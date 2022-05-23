@@ -17,6 +17,9 @@
 		return {
 			status: 200,
 			props: {ideas},
+			cache: {
+				maxage: 1 * 60,
+			},
 		}
 	}
 </script>

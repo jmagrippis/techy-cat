@@ -8,5 +8,8 @@ export const get: RequestHandler = async ({url}) => {
 
 	return {
 		body: {ideas},
+		headers: new Headers({
+			'Cache-Control': 's-maxage=60, stale-while-revalidate=600',
+		}),
 	}
 }
