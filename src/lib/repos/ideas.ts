@@ -5,7 +5,7 @@ export type Idea = {
 }
 
 class IdeasRepo {
-	getAll = async () => [
+	#ideas = [
 		{
 			name: 'Duosingo',
 			emoji: '🎶',
@@ -30,6 +30,8 @@ class IdeasRepo {
 			description: 'Categorise your clothes in looks, get insights!',
 		},
 	]
+
+	getAll = async ({limit}: {limit: number}) => this.#ideas.slice(0, limit)
 }
 
 export const ideasRepo = new IdeasRepo()

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import IdeaCard from '$lib/components/IdeaCard.svelte'
+
 	import PageHeading from '$lib/components/PageHeading.svelte'
 	import type {Idea} from '$lib/repos/ideas'
 
@@ -9,14 +11,8 @@
 	<PageHeading>Latest ideas</PageHeading>
 	<ul class="flex max-w-prose flex-col gap-4">
 		{#each ideas as { emoji, name, description }}
-			<li class="flex items-center gap-4 rounded bg-surface-1 px-6 py-4 shadow">
-				<span class="text-6xl">{emoji}</span>
-				<div>
-					<h2 class="text-2xl">
-						{name}
-					</h2>
-					{description}
-				</div>
+			<li>
+				<IdeaCard {emoji} {name} {description} />
 			</li>
 		{/each}
 	</ul>

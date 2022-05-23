@@ -28,7 +28,7 @@
 			>!
 		</p>
 		<p class="text-center">
-			<BigLink href="/learn" prefetch={true}
+			<BigLink href="/ideas" prefetch={true}
 				>Check out the latest ideas!</BigLink
 			>
 		</p>
