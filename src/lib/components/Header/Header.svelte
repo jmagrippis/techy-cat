@@ -45,7 +45,7 @@
 	<div class="flex items-center gap-4 md:gap-8">
 		<button
 			on:click={handleThemeIconClick}
-			class="transition-colors hover:text-prime"
+			class="transition-colors hover:text-primary-400"
 			label="toggle theme from {$theme} to {nextTheme}"
 			aria-live="polite"
 		>
@@ -56,7 +56,7 @@
 			target="_blank"
 			rel="noopener noreferrer"
 			aria-label="YouTube"
-			class="transition-colors hover:text-prime"
+			class="transition-colors hover:text-primary-400"
 		>
 			<YouTubeIcon title="Johnny's YouTube channel" className="w-6" />
 		</a>

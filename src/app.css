@@ -42,12 +42,6 @@
 	/* common */
 	--transition-duration-short: 0.15s;
 	--transition-duration-long: 0.4s;
-	--prime-color-hue: 15;
-	--prime-color-saturation: 100%;
-	--prime-color-lightness: 50%;
-
-	--prime-color: var(--prime-color-hue) var(--prime-color-saturation)
-		var(--prime-color-lightness);
 
 	/* light */
 	--copy-base-color-light: 24 10% 10%;

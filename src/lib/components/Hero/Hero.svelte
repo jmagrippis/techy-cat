@@ -11,9 +11,9 @@
 	>
 		<div class="mb-2 text-5xl lg:text-6xl">
 			<div>Get inspired by</div>
-			<div class="flex justify-center">
+			<div class="flex justify-center sm:justify-start">
 				😻
-				<div class="font-thin text-prime">Techy Cat</div>
+				<div class="font-thin text-primary-400">Techy Cat</div>
 				😻
 			</div>
 		</div>

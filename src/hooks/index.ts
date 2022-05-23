@@ -1,6 +1,6 @@
 import type {GetSession, Handle} from '@sveltejs/kit'
 
-import {ONE_DAY_IN_SECONDS, ONE_WEEK_IN_SECONDS} from '$lib/constants'
+import {ONE_DAY_IN_SECONDS} from '$lib/constants'
 import {getCookieValue} from '$lib/getCookieValue'
 
 import {isTheme} from '../types'
