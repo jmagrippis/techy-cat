@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type {Theme} from '../../../types'
 	import {setTheme, theme} from '$lib/stores/theme'
-	import YouTubeIcon from '$lib/components/icons/YouTubeIcon.svelte'
+	import YouTubeIcon from '$lib/icons/youtube.svg'
 	import ThemeToggleIcon from './ThemeToggleIcon.svelte'
 
 	let previousY: number
@@ -58,7 +58,10 @@
 			aria-label="YouTube"
 			class="transition-colors hover:text-primary-400"
 		>
-			<YouTubeIcon title="Johnny's YouTube channel" className="w-6" />
+			<YouTubeIcon
+				title="Johnny's YouTube channel"
+				class="w-6 hover:text-primary-400"
+			/>
 		</a>
 	</div>
 </header>

@@ -14,6 +14,7 @@
 	},
 	"devDependencies": {
 		"@notionhq/client": "^1.0.4",
+		"@poppanator/sveltekit-svg": "^0.3.2",
 		"@sveltejs/adapter-vercel": "next",
 		"@sveltejs/kit": "next",
 		"@testing-library/jest-dom": "^5.16.4",

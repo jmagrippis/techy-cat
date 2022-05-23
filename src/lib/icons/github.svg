@@ -1,8 +1,4 @@
-<script lang="ts">
-	export let className: string | undefined = undefined
-</script>
-
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class={className}>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" >
 	<path
 		fill-rule="evenodd"
 		fill="currentColor"

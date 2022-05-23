@@ -40,10 +40,10 @@
 
 <main>
 	<Hero />
-	<section>
+	<section class="container mb-6 px-2 sm:px-0">
 		<h2 class="text-2xl">Latest ideas</h2>
 		<ul
-			class="flex max-w-prose flex-col gap-4 sm:grid sm:w-full sm:max-w-full sm:grid-cols-12"
+			class="mb-6 flex max-w-prose flex-col gap-4 sm:grid sm:w-full sm:max-w-full sm:grid-cols-12"
 		>
 			{#each ideas as { emoji, name, description }}
 				<li class="sm:col-span-6 xl:col-span-4">

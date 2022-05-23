@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let className: string = undefined
+	export let className: string | undefined = undefined
 </script>
 
 <svg class={className} aria-hidden="true" viewBox="0 0 24 24">

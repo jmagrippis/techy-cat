@@ -9,9 +9,7 @@
 <section class="container flex-grow">
 	<PageHeading>About</PageHeading>
 
-	<p>
-		We’re getting inspired and sharing our ideas, so you will be in turn 😄
-	</p>
+	<p>We’re getting inspired and sharing our ideas, AND SO WILL YOU 😉!</p>
 
 	<p>
 		Illustrations courtesy of <a

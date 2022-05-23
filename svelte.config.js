@@ -1,5 +1,23 @@
 import adapter from '@sveltejs/adapter-vercel'
 import preprocess from 'svelte-preprocess'
+import svg from '@poppanator/sveltekit-svg'
+
+const svgPlugin = svg({
+	svgoOptions: {
+		multipass: true,
+		plugins: [
+			{
+				name: 'preset-default',
+				params: {
+					overrides: {
+						removeViewBox: false,
+					},
+				},
+			},
+			'removeDimensions',
+		],
+	},
+})
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -15,7 +33,7 @@ const config = {
 		},
 
 		vite: {
-			plugins: [],
+			plugins: [svgPlugin],
 			test: {
 				mockReset: true,
 				environment: 'jsdom',
