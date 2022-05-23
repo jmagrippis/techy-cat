@@ -1,0 +1,79 @@
+/* tailwind setup */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	html {
+		height: 100%;
+		-webkit-font-smoothing: antialiased;
+		scroll-padding-top: var(--header-height);
+	}
+
+	html,
+	body,
+	#theme-container,
+	#app-content {
+		display: flex;
+		flex-direction: column;
+	}
+
+	body,
+	#theme-container,
+	#app-content {
+		flex-grow: 1;
+	}
+
+	#app-content {
+		@apply bg-surface-1 text-copy-base transition-colors;
+	}
+
+	a {
+		@apply underline decoration-primary-400 decoration-2 transition-colors;
+	}
+
+	a:hover {
+		@apply decoration-primary-600;
+	}
+}
+
+/* css vars */
+* {
+	/* common */
+	--transition-duration-short: 0.15s;
+	--transition-duration-long: 0.4s;
+	--prime-color-hue: 15;
+	--prime-color-saturation: 100%;
+	--prime-color-lightness: 50%;
+
+	--prime-color: var(--prime-color-hue) var(--prime-color-saturation)
+		var(--prime-color-lightness);
+
+	/* light */
+	--copy-base-color-light: 24 10% 10%;
+	--copy-muted-color-light: 30 6% 25%;
+	--surface-1-color-light: 60 9% 98%;
+
+	/* dark */
+	--copy-base-color-dark: 356 100% 97%;
+	--copy-muted-color-dark: 20 6% 90%;
+	--surface-1-color-dark: 24 10% 10%;
+}
+
+:root {
+	color-scheme: light;
+
+	--copy-base-color: var(--copy-base-color-light);
+	--copy-muted-color: var(--copy-muted-color-light);
+	--surface-1-color: var(--surface-1-color-light);
+
+	--header-height: 4rem;
+}
+
+.dark {
+	color-scheme: dark;
+
+	--copy-base-color: var(--copy-base-color-dark);
+	--copy-muted-color: var(--copy-muted-color-dark);
+	--surface-1-color: var(--surface-1-color-dark);
+}
