@@ -28,5 +28,7 @@
 			>
 		</p>
 	</div>
-	<aside class="md:col-span-7"><HeroIcon class="w-full" /></aside>
+	<aside class="md:col-span-7">
+		<HeroIcon class="w-full text-primary-400" />
+	</aside>
 </section>
