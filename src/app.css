@@ -35,6 +35,10 @@
 	a:hover {
 		@apply decoration-primary-600;
 	}
+
+	strong {
+		@apply font-semibold;
+	}
 }
 
 /* css vars */
