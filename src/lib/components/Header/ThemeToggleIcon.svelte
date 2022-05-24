@@ -92,5 +92,42 @@
 			transition-delay: calc(var(--transition-duration-long) / 2);
 			transition-duration: var(--transition-duration-long);
 		}
+
+		@media (prefers-color-scheme: dark) {
+			:global(.auto) svg .sun {
+				transform: scale(1.75);
+			}
+
+			:global(.auto) svg .sun-beams {
+				opacity: 0;
+			}
+
+			:global(.auto) svg .moon > circle {
+				transform: translateX(-7px);
+			}
+
+			@supports (cx: 1) {
+				:global(.auto) svg .moon > circle {
+					transform: translateX(0);
+					cx: 17;
+				}
+			}
+
+			:global(.auto) svg .sun {
+				transform: scale(1.75);
+				transition-timing-function: var(--ease-3);
+				transition-duration: calc(var(--transition-duration-long) / 2);
+			}
+
+			:global(.auto) svg .sun-beams {
+				transform: rotateZ(-25deg);
+				transition-duration: calc(var(--transition-duration-long) / 3);
+			}
+
+			:global(.auto) svg .moon > circle {
+				transition-delay: calc(var(--transition-duration-long) / 2);
+				transition-duration: var(--transition-duration-long);
+			}
+		}
 	}
 </style>

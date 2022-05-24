@@ -3,6 +3,7 @@
 	import {setTheme, theme} from '$lib/stores/theme'
 	import YouTubeIcon from '$lib/icons/youtube.svg'
 	import ThemeToggleIcon from './ThemeToggleIcon.svelte'
+	import {browser} from '$app/env'
 
 	let previousY: number
 	let currentY: number
@@ -15,10 +16,22 @@
 		return direction
 	}
 
+	const deriveNextTheme = (currentTheme: Theme): Theme => {
+		if (!browser) return currentTheme
+
+		if (currentTheme === 'auto') {
+			return window.matchMedia('(prefers-color-scheme: dark)').matches
+				? 'light'
+				: 'dark'
+		}
+
+		return currentTheme === 'dark' ? 'light' : 'dark'
+	}
+
 	$: scrollDirection = deriveDirection(currentY)
 	$: offscreen = scrollDirection === 'down' && currentY > clientHeight * 4
 
-	$: nextTheme = ($theme === 'dark' ? 'light' : 'dark') as Theme
+	$: nextTheme = deriveNextTheme($theme)
 	const handleThemeIconClick = () => {
 		setTheme(nextTheme)
 	}

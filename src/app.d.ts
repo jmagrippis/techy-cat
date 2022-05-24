@@ -30,13 +30,13 @@ declare namespace App {
 	import type {Theme} from './types'
 
 	interface Locals {
-		theme: Theme | null
+		theme: Theme
 	}
 
 	interface Platform {}
 
 	interface Session {
-		theme: Theme | null
+		theme: Theme
 	}
 
 	interface Stuff {}

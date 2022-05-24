@@ -21,6 +21,9 @@ module.exports = {
 			surface: {
 				1: withOpacityValue('surface-1-color'),
 			},
+			shadow: {
+				1: withOpacityValue('shadow-1-color'),
+			},
 			gray: colors.stone,
 			white: colors.white,
 			transparent: 'transparent',

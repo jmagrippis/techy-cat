@@ -1,4 +1,4 @@
-const themes = ['light', 'dark'] as const
+const themes = ['light', 'dark', 'auto'] as const
 export type Theme = typeof themes[number]
 
 export const isTheme = (theme: unknown): theme is Theme =>

@@ -47,11 +47,32 @@
 	--copy-base-color-light: 24 10% 10%;
 	--copy-muted-color-light: 30 6% 25%;
 	--surface-1-color-light: 60 9% 98%;
+	--shadow-1-color-light: 24 10% 10%;
 
 	/* dark */
 	--copy-base-color-dark: 356 100% 97%;
 	--copy-muted-color-dark: 20 6% 90%;
 	--surface-1-color-dark: 24 10% 10%;
+	--shadow-1-color-dark: 297 64% 28%;
+
+	/* easings */
+	--ease-1: cubic-bezier(0.25, 0, 0.5, 1);
+	--ease-2: cubic-bezier(0.25, 0, 0.4, 1);
+	--ease-3: cubic-bezier(0.25, 0, 0.3, 1);
+	--ease-4: cubic-bezier(0.25, 0, 0.2, 1);
+	--ease-5: cubic-bezier(0.25, 0, 0.1, 1);
+
+	--ease-out-1: cubic-bezier(0, 0, 0.75, 1);
+	--ease-out-2: cubic-bezier(0, 0, 0.5, 1);
+	--ease-out-3: cubic-bezier(0, 0, 0.3, 1);
+	--ease-out-4: cubic-bezier(0, 0, 0.1, 1);
+	--ease-out-5: cubic-bezier(0, 0, 0, 1);
+
+	--ease-elastic-1: cubic-bezier(0.5, 0.75, 0.75, 1.25);
+	--ease-elastic-2: cubic-bezier(0.5, 1, 0.75, 1.25);
+	--ease-elastic-3: cubic-bezier(0.5, 1.25, 0.75, 1.25);
+	--ease-elastic-4: cubic-bezier(0.5, 1.5, 0.75, 1.25);
+	--ease-elastic-5: cubic-bezier(0.5, 1.75, 0.75, 1.25);
 }
 
 :root {
@@ -60,6 +81,7 @@
 	--copy-base-color: var(--copy-base-color-light);
 	--copy-muted-color: var(--copy-muted-color-light);
 	--surface-1-color: var(--surface-1-color-light);
+	--shadow-1-color: var(--shadow-1-color-light);
 
 	--header-height: 4rem;
 }
@@ -70,4 +92,16 @@
 	--copy-base-color: var(--copy-base-color-dark);
 	--copy-muted-color: var(--copy-muted-color-dark);
 	--surface-1-color: var(--surface-1-color-dark);
+	--shadow-1-color: var(--shadow-1-color-dark);
+}
+
+@media (prefers-color-scheme: dark) {
+	.auto {
+		color-scheme: dark;
+
+		--copy-base-color: var(--copy-base-color-dark);
+		--copy-muted-color: var(--copy-muted-color-dark);
+		--surface-1-color: var(--surface-1-color-dark);
+		--shadow-1-color: var(--shadow-1-color-dark);
+	}
 }
