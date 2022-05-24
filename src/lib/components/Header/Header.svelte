@@ -40,7 +40,7 @@
 <svelte:window bind:scrollY={currentY} />
 
 <header
-	class="container sticky top-0 flex h-[var(--header-height)] items-center bg-surface-1/50 px-2 text-lg backdrop-blur-sm transition-transform ease-in md:px-0"
+	class="container sticky top-0 z-50 flex h-[var(--header-height)] items-center bg-surface-1/50 px-2 text-lg backdrop-blur-sm transition-transform ease-in md:px-0"
 	class:motion-safe:-translate-y-full={offscreen}
 	bind:clientHeight
 >
