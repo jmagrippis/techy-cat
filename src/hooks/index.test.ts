@@ -8,14 +8,12 @@ vi.mock('$lib/firebase/admin', () => ({
 }))
 
 describe('handle', () => {
-	it('puts a `null` theme value in the locals when there are no cookies in the request', async () => {
+	it('puts `auto` as the theme value in the locals when there are no cookies in the request', async () => {
 		const response = {
 			headers: {get: vi.fn()},
 		}
 		const resolve = vi.fn().mockResolvedValue(response)
-		const headers = {
-			get: (property: string) => headers[property] || '',
-		}
+		const headers = new Headers({})
 		const event = {
 			request: {
 				headers,
@@ -25,7 +23,7 @@ describe('handle', () => {
 
 		await handle({event, resolve})
 
-		expect(event.locals.theme).toBeNull()
+		expect(event.locals.theme).toBe('auto')
 	})
 
 	it('returns the value of the theme cookie', async () => {
@@ -33,10 +31,8 @@ describe('handle', () => {
 			headers: {get: vi.fn()},
 		}
 		const resolve = vi.fn().mockResolvedValue(response)
-		const headersA = {
-			cookie: 'theme=dark',
-			get: (property: string) => headersA[property] || '',
-		}
+		const headersA = new Headers({cookie: 'theme=dark'})
+
 		const eventA = {
 			request: {
 				headers: headersA,
@@ -48,10 +44,10 @@ describe('handle', () => {
 
 		expect(eventA.locals.theme).toBe('dark')
 
-		const headersB = {
+		const headersB = new Headers({
 			cookie: 'random=value; theme=light; answer=42',
-			get: (property: string) => headersB[property] || '',
-		}
+		})
+
 		const eventB = {
 			request: {
 				headers: headersB,
@@ -64,15 +60,13 @@ describe('handle', () => {
 		expect(eventB.locals.theme).toBe('light')
 	})
 
-	it('returns a `null` theme value when there is no theme cookie in the request', async () => {
+	it('returns `auto` as the theme value when there is no theme cookie in the request', async () => {
 		const response = {
 			headers: {get: vi.fn()},
 		}
 		const resolve = vi.fn().mockResolvedValue(response)
-		const headersA = {
-			cookie: '',
-			get: (property: string) => headersA[property] || '',
-		}
+		const headersA = new Headers({cookie: ''})
+
 		const eventA = {
 			request: {
 				headers: headersA,
@@ -82,12 +76,10 @@ describe('handle', () => {
 
 		await handle({event: eventA, resolve})
 
-		expect(eventA.locals.theme).toBeNull()
+		expect(eventA.locals.theme).toBe('auto')
 
-		const headersB = {
-			cookie: 'answer=42',
-			get: (property: string) => headersB[property] || '',
-		}
+		const headersB = new Headers({cookie: 'answer=42'})
+
 		const eventB = {
 			request: {
 				headers: headersB,
@@ -97,6 +89,6 @@ describe('handle', () => {
 
 		await handle({event: eventB, resolve})
 
-		expect(eventA.locals.theme).toBeNull()
+		expect(eventA.locals.theme).toBe('auto')
 	})
 })
