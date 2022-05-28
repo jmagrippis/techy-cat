@@ -46,7 +46,7 @@ export class IdeasRepo {
 			.eq('slug', slug)
 			.limit(1)
 
-		if (!response.data) return null
+		if (!response.data || !response.data.length) return null
 
 		const {profiles, ...idea} = response.data[0]
 		return {...idea, authorDisplayName: profiles.display_name}
