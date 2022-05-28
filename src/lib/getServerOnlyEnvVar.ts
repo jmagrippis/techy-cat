@@ -1,7 +1,4 @@
-import {config} from 'dotenv-flow'
 import {browser} from '$app/env'
-
-config()
 
 export const getServerOnlyEnvVar = (key: string) => {
 	if (browser) {

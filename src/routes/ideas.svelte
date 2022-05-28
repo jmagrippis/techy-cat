@@ -2,9 +2,9 @@
 	import IdeaCard from '$lib/components/IdeaCard.svelte'
 
 	import PageHeading from '$lib/components/PageHeading.svelte'
-	import type {Idea} from '$lib/repos/ideas'
+	import type {IdeaSnippet} from '$lib/repos/ideas'
 
-	export let ideas: Idea[]
+	export let ideas: IdeaSnippet[]
 </script>
 
 <section class="container w-full grow px-2 sm:px-0">
