@@ -6,6 +6,7 @@ export type DbIdeaWithProfiles = {
 	name: string
 	emoji: string
 	description: string
+	created_at: string
 	profiles: {
 		display_name: string
 	}
@@ -13,7 +14,7 @@ export type DbIdeaWithProfiles = {
 
 export type IdeaSnippet = Pick<
 	DbIdeaWithProfiles,
-	'id' | 'slug' | 'name' | 'emoji' | 'description'
+	'id' | 'slug' | 'name' | 'emoji' | 'description' | 'created_at'
 >
 
 export type Idea =
@@ -31,6 +32,7 @@ class IdeasRepo {
 			.from<IdeaSnippet>('ideas')
 			.select('id, slug, name, emoji, description')
 			.neq('description', 'NULL')
+			.order('created_at', {ascending: false})
 			.limit(limit)
 
 		return response.data || []

@@ -16,14 +16,13 @@ export interface paths {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.ideas.id"];
-          slug?: parameters["rowFilter.ideas.slug"];
-          name?: parameters["rowFilter.ideas.name"];
           emoji?: parameters["rowFilter.ideas.emoji"];
+          name?: parameters["rowFilter.ideas.name"];
+          slug?: parameters["rowFilter.ideas.slug"];
           description?: parameters["rowFilter.ideas.description"];
           created_at?: parameters["rowFilter.ideas.created_at"];
-          /** The person who submitted the idea */
           author_id?: parameters["rowFilter.ideas.author_id"];
+          id?: parameters["rowFilter.ideas.id"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -74,14 +73,13 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.ideas.id"];
-          slug?: parameters["rowFilter.ideas.slug"];
-          name?: parameters["rowFilter.ideas.name"];
           emoji?: parameters["rowFilter.ideas.emoji"];
+          name?: parameters["rowFilter.ideas.name"];
+          slug?: parameters["rowFilter.ideas.slug"];
           description?: parameters["rowFilter.ideas.description"];
           created_at?: parameters["rowFilter.ideas.created_at"];
-          /** The person who submitted the idea */
           author_id?: parameters["rowFilter.ideas.author_id"];
+          id?: parameters["rowFilter.ideas.id"];
         };
         header: {
           /** Preference */
@@ -96,14 +94,13 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.ideas.id"];
-          slug?: parameters["rowFilter.ideas.slug"];
-          name?: parameters["rowFilter.ideas.name"];
           emoji?: parameters["rowFilter.ideas.emoji"];
+          name?: parameters["rowFilter.ideas.name"];
+          slug?: parameters["rowFilter.ideas.slug"];
           description?: parameters["rowFilter.ideas.description"];
           created_at?: parameters["rowFilter.ideas.created_at"];
-          /** The person who submitted the idea */
           author_id?: parameters["rowFilter.ideas.author_id"];
+          id?: parameters["rowFilter.ideas.id"];
         };
         body: {
           /** ideas */
@@ -125,7 +122,8 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.profiles.id"];
-          "Display Name"?: parameters["rowFilter.profiles.Display Name"];
+          display_name?: parameters["rowFilter.profiles.display_name"];
+          created_at?: parameters["rowFilter.profiles.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -177,7 +175,8 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.profiles.id"];
-          "Display Name"?: parameters["rowFilter.profiles.Display Name"];
+          display_name?: parameters["rowFilter.profiles.display_name"];
+          created_at?: parameters["rowFilter.profiles.created_at"];
         };
         header: {
           /** Preference */
@@ -193,7 +192,8 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.profiles.id"];
-          "Display Name"?: parameters["rowFilter.profiles.Display Name"];
+          display_name?: parameters["rowFilter.profiles.display_name"];
+          created_at?: parameters["rowFilter.profiles.created_at"];
         };
         body: {
           /** profiles */
@@ -214,6 +214,25 @@ export interface paths {
 
 export interface definitions {
   ideas: {
+    /** Format: text */
+    emoji: string;
+    /** Format: text */
+    name: string;
+    /** Format: text */
+    slug: string;
+    /** Format: text */
+    description: string;
+    /**
+     * Format: timestamp with time zone
+     * @default (now() AT TIME ZONE 'utc'::text)
+     */
+    created_at: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
+    author_id: string;
     /**
      * Format: uuid
      * @description Note:
@@ -221,29 +240,8 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
-    /** Format: text */
-    slug: string;
-    /** Format: text */
-    name: string;
-    /** Format: text */
-    emoji: string;
-    /** Format: text */
-    description?: string;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    created_at: string;
-    /**
-     * Format: uuid
-     * @description The person who submitted the idea
-     *
-     * Note:
-     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
-     */
-    author_id?: string;
   };
-  /** @description Public facing user information */
+  /** @description Public user information */
   profiles: {
     /**
      * Format: uuid
@@ -252,7 +250,12 @@ export interface definitions {
      */
     id: string;
     /** Format: text */
-    "Display Name": string;
+    display_name?: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
   };
 }
 
@@ -291,29 +294,28 @@ export interface parameters {
   limit: string;
   /** @description ideas */
   "body.ideas": definitions["ideas"];
-  /** Format: uuid */
-  "rowFilter.ideas.id": string;
   /** Format: text */
-  "rowFilter.ideas.slug": string;
+  "rowFilter.ideas.emoji": string;
   /** Format: text */
   "rowFilter.ideas.name": string;
   /** Format: text */
-  "rowFilter.ideas.emoji": string;
+  "rowFilter.ideas.slug": string;
   /** Format: text */
   "rowFilter.ideas.description": string;
   /** Format: timestamp with time zone */
   "rowFilter.ideas.created_at": string;
-  /**
-   * Format: uuid
-   * @description The person who submitted the idea
-   */
+  /** Format: uuid */
   "rowFilter.ideas.author_id": string;
+  /** Format: uuid */
+  "rowFilter.ideas.id": string;
   /** @description profiles */
   "body.profiles": definitions["profiles"];
   /** Format: uuid */
   "rowFilter.profiles.id": string;
   /** Format: text */
-  "rowFilter.profiles.Display Name": string;
+  "rowFilter.profiles.display_name": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.profiles.created_at": string;
 }
 
 export interface operations {}
