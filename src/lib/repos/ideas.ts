@@ -1,4 +1,4 @@
-import {createClient} from '@supabase/supabase-js'
+import type {SupabaseClient} from '@supabase/supabase-js'
 
 export type DbIdeaWithProfiles = {
 	id: string
@@ -21,11 +21,12 @@ export type Idea =
 	| Pick<DbIdeaWithProfiles, 'id' | 'slug' | 'name' | 'emoji' | 'description'>
 	| {authorDisplayName: string}
 
-class IdeasRepo {
-	#client = createClient(
-		import.meta.env.VITE_SUPABASE_URL,
-		import.meta.env.VITE_SUPABASE_ANON_KEY
-	)
+export class IdeasRepo {
+	#client: SupabaseClient
+
+	constructor(client: SupabaseClient) {
+		this.#client = client
+	}
 
 	getAll = async ({limit}: {limit: number}): Promise<IdeaSnippet[]> => {
 		const response = await this.#client
@@ -51,5 +52,3 @@ class IdeasRepo {
 		return {...idea, authorDisplayName: profiles.display_name}
 	}
 }
-
-export const ideasRepo = new IdeasRepo()

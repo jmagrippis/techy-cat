@@ -1,8 +1,7 @@
-import {ideasRepo} from '$lib/repos/ideas'
 import type {RequestHandler} from './__types/[slug]'
 
-export const get: RequestHandler = async ({params}) => {
-	const idea = await ideasRepo.find(params.slug)
+export const get: RequestHandler = async ({params, locals}) => {
+	const idea = await locals.ideasRepo.find(params.slug)
 
 	if (!idea) {
 		return {
