@@ -1,81 +1,52 @@
-import {Client} from '@notionhq/client'
-import {getServerOnlyEnvVar} from '$lib/getServerOnlyEnvVar'
+import {createClient} from '@supabase/supabase-js'
 
-export type Idea = {
+export type DbIdeaWithProfiles = {
 	id: string
+	slug: string
 	name: string
 	emoji: string
 	description: string
-}
-
-const IDEAS_DB_ID = '864d832403c54dc1b062376efa807f18'
-
-type NotionIdeaResult = {
-	id: string
-	icon: {
-		emoji: string
-	}
-	properties: {
-		Name: {
-			type: 'title'
-			title: {
-				type: 'text'
-				text: {
-					content: string
-				}
-			}[]
-		}
-		Description: {
-			type: 'rich_text'
-			rich_text: {
-				type: 'text'
-				text: {content: string}
-			}[]
-		}
+	profiles: {
+		display_name: string
 	}
 }
 
-const isNotionResult = (
-	result: Record<string, unknown>
-): result is NotionIdeaResult =>
-	!!(
-		(result as NotionIdeaResult)?.icon?.emoji &&
-		(result as NotionIdeaResult)?.properties.Name.title[0].text.content &&
-		(result as NotionIdeaResult)?.properties.Description.rich_text
-	)
+export type IdeaSnippet = Pick<
+	DbIdeaWithProfiles,
+	'id' | 'slug' | 'name' | 'emoji' | 'description'
+>
 
-const mapResultToIdea = (notionResult: NotionIdeaResult): Idea => ({
-	id: notionResult.id,
-	name: notionResult.properties.Name.title[0].text.content,
-	emoji: notionResult.icon.emoji,
-	description: notionResult.properties.Description.rich_text
-		.reduce((acc, {text: {content}}) => `${acc} ${content}`, '')
-		.trim(),
-})
+export type Idea =
+	| Pick<DbIdeaWithProfiles, 'id' | 'slug' | 'name' | 'emoji' | 'description'>
+	| {authorDisplayName: string}
 
 class IdeasRepo {
-	#client = new Client({
-		auth: getServerOnlyEnvVar('NOTION_TOKEN'),
-	})
+	#client = createClient(
+		import.meta.env.VITE_SUPABASE_URL,
+		import.meta.env.VITE_SUPABASE_ANON_KEY
+	)
 
-	getAll = async ({limit}: {limit: number}): Promise<Idea[]> => {
-		const {results} = await this.#client.databases.query({
-			database_id: IDEAS_DB_ID,
-			page_size: limit,
-		})
+	getAll = async ({limit}: {limit: number}): Promise<IdeaSnippet[]> => {
+		const response = await this.#client
+			.from<IdeaSnippet>('ideas')
+			.select('id, slug, name, emoji, description')
+			.neq('description', 'NULL')
+			.limit(limit)
 
-		return results.reduce<Idea[]>((acc, result) => {
-			if (isNotionResult(result)) {
-				acc.push(mapResultToIdea(result))
-			}
-			return acc
-		}, [])
+		return response.data || []
 	}
 
-	find = async (id: string): Promise<Idea | null> => {
-		const result = await this.#client.pages.retrieve({page_id: id})
+	find = async (slug: string): Promise<Idea | null> => {
+		const response = await this.#client
+			.from<DbIdeaWithProfiles>('ideas')
+			.select('id, slug, name, emoji, description, profiles (display_name)')
+			.eq('slug', slug)
+			.limit(1)
 
-		return isNotionResult(result) ? mapResultToIdea(result) : null
+		if (!response.data) return null
+
+		const {profiles, ...idea} = response.data[0]
+		return {...idea, authorDisplayName: profiles.display_name}
 	}
 }
 

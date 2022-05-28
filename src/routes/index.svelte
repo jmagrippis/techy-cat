@@ -29,9 +29,9 @@
 
 	import Hero from '$lib/components/Hero/Hero.svelte'
 	import IdeaCard from '$lib/components/IdeaCard.svelte'
-	import type {Idea} from '$lib/repos/ideas'
+	import type {IdeaSnippet} from '$lib/repos/ideas'
 
-	export let ideas: Idea[]
+	export let ideas: IdeaSnippet[]
 </script>
 
 <svelte:head>
