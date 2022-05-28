@@ -4,13 +4,13 @@ import type {RequestHandler} from './__types/[id]'
 export const get: RequestHandler = async ({params}) => {
 	const idea = await ideasRepo.find(params.id)
 
-	if (idea) {
+	if (!idea) {
 		return {
-			body: {idea},
+			status: 404,
 		}
 	}
 
 	return {
-		status: 404,
+		body: {idea},
 	}
 }

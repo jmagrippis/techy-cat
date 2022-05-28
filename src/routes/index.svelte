@@ -9,13 +9,13 @@
 
 		const response = await fetch(url, {headers})
 
-		if (response.status !== 200 || !response.ok) {
+		if (!response.ok) {
 			return {status: response.status}
 		}
+
 		const {ideas} = await response.json()
 
 		return {
-			status: 200,
 			props: {ideas},
 			cache: {
 				maxage: 1 * 60,
