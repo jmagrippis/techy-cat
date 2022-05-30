@@ -1,6 +1,6 @@
 <script lang="ts">
 	import BigLink from '../buttons/BigLink.svelte'
-	import HeroIcon from '$lib/icons/hero.svg'
+	import HeroImage from '$lib/icons/hero.svg'
 </script>
 
 <section
@@ -29,6 +29,6 @@
 		</p>
 	</div>
 	<aside class="md:col-span-7">
-		<HeroIcon class="w-full text-primary-400" />
+		<HeroImage class="w-full fill-surface-2 text-primary-400" />
 	</aside>
 </section>

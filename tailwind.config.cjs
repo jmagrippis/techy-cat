@@ -8,7 +8,6 @@ const withOpacityValue =
 			: `hsla(var(--${varName}) / ${opacityValue})`
 
 module.exports = {
-	darkMode: 'class',
 	content: ['./src/**/*.{html,css,svelte}'],
 	theme: {
 		colors: {
@@ -20,6 +19,7 @@ module.exports = {
 			},
 			surface: {
 				1: withOpacityValue('surface-1-color'),
+				2: withOpacityValue('surface-2-color'),
 			},
 			shadow: {
 				1: withOpacityValue('shadow-1-color'),
