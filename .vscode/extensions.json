@@ -4,7 +4,6 @@
 
 	// List of extensions which should be recommended for users of this workspace.
 	"recommendations": [
-		"ardenivanov.svelte-intellisense",
 		"bradlc.vscode-tailwindcss",
 		"codezombiech.gitignore",
 		"cschleiden.vscode-github-actions",
