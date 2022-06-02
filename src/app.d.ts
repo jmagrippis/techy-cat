@@ -28,11 +28,9 @@ declare module '*.svg?url' {
 // for information about these interfaces
 declare namespace App {
 	import type {Theme} from './types'
-	import type {IdeasRepo} from '$lib/repos/ideas'
 
 	interface Locals {
 		theme: Theme
-		ideasRepo: IdeasRepo
 	}
 
 	interface Platform {}
