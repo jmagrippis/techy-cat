@@ -29,8 +29,22 @@ declare module '*.svg?url' {
 declare namespace App {
 	import type {Theme} from './types'
 
+	type Idea = {
+		id: string
+		name: string
+		emoji: string
+		description: string
+		slug: string
+	}
+
+	interface IdeasRepoInterface {
+		getAll({limit: number}): Promise<Idea[]>
+		findBySlug(slug: string): Promise<Idea | null>
+	}
+
 	interface Locals {
 		theme: Theme
+		ideasRepo: IdeasRepoInterface
 	}
 
 	interface Platform {}

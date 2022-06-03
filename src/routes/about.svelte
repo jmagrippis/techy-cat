@@ -6,7 +6,7 @@
 	<title>About | Techy Cat</title>
 </svelte:head>
 
-<section class="container flex-grow px-2 sm:px-0">
+<section class="container flex-grow px-2">
 	<PageHeading>About</PageHeading>
 
 	<div class="flex flex-col gap-2">

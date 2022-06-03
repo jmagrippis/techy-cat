@@ -1,0 +1,17 @@
+<script lang="ts">
+	import IdeaCard from '$lib/components/IdeaCard.svelte'
+	import PageHeading from '$lib/components/PageHeading.svelte'
+
+	export let ideas: App.Idea[]
+</script>
+
+<section class="container w-full grow px-2">
+	<PageHeading>Latest Ideas</PageHeading>
+	<ul class="flex max-w-prose flex-col gap-4">
+		{#each ideas as { emoji, name, description }}
+			<li>
+				<IdeaCard {emoji} {name} {description} />
+			</li>
+		{/each}
+	</ul>
+</section>
