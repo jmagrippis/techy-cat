@@ -7,7 +7,7 @@
 	class="container py-4 px-2 md:grid md:grid-cols-12 md:gap-x-8 md:px-0 lg:gap-x-16"
 >
 	<div
-		class="mb-8 text-center text-xl md:col-span-5 md:mb-0 md:self-center md:text-left md:text-2xl"
+		class="mb-8 text-center text-xl md:col-span-6 md:mb-0 md:self-center md:text-left md:text-2xl lg:col-span-5"
 	>
 		<div class="mb-2 text-5xl lg:text-6xl">
 			<div class="mb-2">Get inspired by</div>
@@ -28,7 +28,7 @@
 			>
 		</p>
 	</div>
-	<aside class="md:col-span-7">
+	<aside class="self-center sm:col-span-6 md:col-span-6 lg:col-span-7">
 		<HeroImage class="w-full fill-surface-2 text-primary-400" />
 	</aside>
 </section>
