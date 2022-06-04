@@ -4,6 +4,7 @@
 	import YouTubeIcon from '$lib/icons/youtube.svg'
 	import ThemeToggleIcon from './ThemeToggleIcon.svelte'
 	import {browser} from '$app/env'
+	import UserIcon from './UserIcon.svelte'
 
 	let previousY: number
 	let currentY: number
@@ -64,6 +65,7 @@
 		>
 			<ThemeToggleIcon className="w-6" />
 		</button>
+		<UserIcon />
 		<a
 			href="https://www.youtube.com/channel/UCm1ALyg61uhPoTnZBm7mY2g"
 			target="_blank"

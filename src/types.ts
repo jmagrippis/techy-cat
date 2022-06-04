@@ -6,5 +6,5 @@ export const isTheme = (theme: unknown): theme is Theme =>
 
 export type User = {
 	id: string
-	email: string
+	displayName?: string
 }
