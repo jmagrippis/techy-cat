@@ -8,9 +8,9 @@
 <section class="container w-full grow px-2">
 	<PageHeading>Latest Ideas</PageHeading>
 	<ul class="flex max-w-prose flex-col gap-4">
-		{#each ideas as { emoji, name, description }}
+		{#each ideas as { id, emoji, name, description, favourite }}
 			<li>
-				<IdeaCard {emoji} {name} {description} />
+				<IdeaCard {id} {emoji} {name} {description} {favourite} />
 			</li>
 		{/each}
 	</ul>

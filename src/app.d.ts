@@ -27,7 +27,7 @@ declare module '*.svg?url' {
 // See https://kit.svelte.dev/docs#typescript
 // for information about these interfaces
 declare namespace App {
-	import type {Theme} from './types'
+	import type {Theme, User} from './types'
 
 	type Idea = {
 		id: string
@@ -44,6 +44,7 @@ declare namespace App {
 
 	interface Locals {
 		theme: Theme
+		user: User | null
 		ideasRepo: IdeasRepoInterface
 	}
 
@@ -51,6 +52,7 @@ declare namespace App {
 
 	interface Session {
 		theme: Theme
+		user: User | null
 	}
 
 	interface Stuff {}
