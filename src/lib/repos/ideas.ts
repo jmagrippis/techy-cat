@@ -7,19 +7,13 @@ export type DbIdeaWithFavourites = {
 	emoji: string
 	description: string
 	created_at: string
-	users_to_favourite_ideas: {
+	profiles: {
+		display_name: string
+	}
+	starred_ideas: {
 		created_at: string
 	}[]
 }
-
-export type IdeaSnippet = Pick<
-	DbIdeaWithFavourites,
-	'id' | 'slug' | 'name' | 'emoji' | 'description' | 'created_at'
-> & {favourite: boolean}
-
-export type Idea =
-	| Pick<DbIdeaWithFavourites, 'id' | 'slug' | 'name' | 'emoji' | 'description'>
-	| {authorDisplayName: string}
 
 export class IdeasRepo implements App.IdeasRepoInterface {
 	#client: SupabaseClient
@@ -27,49 +21,62 @@ export class IdeasRepo implements App.IdeasRepoInterface {
 	constructor(client: SupabaseClient) {
 		this.#client = client
 	}
-	getAll = async ({limit}: {limit: number}): Promise<App.Idea[]> => {
+
+	getAll = async ({limit}: {limit: number}): Promise<App.IdeaSnippet[]> => {
 		const response = await this.#client
 			.from<DbIdeaWithFavourites>('ideas')
 			.select(
 				`id, slug, name, emoji, description,
-					users_to_favourite_ideas (
+					starred_ideas (
 						created_at
-					) AS favourites`
+					)`
 			)
 			.neq('description', 'NULL')
 			.order('created_at', {ascending: false})
 			.limit(limit)
 
-		console.log(response.data?.[0])
-
-		return (response.data || []).map(
-			({users_to_favourite_ideas, ...dbIdea}) => ({
-				...dbIdea,
-				favourite: users_to_favourite_ideas?.length > 0,
-			})
-		)
+		return (response.data || []).map(({starred_ideas, ...dbIdea}) => ({
+			...dbIdea,
+			starred: starred_ideas?.length > 0,
+		}))
 	}
 
 	findBySlug = async (slug: string): Promise<App.Idea | null> => {
 		const response = await this.#client
 			.from<DbIdeaWithFavourites>('ideas')
-			.select('id, slug, name, emoji, description')
+			.select(
+				`id, slug, name, emoji, description, profiles!ideas_author_id_fkey (display_name),
+					starred_ideas (
+						created_at
+					)`
+			)
 			.eq('slug', slug)
-			.limit(1)
+			.maybeSingle()
 
-		if (!response.data || !response.data.length) return null
+		if (!response.data) return null
 
-		return response.data[0]
+		const {profiles, starred_ideas, ...idea} = response.data
+		return {
+			...idea,
+			authorDisplayName: profiles.display_name,
+			starred: starred_ideas?.length > 0,
+		}
 	}
 
-	favouriteIdea = async (ideaId: string, userId: string) =>
-		this.#client
-			.from('users_to_favourite_ideas')
+	starIdea = async (ideaId: string, userId: string) => {
+		await this.#client
+			.from('starred_ideas')
 			.insert({user_id: userId, idea_id: ideaId})
 
-	removeFavouriteIdea = async (ideaId: string, userId: string) =>
-		this.#client
-			.from('users_to_favourite_ideas')
+		return true
+	}
+
+	unstarIdea = async (ideaId: string, userId: string) => {
+		await this.#client
+			.from('starred_ideas')
 			.delete()
 			.match({user_id: userId, idea_id: ideaId})
+
+		return false
+	}
 }
