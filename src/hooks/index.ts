@@ -1,38 +1,14 @@
 import type {GetSession, Handle} from '@sveltejs/kit'
-import {createClient, type SupabaseClient} from '@supabase/supabase-js'
+import {createClient} from '@supabase/supabase-js'
 import {getCookieValue} from '$lib/getCookieValue'
 import {IdeasRepo} from '$lib/repos/ideas'
 
-import {isTheme, type Theme, type User} from '../types'
+import {isTheme, type Theme} from '../types'
+import {UserRepo} from '$lib/repos/user'
 
 const getThemeFromCookie = (cookie: string | null): Theme => {
 	const theme = getCookieValue(cookie, 'theme')
 	return isTheme(theme) ? theme : 'auto'
-}
-
-type DbUser = {
-	id: string
-	display_name: string
-}
-
-const getUserFromCookie = async (
-	cookie: string | null,
-	client: SupabaseClient
-): Promise<User | null> => {
-	const session = getCookieValue(cookie, 'session')
-	if (!session) return null
-	client.auth.setAuth(session)
-
-	const result = await client
-		.from<DbUser>('profiles')
-		.select('id, display_name')
-		.limit(1)
-
-	if (!result.data || !result.data.length) return null
-
-	const [dbUser] = result.data
-
-	return {id: dbUser.id, displayName: dbUser.display_name}
 }
 
 export const handle: Handle = async ({event, resolve}) => {
@@ -44,11 +20,37 @@ export const handle: Handle = async ({event, resolve}) => {
 		import.meta.env.VITE_SUPABASE_URL,
 		import.meta.env.VITE_SUPABASE_ANON_KEY
 	)
+	const userRepo = new UserRepo(supabaseClient)
 	const ideasRepo = new IdeasRepo(supabaseClient)
 	event.locals.ideasRepo = ideasRepo
-	event.locals.user = await getUserFromCookie(cookie, supabaseClient)
+	event.locals.userRepo = userRepo
+	const session = getCookieValue(cookie, 'session')
+	const refreshSession = getCookieValue(cookie, 'refreshSession')
 
-	return resolve(event)
+	let sessionCookie
+	let refreshCookie
+	if (!session) {
+		if (!refreshSession) {
+			event.locals.user = null
+		} else {
+			const result = await userRepo.refreshSession(refreshSession)
+
+			event.locals.user = result.user
+			sessionCookie = result.sessionCookie
+			refreshCookie = result.refreshCookie
+		}
+	} else {
+		event.locals.user = await userRepo.findByAccessToken(session)
+	}
+
+	const response = await resolve(event)
+	if (sessionCookie) {
+		response.headers.set('Set-Cookie', sessionCookie)
+	}
+	if (refreshCookie) {
+		response.headers.set('Set-Cookie', refreshCookie)
+	}
+	return response
 }
 
 export const getSession: GetSession = ({locals}) => {

@@ -5,13 +5,13 @@
 	export let emoji: string
 	export let name: string
 	export let description: string
-	export let favourite: boolean
+	export let starred: boolean
 
 	import FullStar from '$lib/icons/star.svg'
 	import EmptyStar from '$lib/icons/empty-star.svg'
 
-	const handleRemoveFavourite = () => {}
-	const handleFavourite = () => {}
+	const handleUnstar = () => {}
+	const handleStar = () => {}
 </script>
 
 <div
@@ -24,21 +24,27 @@
 			{description}
 		</div>
 	</div>
-	{#if favourite}
+	{#if starred}
 		<form
 			method="POST"
-			action={`ideas/favourite/${id}?_method=DELETE`}
-			use:enhanceForm={{result: handleRemoveFavourite}}
+			action={`ideas/star/${id}?_method=DELETE`}
+			use:enhanceForm={{result: handleUnstar}}
 		>
-			<button><FullStar class="w-8 fill-copy-base" title="favourite" /></button>
+			<button class="relative"
+				><FullStar class="w-8 fill-copy-base" title="unstar this idea" />
+				<EmptyStar
+					class="absolute top-0 z-0 w-8 animate-ping-once fill-copy-base"
+				/>
+			</button>
 		</form>
 	{:else}
 		<form
 			method="POST"
-			action={`ideas/favourite/${id}`}
-			use:enhanceForm={{result: handleFavourite}}
+			action={`ideas/star/${id}`}
+			use:enhanceForm={{result: handleStar}}
 		>
-			<button><EmptyStar class="w-8 fill-copy-base" title="favourite" /></button
+			<button
+				><EmptyStar class="w-8 fill-copy-base" title="star this idea" /></button
 			>
 		</form>
 	{/if}

@@ -5,8 +5,6 @@ export const get: RequestHandler = async ({locals: {ideasRepo}, url}) => {
 	const ideas = await ideasRepo.getAll({limit})
 
 	return {
-		body: {
-			ideas,
-		},
+		body: {ideas},
 	}
 }

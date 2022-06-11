@@ -27,23 +27,46 @@ declare module '*.svg?url' {
 // See https://kit.svelte.dev/docs#typescript
 // for information about these interfaces
 declare namespace App {
-	import type {Theme, User} from './types'
+	import type {Theme} from './types'
+
+	type User = {
+		id: string
+		displayName: string
+	}
 
 	type Idea = {
 		id: string
+		slug: string
 		name: string
 		emoji: string
 		description: string
-		slug: string
+		created_at: string
+		starred: boolean
+		authorDisplayName: string
 	}
 
+	type IdeaSnippet = Omit<Idea, 'authorDisplayName'>
+
 	interface IdeasRepoInterface {
-		getAll({limit: number}): Promise<Idea[]>
+		getAll(options: {limit: number}): Promise<IdeaSnippet[]>
 		findBySlug(slug: string): Promise<Idea | null>
+		starIdea(ideaId: string, userId: string): Promise<boolean>
+		unstarIdea(ideaId: string, userId: string): Promise<boolean>
+	}
+
+	interface UserRepoInterface {
+		findByAccessToken(accessToken: string): Promise<User | null>
+		refreshSession(refreshToken: string): Promise<{
+			user: User | null
+			sessionCookie: string
+			refreshCookie: string
+		}>
 	}
 
 	interface Locals {
 		theme: Theme
+		ideasRepo: IdeasRepoInterface
+		userRepo: UserRepoInterface
 		user: User | null
 		ideasRepo: IdeasRepoInterface
 	}

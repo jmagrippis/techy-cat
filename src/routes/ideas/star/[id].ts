@@ -6,9 +6,16 @@ export const post: RequestHandler = async ({
 }) => {
 	const {id} = params
 
-	try {
-		await ideasRepo.favouriteIdea(id, user.id)
+	if (!user) {
 		return {
+			status: 401,
+		}
+	}
+
+	try {
+		await ideasRepo.starIdea(id, user.id)
+		return {
+			body: {starred: true},
 			status: 201,
 		}
 	} catch {
@@ -24,8 +31,14 @@ export const del: RequestHandler = async ({
 }) => {
 	const {id} = params
 
+	if (!user) {
+		return {
+			status: 401,
+		}
+	}
+
 	try {
-		await ideasRepo.removeFavouriteIdea(id, user.id)
+		await ideasRepo.unstarIdea(id, user.id)
 		return {
 			status: 201,
 		}

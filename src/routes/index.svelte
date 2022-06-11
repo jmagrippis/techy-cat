@@ -28,7 +28,7 @@
 	import IdeaCard from '$lib/components/IdeaCard.svelte'
 	import BigLink from '$lib/components/buttons/BigLink.svelte'
 
-	export let latestIdeas: App.Idea[]
+	export let latestIdeas: App.IdeaSnippet[]
 </script>
 
 <svelte:head>
@@ -41,9 +41,9 @@
 	<ul
 		class="mb-6 flex max-w-prose flex-col gap-4 sm:grid sm:w-full sm:max-w-full sm:grid-cols-12"
 	>
-		{#each latestIdeas as { emoji, name, description }}
+		{#each latestIdeas as { id, emoji, name, description, starred }}
 			<li class="sm:col-span-6 xl:col-span-4">
-				<IdeaCard {emoji} {name} {description} />
+				<IdeaCard {id} {emoji} {name} {description} {starred} />
 			</li>
 		{/each}
 	</ul>

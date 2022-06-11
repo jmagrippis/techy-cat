@@ -1,18 +1,21 @@
+import {TWO_WEEKS_IN_SECONDS} from '$lib/constants'
 import type {RequestHandler} from '@sveltejs/kit'
 
-export const post: RequestHandler = async ({request}) => {
+export const post: RequestHandler = async ({request, locals}) => {
 	const authHeader = request.headers.get('Authorization') || ''
 	const [scheme, accessToken] = authHeader.split(' ')
 	if (scheme !== 'Bearer' || !accessToken) {
 		return {status: 401, body: 'invalid authorization header'}
 	}
-	const {refreshToken} = await request.json()
+	const {refreshToken, expiresIn} = await request.json()
 
-	const sessionCookie = `session=${accessToken}; SameSite=Strict; Path=/; HttpOnly;`
-	const refreshCookie = `refreshSession=${refreshToken}; SameSite=Strict; Path=/; HttpOnly;`
+	const sessionCookie = `session=${accessToken}; SameSite=Strict; Path=/; HttpOnly; Max-Age=${expiresIn}`
+	const refreshCookie = `refreshSession=${refreshToken}; SameSite=Strict; Path=/; HttpOnly; Max-Age=${TWO_WEEKS_IN_SECONDS}`
+	const user = await locals.userRepo.findByAccessToken(accessToken)
 
 	return {
 		status: 200,
+		body: {user},
 		headers: {
 			'Set-Cookie': [sessionCookie, refreshCookie],
 		},

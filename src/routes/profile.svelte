@@ -9,10 +9,9 @@
 	import {enhanceForm} from '$lib/actions/enhanceForm'
 	import IdeaCard from '$lib/components/IdeaCard.svelte'
 	import PageHeading from '$lib/components/PageHeading.svelte'
-	import type {IdeaSnippet} from '$lib/repos/ideas'
 	import {setUser, user} from '$lib/stores/user'
 
-	export let ideas: IdeaSnippet[] = []
+	export let ideas: App.IdeaSnippet[] = []
 
 	const handleLogout = async () => {
 		setUser(null)
@@ -37,9 +36,9 @@
 		<PageHeading>Favourite ideas</PageHeading>
 		<p>These are the ideas you have marked as favourite!</p>
 		<ul class="flex max-w-prose flex-col gap-4">
-			{#each ideas as { id, emoji, name, description }}
+			{#each ideas as { id, emoji, name, description, starred }}
 				<li>
-					<IdeaCard {id} {emoji} {name} {description} />
+					<IdeaCard {id} {emoji} {name} {description} {starred} />
 				</li>
 			{/each}
 		</ul>
