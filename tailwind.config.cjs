@@ -1,28 +1,24 @@
 const colors = require('tailwindcss/colors')
 
-const withOpacityValue =
-	(varName) =>
-	({opacityValue}) =>
-		opacityValue === undefined
-			? `hsl(var(--${varName}))`
-			: `hsla(var(--${varName}) / ${opacityValue})`
+const withAlphaValue = (varName) => `hsl(var(--${varName}) / <alpha-value>)`
 
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+const config = {
 	content: ['./src/**/*.{html,css,svelte}'],
 	theme: {
 		colors: {
 			primary: colors.fuchsia,
 			secondary: colors.emerald,
 			copy: {
-				base: withOpacityValue('copy-base-color'),
-				muted: withOpacityValue('copy-muted-color'),
+				base: withAlphaValue('copy-base-color'),
+				muted: withAlphaValue('copy-muted-color'),
 			},
 			surface: {
-				1: withOpacityValue('surface-1-color'),
-				2: withOpacityValue('surface-2-color'),
+				1: withAlphaValue('surface-1-color'),
+				2: withAlphaValue('surface-2-color'),
 			},
 			shadow: {
-				1: withOpacityValue('shadow-1-color'),
+				1: withAlphaValue('shadow-1-color'),
 			},
 			gray: colors.stone,
 			white: colors.white,
@@ -44,3 +40,5 @@ module.exports = {
 	},
 	plugins: [],
 }
+
+module.exports = config
