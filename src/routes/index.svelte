@@ -29,6 +29,13 @@
 	import BigLink from '$lib/components/buttons/BigLink.svelte'
 
 	export let latestIdeas: App.IdeaSnippet[]
+
+	const handleStar = (id: string, starred: boolean) => {
+		const idea = latestIdeas.find((idea) => idea.id === id)
+		if (idea) {
+			idea.starred = starred
+		}
+	}
 </script>
 
 <svelte:head>
@@ -43,7 +50,7 @@
 	>
 		{#each latestIdeas as { id, emoji, name, description, starred }}
 			<li class="sm:col-span-6 xl:col-span-4">
-				<IdeaCard {id} {emoji} {name} {description} {starred} />
+				<IdeaCard {id} {emoji} {name} {description} {starred} {handleStar} />
 			</li>
 		{/each}
 	</ul>

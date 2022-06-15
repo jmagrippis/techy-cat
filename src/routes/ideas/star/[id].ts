@@ -15,7 +15,6 @@ export const post: RequestHandler = async ({
 	try {
 		await ideasRepo.starIdea(id, user.id)
 		return {
-			body: {starred: true},
 			status: 201,
 		}
 	} catch {
