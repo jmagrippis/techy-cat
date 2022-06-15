@@ -10,7 +10,6 @@
 		const refreshToken = getValueFromHash(window.location.hash, 'refresh_token')
 		const expiresIn = getValueFromHash(window.location.hash, 'expires_in')
 		if (!accessToken || !refreshToken) {
-			console.log(window.location.hash)
 			goto('/login')
 			return
 		}
