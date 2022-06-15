@@ -44,12 +44,10 @@ export const handle: Handle = async ({event, resolve}) => {
 	}
 
 	const response = await resolve(event)
-	if (sessionCookie) {
-		response.headers.set('Set-Cookie', sessionCookie)
+	if (sessionCookie && refreshCookie) {
+		response.headers.set('Set-Cookie', `${sessionCookie}, ${refreshCookie}`)
 	}
-	if (refreshCookie) {
-		response.headers.set('Set-Cookie', refreshCookie)
-	}
+
 	return response
 }
 

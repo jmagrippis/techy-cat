@@ -44,8 +44,9 @@ export class UserRepo implements App.UserRepoInterface {
 		if (session && session.user) {
 			const user = await this.findById(session.user.id)
 
+			console.log(session)
 			const sessionCookie = `session=${session.access_token}; SameSite=Strict; Path=/; HttpOnly; Max-Age=${session.expires_in}`
-			const refreshCookie = `refreshSession=${refreshToken}; SameSite=Strict; Path=/; HttpOnly; Max-Age=${TWO_WEEKS_IN_SECONDS}`
+			const refreshCookie = `refreshSession=${session.refresh_token}; SameSite=Strict; Path=/; HttpOnly; Max-Age=${TWO_WEEKS_IN_SECONDS}`
 
 			return {
 				user,
