@@ -6,12 +6,10 @@
 	export let name: string
 	export let description: string
 	export let starred: boolean
+	export let handleStar: (id: string, starred: boolean) => void
 
 	import FullStar from '$lib/icons/star.svg'
 	import EmptyStar from '$lib/icons/empty-star.svg'
-
-	const handleUnstar = () => {}
-	const handleStar = () => {}
 </script>
 
 <div
@@ -28,7 +26,11 @@
 		<form
 			method="POST"
 			action={`ideas/star/${id}?_method=DELETE`}
-			use:enhanceForm={{result: handleUnstar}}
+			use:enhanceForm={{
+				result() {
+					handleStar(id, false)
+				},
+			}}
 		>
 			<button class="relative"
 				><FullStar class="w-8 fill-copy-base" title="unstar this idea" />
@@ -41,7 +43,11 @@
 		<form
 			method="POST"
 			action={`ideas/star/${id}`}
-			use:enhanceForm={{result: handleStar}}
+			use:enhanceForm={{
+				result() {
+					handleStar(id, true)
+				},
+			}}
 		>
 			<button
 				><EmptyStar class="w-8 fill-copy-base" title="star this idea" /></button
