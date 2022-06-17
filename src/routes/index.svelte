@@ -45,11 +45,9 @@
 <Hero />
 <section class="container mb-6 px-2 sm:px-0">
 	<h2 class="mb-4 text-2xl">Latest ideas</h2>
-	<ul
-		class="mb-6 flex max-w-prose flex-col gap-4 sm:grid sm:w-full sm:max-w-full sm:grid-cols-12"
-	>
+	<ul class="mb-6 grid grid-cols-12 gap-4">
 		{#each latestIdeas as { id, emoji, name, description, starred }}
-			<li class="sm:col-span-6 xl:col-span-4">
+			<li class="col-span-12 md:col-span-6 xl:col-span-4">
 				<IdeaCard {id} {emoji} {name} {description} {starred} {handleStar} />
 			</li>
 		{/each}
