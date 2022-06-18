@@ -1,41 +1,9 @@
-<script lang="ts" context="module">
-	import type {Load} from '@sveltejs/kit'
-
-	export const load: Load = async ({fetch}) => {
-		const response = await fetch('/ideas?limit=3', {
-			headers: new Headers({
-				Accept: 'application/json',
-			}),
-		})
-
-		if (!response.ok) {
-			return {status: response.status}
-		}
-		const {ideas} = await response.json()
-		const latestIdeas: App.Idea[] = ideas
-
-		return {
-			status: 200,
-			props: {
-				latestIdeas,
-			},
-		}
-	}
-</script>
-
 <script lang="ts">
 	import Hero from '$lib/components/Hero/Hero.svelte'
-	import IdeaCard from '$lib/components/IdeaCard.svelte'
 	import BigLink from '$lib/components/buttons/BigLink.svelte'
+	import IdeaSnippetCard from '$lib/components/IdeaSnippetCard.svelte'
 
 	export let latestIdeas: App.IdeaSnippet[]
-
-	const handleStar = (id: string, starred: boolean) => {
-		const idea = latestIdeas.find((idea) => idea.id === id)
-		if (idea) {
-			idea.starred = starred
-		}
-	}
 </script>
 
 <svelte:head>
@@ -46,13 +14,13 @@
 <section class="container mb-6 px-2 sm:px-0">
 	<h2 class="mb-4 text-2xl">Latest ideas</h2>
 	<ul class="mb-6 grid grid-cols-12 gap-4">
-		{#each latestIdeas as { id, emoji, name, description, starred }}
-			<li class="col-span-12 md:col-span-6 xl:col-span-4">
-				<IdeaCard {id} {emoji} {name} {description} {starred} {handleStar} />
+		{#each latestIdeas as { emoji, name, description }}
+			<li class="col-span-12 lg:col-span-6 xl:col-span-4">
+				<IdeaSnippetCard {emoji} {name} {description} />
 			</li>
 		{/each}
 	</ul>
 	<p class="text-center">
-		<BigLink href="/ideas" prefetch={true}>See more!</BigLink>
+		<BigLink href="/ideas" prefetch={true}>See more & star your faves!</BigLink>
 	</p>
 </section>
