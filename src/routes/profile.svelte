@@ -18,6 +18,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Profile | Techy Cat</title>
+</svelte:head>
+
 <div class="container w-full grow px-2 sm:px-0">
 	<section class="mb-8">
 		<PageHeading>Profile</PageHeading>
@@ -30,6 +34,22 @@
 		>
 			<button class="underline decoration-primary-600">logout</button>
 		</form>
+	</section>
+
+	<section class="mb-8">
+		{#if $user?.role === 'contributor'}
+			<p>
+				As a <strong>contributor</strong> you have the ability to
+				<a href="/dashboard/ideas">go to the dashboard</a>, and add new ideas,
+				and edit them!
+			</p>
+		{:else}
+			<p>
+				As a <strong>fan</strong> you cannot create new ideas... but you can
+				still review and update ideas you've created in the past,
+				<a href="/dashboard/ideas">over at the dashboard</a>!
+			</p>
+		{/if}
 	</section>
 
 	<section>
