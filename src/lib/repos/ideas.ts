@@ -1,12 +1,16 @@
 import type {SupabaseClient} from '@supabase/supabase-js'
 
-export type DbIdeaWithFavourites = {
+export type DbIdea = {
 	id: string
 	slug: string
 	name: string
 	emoji: string
 	description: string
 	created_at: string
+	author_id: string
+}
+
+export type DbIdeaWithFavourites = DbIdea & {
 	profiles: {
 		display_name: string
 	}
@@ -41,6 +45,26 @@ export class IdeasRepo implements App.IdeasRepoInterface {
 		}))
 	}
 
+	getAllForAuthorId = async (authorId: string) => {
+		const response = await this.#client
+			.from<DbIdea>('ideas')
+			.select(`id, slug, name, emoji, description`)
+			.match({author_id: authorId})
+			.order('created_at', {ascending: false})
+
+		return response.data || []
+	}
+
+	findById = async (id: string) => {
+		const response = await this.#client
+			.from<DbIdea>('ideas')
+			.select('id, slug, name, emoji, description')
+			.match({id})
+			.maybeSingle()
+
+		return response.data
+	}
+
 	findBySlug = async (slug: string): Promise<App.Idea | null> => {
 		const response = await this.#client
 			.from<DbIdeaWithFavourites>('ideas')
@@ -50,7 +74,7 @@ export class IdeasRepo implements App.IdeasRepoInterface {
 						created_at
 					)`
 			)
-			.eq('slug', slug)
+			.match({slug})
 			.maybeSingle()
 
 		if (!response.data) return null
@@ -61,6 +85,25 @@ export class IdeasRepo implements App.IdeasRepoInterface {
 			authorDisplayName: profiles.display_name,
 			starred: starred_ideas?.length > 0,
 		}
+	}
+
+	createIdea = async (ideaPartial: App.IdeaPartial, authorId: string) => {
+		const response = await this.#client
+			.from<DbIdea>('ideas')
+			.insert({...ideaPartial, author_id: authorId})
+			.maybeSingle()
+
+		return response.data
+	}
+
+	updateIdea = async (id: string, ideaPartial: App.IdeaPartial) => {
+		const response = await this.#client
+			.from<DbIdea>('ideas')
+			.update(ideaPartial)
+			.match({id})
+			.maybeSingle()
+
+		return response.data
 	}
 
 	starIdea = async (ideaId: string, userId: string) => {

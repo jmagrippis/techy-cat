@@ -32,6 +32,7 @@ declare namespace App {
 	type User = {
 		id: string
 		displayName: string
+		role: 'fan' | 'contributor'
 	}
 
 	type Idea = {
@@ -45,13 +46,26 @@ declare namespace App {
 		authorDisplayName: string
 	}
 
+	type IdeaPartial = Pick<Idea, 'slug' | 'name' | 'emoji' | 'description'>
+
 	type IdeaSnippet = Omit<Idea, 'authorDisplayName'>
+	type IdeaSnippetWithoutStarred = Omit<IdeaSnippet, 'starred'>
 
 	interface IdeasRepoInterface {
 		getAll(options: {limit: number}): Promise<IdeaSnippet[]>
+		getAllForAuthorId(authorId: string): Promise<IdeaSnippetWithoutStarred[]>
+		findById(id: string): Promise<IdeaSnippetWithoutStarred | null>
 		findBySlug(slug: string): Promise<Idea | null>
 		starIdea(ideaId: string, userId: string): Promise<boolean>
 		unstarIdea(ideaId: string, userId: string): Promise<boolean>
+		createIdea(
+			idea: IdeaPartial,
+			userId
+		): Promise<IdeaSnippetWithoutStarred | null>
+		updateIdea(
+			id: string,
+			ideaPartial: IdeaPartial
+		): Promise<IdeaSnippetWithoutStarred | null>
 	}
 
 	interface UserRepoInterface {

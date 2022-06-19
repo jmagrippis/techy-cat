@@ -33,10 +33,7 @@
 		const redirectTo = `${window.location.protocol}//${window.location.host}/auth/callback`
 
 		state = 'loading'
-		const {user, error} = await supabaseClient.auth.signIn(
-			{email},
-			{redirectTo}
-		)
+		const {error} = await supabaseClient.auth.signIn({email}, {redirectTo})
 		if (error) {
 			if (error.message.includes('request this once')) {
 				state = new Error(
