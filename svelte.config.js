@@ -39,6 +39,9 @@ const config = {
 				environment: 'jsdom',
 				globals: true,
 				setupFiles: 'src/setupTests.ts',
+				deps: {
+					inline: ['unique-names-generator'],
+				},
 			},
 		},
 	},
