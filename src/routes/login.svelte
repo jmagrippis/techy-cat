@@ -54,16 +54,17 @@
 	<PageHeading>Login</PageHeading>
 
 	{#if state === 'idle'}
-		<p>
-			Sign up / Log in for the ability to <strong>favourite</strong> Ideas, and more
-			exclusive features!
+		<p class="mb-6">
+			Sign-up / login for the ability to <strong
+				class="underline decoration-secondary-400">star</strong
+			> Ideas, and more exclusive features! It's free 🙌
 		</p>
-		<form class="flex flex-col gap-4" on:submit|preventDefault={handleSubmit}>
+		<form class="flex flex-col gap-6" on:submit|preventDefault={handleSubmit}>
 			<label>
-				<span class="mb-2 block"
-					>Use your email to sign-up / login via 🪄 <strong>magic link</strong>
-					🪄</span
-				>
+				<p class="mb-4">
+					Input your email to sign-up / login via 🪄 <strong>magic link</strong>
+					🪄
+				</p>
 				<input
 					name="email"
 					type="email"

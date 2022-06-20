@@ -2,7 +2,7 @@
 	import PageHeading from '$lib/components/PageHeading.svelte'
 	import {user} from '$lib/stores/user'
 
-	export let myIdeas: App.IdeaSnippet[]
+	export let myIdeas: App.Idea[]
 
 	import type {Load} from '@sveltejs/kit'
 

@@ -10,13 +10,13 @@ export type DbIdea = {
 	author_id: string
 }
 
-export type DbIdeaWithFavourites = DbIdea & {
-	profiles: {
-		display_name: string
-	}
-	starred_ideas: {
-		created_at: string
-	}[]
+export type DbIdeaWithAuthorAndStarred = Omit<
+	DbIdea,
+	'created_at' | 'author_id'
+> & {
+	authorId: string
+	authorDisplayName: string
+	starred: boolean
 }
 
 export class IdeasRepo implements App.IdeasRepoInterface {
@@ -26,29 +26,28 @@ export class IdeasRepo implements App.IdeasRepoInterface {
 		this.#client = client
 	}
 
-	getAll = async ({limit}: {limit: number}): Promise<App.IdeaSnippet[]> => {
+	getAll = async ({
+		limit,
+		match = {},
+	}: {
+		limit: number
+		match?: Record<string, unknown>
+	}): Promise<App.IdeaWithAuthorAndStarred[]> => {
 		const response = await this.#client
-			.from<DbIdeaWithFavourites>('ideas')
-			.select(
-				`id, slug, name, emoji, description,
-					starred_ideas (
-						created_at
-					)`
-			)
-			.neq('description', 'NULL')
-			.order('created_at', {ascending: false})
+			// find the SQL which defined this function at
+			// sql/ideas_with_authors_and_starred.sql
+			.rpc<DbIdeaWithAuthorAndStarred>('ideas_with_authors_and_starred')
+			.select('id, slug, name, emoji, description, starred')
+			.match(match)
 			.limit(limit)
 
-		return (response.data || []).map(({starred_ideas, ...dbIdea}) => ({
-			...dbIdea,
-			starred: starred_ideas?.length > 0,
-		}))
+		return response.data ?? []
 	}
 
 	getAllForAuthorId = async (authorId: string) => {
 		const response = await this.#client
 			.from<DbIdea>('ideas')
-			.select(`id, slug, name, emoji, description`)
+			.select('id, slug, name, emoji, description')
 			.match({author_id: authorId})
 			.order('created_at', {ascending: false})
 
@@ -67,7 +66,7 @@ export class IdeasRepo implements App.IdeasRepoInterface {
 
 	findBySlug = async (slug: string): Promise<App.Idea | null> => {
 		const response = await this.#client
-			.from<DbIdeaWithFavourites>('ideas')
+			.from<DbIdea>('ideas')
 			.select(
 				`id, slug, name, emoji, description, profiles!ideas_author_id_fkey (display_name),
 					starred_ideas (
@@ -79,12 +78,7 @@ export class IdeasRepo implements App.IdeasRepoInterface {
 
 		if (!response.data) return null
 
-		const {profiles, starred_ideas, ...idea} = response.data
-		return {
-			...idea,
-			authorDisplayName: profiles.display_name,
-			starred: starred_ideas?.length > 0,
-		}
+		return response.data
 	}
 
 	createIdea = async (ideaPartial: App.IdeaPartial, authorId: string) => {

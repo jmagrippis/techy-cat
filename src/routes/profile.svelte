@@ -1,17 +1,10 @@
-<script lang="ts" context="module">
-	import type {Load} from '@sveltejs/kit'
-
-	export const load: Load = ({session}) =>
-		session.user ? {status: 200} : {redirect: '/login', status: 302}
-</script>
-
 <script lang="ts">
 	import {enhanceForm} from '$lib/actions/enhanceForm'
-	import IdeaCard from '$lib/components/IdeaCard.svelte'
 	import PageHeading from '$lib/components/PageHeading.svelte'
 	import {setUser, user} from '$lib/stores/user'
+	import IdeaSnippetCard from '$lib/components/IdeaSnippetCard.svelte'
 
-	export let ideas: App.IdeaSnippet[] = []
+	export let starredIdeas: App.Idea[]
 
 	const handleLogout = async () => {
 		setUser(null)
@@ -53,12 +46,12 @@
 	</section>
 
 	<section>
-		<PageHeading>Favourite ideas</PageHeading>
-		<p>These are the ideas you have marked as favourite!</p>
-		<ul class="flex max-w-prose flex-col gap-4">
-			{#each ideas as { id, emoji, name, description, starred }}
-				<li>
-					<IdeaCard {id} {emoji} {name} {description} {starred} />
+		<PageHeading>Starred ideas</PageHeading>
+		<p class="mb-6">These are the ideas you have starred ⭐️!</p>
+		<ul class="mb-6 grid grid-cols-12 gap-4">
+			{#each starredIdeas as { emoji, name, description }}
+				<li class="col-span-12 lg:col-span-6 xl:col-span-4">
+					<IdeaSnippetCard {emoji} {name} {description} />
 				</li>
 			{/each}
 		</ul>

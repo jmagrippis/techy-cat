@@ -3,7 +3,7 @@
 	import BigLink from '$lib/components/buttons/BigLink.svelte'
 	import IdeaSnippetCard from '$lib/components/IdeaSnippetCard.svelte'
 
-	export let latestIdeas: App.IdeaSnippet[]
+	export let latestIdeas: App.Idea[]
 </script>
 
 <svelte:head>
