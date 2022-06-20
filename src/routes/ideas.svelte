@@ -2,7 +2,7 @@
 	import IdeaCard from '$lib/components/IdeaCard.svelte'
 	import PageHeading from '$lib/components/PageHeading.svelte'
 
-	export let ideas: App.IdeaSnippet[]
+	export let ideas: App.IdeaWithAuthorAndStarred[]
 </script>
 
 <section class="container w-full grow px-2">

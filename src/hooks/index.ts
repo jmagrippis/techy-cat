@@ -18,7 +18,11 @@ export const handle: Handle = async ({event, resolve}) => {
 
 	const supabaseClient = createClient(
 		import.meta.env.VITE_SUPABASE_URL,
-		import.meta.env.VITE_SUPABASE_ANON_KEY
+		import.meta.env.VITE_SUPABASE_ANON_KEY,
+		{
+			autoRefreshToken: false,
+			persistSession: false,
+		}
 	)
 	const userRepo = new UserRepo(supabaseClient)
 	const ideasRepo = new IdeasRepo(supabaseClient)
@@ -33,11 +37,17 @@ export const handle: Handle = async ({event, resolve}) => {
 		if (!refreshSession) {
 			event.locals.user = null
 		} else {
-			const result = await userRepo.refreshSession(refreshSession)
+			try {
+				const result = await userRepo.refreshSession(refreshSession)
 
-			event.locals.user = result.user
-			sessionCookie = result.sessionCookie
-			refreshCookie = result.refreshCookie
+				event.locals.user = result.user
+				sessionCookie = result.sessionCookie
+				refreshCookie = result.refreshCookie
+			} catch {
+				// I *think* I've fixed my bug with refreshing the session
+				// but this will keep the app operational if not 😄
+				event.locals.user = null
+			}
 		}
 	} else {
 		event.locals.user = await userRepo.findByAccessToken(session)

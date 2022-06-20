@@ -5,7 +5,7 @@
 
 	import PageHeading from '$lib/components/PageHeading.svelte'
 
-	export let idea: App.IdeaSnippet
+	export let idea: App.Idea
 
 	let state: 'idle' | 'updating' | 'success' | Error = 'idle'
 </script>

@@ -41,31 +41,28 @@ declare namespace App {
 		name: string
 		emoji: string
 		description: string
-		created_at: string
-		starred: boolean
+	}
+
+	type IdeaWithAuthorAndStarred = Idea & {
+		authorId: string
 		authorDisplayName: string
+		starred: boolean
 	}
 
 	type IdeaPartial = Pick<Idea, 'slug' | 'name' | 'emoji' | 'description'>
 
-	type IdeaSnippet = Omit<Idea, 'authorDisplayName'>
-	type IdeaSnippetWithoutStarred = Omit<IdeaSnippet, 'starred'>
-
 	interface IdeasRepoInterface {
-		getAll(options: {limit: number}): Promise<IdeaSnippet[]>
-		getAllForAuthorId(authorId: string): Promise<IdeaSnippetWithoutStarred[]>
-		findById(id: string): Promise<IdeaSnippetWithoutStarred | null>
+		getAll(options: {
+			limit: number
+			match?: Record<string, unknown>
+		}): Promise<IdeaWithAuthorAndStarred[]>
+		getAllForAuthorId(authorId: string): Promise<Idea[]>
+		findById(id: string): Promise<Idea | null>
 		findBySlug(slug: string): Promise<Idea | null>
 		starIdea(ideaId: string, userId: string): Promise<boolean>
 		unstarIdea(ideaId: string, userId: string): Promise<boolean>
-		createIdea(
-			idea: IdeaPartial,
-			userId
-		): Promise<IdeaSnippetWithoutStarred | null>
-		updateIdea(
-			id: string,
-			ideaPartial: IdeaPartial
-		): Promise<IdeaSnippetWithoutStarred | null>
+		createIdea(idea: IdeaPartial, userId): Promise<Idea | null>
+		updateIdea(id: string, ideaPartial: IdeaPartial): Promise<Idea | null>
 	}
 
 	interface UserRepoInterface {

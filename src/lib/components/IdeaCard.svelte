@@ -2,6 +2,7 @@
 	import {enhanceForm} from '$lib/actions/enhanceForm'
 	import FullStar from '$lib/icons/star.svg'
 	import EmptyStar from '$lib/icons/empty-star.svg'
+	import {user} from '$lib/stores/user'
 
 	export let id: string
 	export let emoji: string
@@ -23,30 +24,36 @@
 		</div>
 	</div>
 	<div class="col-span-2 text-center">
-		<form
-			class="relative"
-			method="POST"
-			action={starred ? '/ideas?_method=DELETE' : '/ideas'}
-			use:enhanceForm={{
-				pending() {
-					state = 'starring'
-				},
-				result() {
-					state = 'idle'
-				},
-			}}
-		>
-			<input type="hidden" name="id" value={id} />
-			<button disabled={state === 'starring'}>
-				{#if starred}
-					<FullStar class="w-8 fill-copy-base" title="unstar this idea" />
-					<EmptyStar
-						class="absolute top-0 z-0 w-8 animate-ping-once fill-copy-base"
-					/>
-				{:else}
-					<EmptyStar class="w-8 fill-copy-base" title="star this idea" />
-				{/if}
-			</button>
-		</form>
+		{#if $user}
+			<form
+				class="relative"
+				method="POST"
+				action={starred ? '/ideas?_method=DELETE' : '/ideas'}
+				use:enhanceForm={{
+					pending() {
+						state = 'starring'
+					},
+					result() {
+						state = 'idle'
+					},
+				}}
+			>
+				<input type="hidden" name="id" value={id} />
+				<button disabled={state === 'starring'}>
+					{#if starred}
+						<FullStar class="w-8 fill-copy-base" title="unstar this idea" />
+						<EmptyStar
+							class="absolute top-0 z-0 w-8 animate-ping-once fill-copy-base"
+						/>
+					{:else}
+						<EmptyStar class="w-8 fill-copy-base" title="star this idea" />
+					{/if}
+				</button>
+			</form>
+		{:else}
+			<a href="/login">
+				<EmptyStar class="w-8 fill-copy-base" title="login to star this idea" />
+			</a>
+		{/if}
 	</div>
 </div>
