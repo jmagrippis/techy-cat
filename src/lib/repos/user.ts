@@ -31,10 +31,27 @@ export class UserRepo implements App.UserRepoInterface {
 		const result = await this.#client
 			.from<DbUser>('profiles')
 			.select('id, display_name, role')
-			.eq('id', id)
+			.match({id})
 			.maybeSingle()
 
 		const dbUser = result.data ?? (await this.createProfile(id))
+
+		if (!dbUser) return null
+
+		return {id: dbUser.id, displayName: dbUser.display_name, role: dbUser.role}
+	}
+
+	updateDisplayName = async (
+		id: string,
+		displayName: string
+	): Promise<App.User | null> => {
+		const result = await this.#client
+			.from<DbUser>('profiles')
+			.update({display_name: displayName})
+			.match({id})
+			.maybeSingle()
+
+		const dbUser = result.data
 
 		if (!dbUser) return null
 

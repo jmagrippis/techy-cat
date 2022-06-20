@@ -72,6 +72,7 @@ declare namespace App {
 			sessionCookie: string
 			refreshCookie: string
 		}>
+		updateDisplayName(id: string, displayName: string): Promise<App.User | null>
 	}
 
 	interface Locals {
