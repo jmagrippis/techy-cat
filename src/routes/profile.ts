@@ -19,3 +19,32 @@ export const get: RequestHandler = async ({locals: {ideasRepo, user}}) => {
 		body: {starredIdeas},
 	}
 }
+
+export const post: RequestHandler = async ({
+	request,
+	locals: {userRepo, user},
+}) => {
+	if (!user) {
+		return {
+			status: 401,
+		}
+	}
+
+	const formData = await request.formData()
+	const displayName = formData.get('display_name')
+
+	if (!displayName || typeof displayName !== 'string') {
+		return {
+			status: 400,
+			body: 'you need to specify a display name',
+		}
+	}
+
+	const updatedUser = await userRepo.updateDisplayName(user.id, displayName)
+
+	if (!updatedUser) {
+		return {status: 500}
+	}
+
+	return {body: {user: updatedUser}}
+}

@@ -6,6 +6,15 @@
 
 	export let starredIdeas: App.Idea[]
 
+	let updatedName: string = $user?.displayName || ''
+
+	const handleUpdateDisplayName = async ({response}: {response: Response}) => {
+		if (response.ok) {
+			const {user} = await response.json()
+
+			setUser(user)
+		}
+	}
 	const handleLogout = async () => {
 		setUser(null)
 	}
@@ -16,16 +25,42 @@
 </svelte:head>
 
 <div class="container w-full grow px-2 sm:px-0">
-	<section class="mb-8">
+	<section class="mb-8 max-w-prose">
 		<PageHeading>Profile</PageHeading>
 		<p>You are logged in as <strong>{$user?.displayName}</strong>!</p>
+
+		<form
+			class="mb-2 grid grid-cols-12 items-center gap-2"
+			method="POST"
+			action="profile"
+			use:enhanceForm={{result: handleUpdateDisplayName}}
+		>
+			<label class="col-span-12 lg:col-span-5" for="display_name">
+				You may update your <strong>display name</strong>:
+			</label>
+			<input
+				class="col-span-7 rounded p-2 shadow sm:col-span-6 lg:col-span-4"
+				id="display_name"
+				name="display_name"
+				bind:value={updatedName}
+				placeholder="display name"
+			/>
+			<button
+				class="bg-tra col-span-5 underline decoration-primary-600 sm:col-span-6 lg:col-span-3"
+				>update</button
+			>
+		</form>
 
 		<form
 			method="POST"
 			action="auth/session?_method=DELETE"
 			use:enhanceForm={{result: handleLogout}}
 		>
-			<button class="underline decoration-primary-600">logout</button>
+			<p>
+				You may also <button class="underline decoration-primary-600"
+					>logout</button
+				>
+			</p>
 		</form>
 	</section>
 
