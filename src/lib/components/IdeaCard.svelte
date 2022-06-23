@@ -10,7 +10,7 @@
 	export let description: string
 	export let starred: boolean
 
-	let state: 'idle' | 'starring' = 'idle'
+	let state: 'idle' | 'starring' | Error = 'idle'
 </script>
 
 <div
@@ -32,9 +32,18 @@
 				use:enhanceForm={{
 					pending() {
 						state = 'starring'
+						starred = !starred
 					},
 					result() {
 						state = 'idle'
+					},
+					error() {
+						state = new Error(
+							`there was a problem ${
+								starred ? 'starring' : 'unstarring'
+							} this idea...`
+						)
+						starred = !starred
 					},
 				}}
 			>
