@@ -11,9 +11,12 @@
 		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
 		"test": "vitest",
+		"test:e2e": "npx playwright test",
+		"test:e2e:debug": "PWDEBUG=1 SLOW_MO=50 npx playwright test --project=chromium",
 		"generate": "export $(grep -v '^#' .env | xargs) && openapi-typescript \"$VITE_SUPABASE_URL/rest/v1/?apikey=$VITE_SUPABASE_ANON_KEY\" --output src/lib/supabase.d.ts"
 	},
 	"devDependencies": {
+		"@playwright/test": "^1.23.3",
 		"@poppanator/sveltekit-svg": "^0.3.4",
 		"@supabase/supabase-js": "^1.35.3",
 		"@sveltejs/adapter-vercel": "next",

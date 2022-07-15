@@ -19,3 +19,6 @@ cypress/screenshots
 # build
 .vercel_build_output
 .vercel
+/test-results/
+/playwright-report/
+/playwright/.cache/
