@@ -13,7 +13,7 @@
 			<div class="mb-2">Get inspired by</div>
 			<div class="flex justify-center sm:justify-start">
 				😻
-				<div class="font-thin text-primary-400">Techy Cat</div>
+				<h1 class="font-thin text-primary-400">Techy Cat</h1>
 				😻
 			</div>
 		</div>

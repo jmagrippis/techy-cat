@@ -19,67 +19,71 @@
 	<title>Create new idea | Techy Cat</title>
 </svelte:head>
 
-<PageHeading>New Idea</PageHeading>
+<div class="container w-full grow px-2 sm:px-0">
+	<section class="mb-8 max-w-prose">
+		<PageHeading>New Idea</PageHeading>
 
-<form
-	method="POST"
-	action="/dashboard/ideas"
-	class="text-2x mb-6 flex w-full flex-col gap-4"
-	use:enhanceForm={{
-		pending() {
-			state = 'creating'
-		},
-		error({error}) {
-			state = error ?? new Error('Something went wrong creating idea!')
-		},
-		async result({response}) {
-			if (!response.ok) {
-				state = new Error('Something went wrong creating idea!')
-				return
-			}
+		<form
+			method="POST"
+			action="/dashboard/ideas"
+			class="text-2x mb-6 flex w-full flex-col gap-4"
+			use:enhanceForm={{
+				pending() {
+					state = 'creating'
+				},
+				error({error}) {
+					state = error ?? new Error('Something went wrong creating idea!')
+				},
+				async result({response}) {
+					if (!response.ok) {
+						state = new Error('Something went wrong creating idea!')
+						return
+					}
 
-			const {
-				idea: {id},
-			} = await response.json()
-			state = 'success'
-			goto(`/dashboard/ideas/${id}`)
-		},
-	}}
->
-	<label>
-		<strong>Emoji</strong>
-		<input
-			class="block w-full rounded p-4"
-			name="emoji"
-			bind:value={emoji}
-			maxlength="4"
-		/>
-	</label>
-	<label>
-		<strong>Name</strong>
-		<input class="block w-full rounded p-4" name="name" bind:value={name} />
-	</label>
-	<label>
-		<strong>Slug</strong>
-		<input class="block w-full rounded p-4" name="slug" bind:value={slug} />
-	</label>
-	<label>
-		<strong>Description</strong>
-		<textarea
-			class="block w-full rounded p-4"
-			name="description"
-			bind:value={description}
-			rows="8"
-		/>
-	</label>
+					const {
+						idea: {id},
+					} = await response.json()
+					state = 'success'
+					goto(`/dashboard/ideas/${id}`)
+				},
+			}}
+		>
+			<label>
+				<strong>Emoji</strong>
+				<input
+					class="block w-full rounded p-4"
+					name="emoji"
+					bind:value={emoji}
+					maxlength="4"
+				/>
+			</label>
+			<label>
+				<strong>Name</strong>
+				<input class="block w-full rounded p-4" name="name" bind:value={name} />
+			</label>
+			<label>
+				<strong>Slug</strong>
+				<input class="block w-full rounded p-4" name="slug" bind:value={slug} />
+			</label>
+			<label>
+				<strong>Description</strong>
+				<textarea
+					class="block w-full rounded p-4"
+					name="description"
+					bind:value={description}
+					rows="8"
+				/>
+			</label>
 
-	<BigButton disabled={state === 'creating'}>Publish!</BigButton>
-</form>
+			<BigButton disabled={state === 'creating'}>Publish!</BigButton>
+		</form>
 
-{#if state === 'creating'}
-	<div class="text-lg">⚙️ creating ⚙️</div>
-{:else if state === 'success'}
-	<div class="text-lg">✅ idea created ✅</div>
-{:else if state instanceof Error}
-	<div class="text-lg">🚨 {state} 🚨</div>
-{/if}
+		{#if state === 'creating'}
+			<div class="text-lg">⚙️ creating ⚙️</div>
+		{:else if state === 'success'}
+			<div class="text-lg">✅ idea created ✅</div>
+		{:else if state instanceof Error}
+			<div class="text-lg">🚨 {state} 🚨</div>
+		{/if}
+	</section>
+</div>
