@@ -52,5 +52,8 @@
 	},
 	"volta": {
 		"node": "16.15.0"
+	},
+	"dependencies": {
+		"stripe": "^9.12.0"
 	}
 }
