@@ -1,6 +1,6 @@
 import type {RequestHandler} from '@sveltejs/kit'
 
-export const get: RequestHandler = async ({locals: {ideasRepo}, url}) => {
+export const GET: RequestHandler = async ({locals: {ideasRepo}, url}) => {
 	const limit = parseInt(url.searchParams.get('limit') || '50')
 	const ideas = await ideasRepo.getAll({limit})
 
@@ -9,7 +9,7 @@ export const get: RequestHandler = async ({locals: {ideasRepo}, url}) => {
 	}
 }
 
-export const post: RequestHandler = async ({
+export const POST: RequestHandler = async ({
 	request,
 	locals: {ideasRepo, user},
 }) => {
@@ -40,7 +40,7 @@ export const post: RequestHandler = async ({
 	}
 }
 
-export const del: RequestHandler = async ({
+export const DELETE: RequestHandler = async ({
 	request,
 	locals: {ideasRepo, user},
 }) => {

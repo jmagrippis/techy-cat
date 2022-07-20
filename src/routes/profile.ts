@@ -1,6 +1,6 @@
 import type {RequestHandler} from '@sveltejs/kit'
 
-export const get: RequestHandler = async ({locals: {ideasRepo, user}}) => {
+export const GET: RequestHandler = async ({locals: {ideasRepo, user}}) => {
 	if (!user) {
 		return {
 			status: 303,
@@ -20,7 +20,7 @@ export const get: RequestHandler = async ({locals: {ideasRepo, user}}) => {
 	}
 }
 
-export const post: RequestHandler = async ({
+export const POST: RequestHandler = async ({
 	request,
 	locals: {userRepo, user},
 }) => {

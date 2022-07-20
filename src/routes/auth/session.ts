@@ -1,7 +1,7 @@
 import {TWO_WEEKS_IN_SECONDS} from '$lib/constants'
 import type {RequestHandler} from '@sveltejs/kit'
 
-export const post: RequestHandler = async ({request, locals}) => {
+export const POST: RequestHandler = async ({request, locals}) => {
 	const authHeader = request.headers.get('Authorization') || ''
 	const [scheme, accessToken] = authHeader.split(' ')
 	if (scheme !== 'Bearer' || !accessToken) {
@@ -27,7 +27,7 @@ const expiredSessionCookie =
 const expiredRefreshCookie =
 	'refreshSession=; SameSite=Strict; Path=/; HttpOnly; Max-Age=0;'
 
-export const del: RequestHandler = () => ({
+export const DELETE: RequestHandler = () => ({
 	status: 200,
 	headers: {
 		'Set-Cookie': [expiredSessionCookie, expiredRefreshCookie],
