@@ -37,7 +37,7 @@
 		if (error) {
 			if (error.message.includes('request this once')) {
 				state = new Error(
-					'we have already sent you an email, please check: ...'
+					`we have already sent you an email, please check: ${email}... Maybe in spam? 😬`
 				)
 				return
 			}
