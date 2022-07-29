@@ -81,7 +81,7 @@
 	</section>
 
 	<section>
-		<PageHeading>Starred ideas</PageHeading>
+		<h2 class="mb-6 text-3xl">Starred ideas</h2>
 		<p class="mb-6">These are the ideas you have starred ⭐️!</p>
 		<ul class="mb-6 grid grid-cols-12 gap-4">
 			{#each starredIdeas as { emoji, name, description }}
