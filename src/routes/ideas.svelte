@@ -5,6 +5,10 @@
 	export let ideas: App.IdeaWithAuthorAndStarred[]
 </script>
 
+<svelte:head>
+	<title>Latest Ideas | Techy Cat</title>
+</svelte:head>
+
 <section class="container w-full grow px-2">
 	<PageHeading>Latest Ideas</PageHeading>
 	<ul class="flex max-w-prose flex-col gap-4">

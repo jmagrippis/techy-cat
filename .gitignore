@@ -15,6 +15,10 @@ yarn-error.log*
 # cypress
 cypress/videos
 cypress/screenshots
+# playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
 
 # build
 .vercel_build_output
