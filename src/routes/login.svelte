@@ -37,7 +37,7 @@
 		if (error) {
 			if (error.message.includes('request this once')) {
 				state = new Error(
-					`we have already sent you an email, please check: ${email}... Maybe in spam? 😬`
+					`we have already sent you an email, please check ${email}... Maybe in spam? 😬`
 				)
 				return
 			}
@@ -49,6 +49,10 @@
 		state = 'success'
 	}
 </script>
+
+<svelte:head>
+	<title>Login | Techy Cat</title>
+</svelte:head>
 
 <section class="container w-full max-w-prose grow px-2 text-xl sm:px-0">
 	<PageHeading>Login</PageHeading>
