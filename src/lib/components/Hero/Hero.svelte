@@ -21,15 +21,11 @@
 	})
 </script>
 
-<section
-	class="container py-4 px-2 md:grid md:grid-cols-12 md:gap-x-8 md:px-0 lg:gap-x-16"
->
-	<div
-		class="mb-8 text-center text-xl md:col-span-6 md:mb-0 md:self-center md:text-left md:text-2xl lg:col-span-5"
-	>
+<section class="container grid grid-cols-12 items-center">
+	<div class="col-span-12 text-center text-xl md:text-2xl lg:col-span-5">
 		<div class="mb-2 text-5xl lg:text-6xl">
 			<div class="mb-2">Get inspired by</div>
-			<div class="flex justify-center sm:justify-start">
+			<div class="flex justify-center">
 				😻
 				<h1 class="font-thin text-primary-400">Techy Cat</h1>
 				😻
@@ -46,7 +42,10 @@
 			>
 		</p>
 	</div>
-	<aside class="self-center sm:col-span-6 md:col-span-6 lg:col-span-7">
-		<div bind:this={animationContainer} />
+	<aside class="col-span-12 min-h-full lg:col-span-7">
+		<div
+			bind:this={animationContainer}
+			class="h-[33vh] animate-fade-in-once lg:h-[67vh]"
+		/>
 	</aside>
 </section>
