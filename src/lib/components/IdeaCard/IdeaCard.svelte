@@ -1,8 +1,11 @@
 <script lang="ts">
+	import {onMount} from 'svelte'
+	import lottie, {type AnimationItem} from 'lottie-web'
+
 	import {enhanceForm} from '$lib/actions/enhanceForm'
-	import FullStar from '$lib/icons/star.svg'
 	import EmptyStar from '$lib/icons/empty-star.svg'
 	import {user} from '$lib/stores/user'
+	import animationData from './star.json'
 
 	export let id: string
 	export let emoji: string
@@ -10,7 +13,25 @@
 	export let description: string
 	export let starred: boolean
 
+	let starButton: HTMLButtonElement
+	let starAnimation: AnimationItem
+
 	let state: 'idle' | 'starring' | Error = 'idle'
+
+	onMount(() => {
+		if (!starButton) return
+
+		starAnimation = lottie.loadAnimation({
+			container: starButton,
+			renderer: 'svg',
+			loop: false,
+			autoplay: false,
+			animationData,
+		})
+
+		const lastFrame = starAnimation.totalFrames - 1
+		starAnimation.goToAndStop(starred ? lastFrame : 0, true)
+	})
 </script>
 
 <div
@@ -33,6 +54,9 @@
 					pending() {
 						state = 'starring'
 						starred = !starred
+
+						starAnimation.setDirection(starred ? 1 : -1)
+						starAnimation.goToAndPlay(starred ? 0 : 20, true)
 					},
 					result() {
 						state = 'idle'
@@ -48,16 +72,11 @@
 				}}
 			>
 				<input type="hidden" name="id" value={id} />
-				<button disabled={state === 'starring'}>
-					{#if starred}
-						<FullStar class="w-8 fill-copy-base" title="unstar this idea" />
-						<EmptyStar
-							class="absolute top-0 z-0 w-8 animate-ping-once fill-copy-base"
-						/>
-					{:else}
-						<EmptyStar class="w-8 fill-copy-base" title="star this idea" />
-					{/if}
-				</button>
+				<button
+					disabled={state === 'starring'}
+					bind:this={starButton}
+					aria-label={starred ? 'unstar this idea' : 'star this idea'}
+				/>
 			</form>
 		{:else}
 			<a href="/login">

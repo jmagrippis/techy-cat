@@ -1,6 +1,24 @@
 <script lang="ts">
+	import {onMount} from 'svelte'
+	import lottie from 'lottie-web'
+
+	import animationData from './cat-playing-with-yarn.json'
+
 	import BigLink from '../buttons/BigLink.svelte'
-	import HeroImage from '$lib/icons/hero.svg'
+
+	let animationContainer: HTMLElement
+
+	onMount(() => {
+		if (!animationContainer) return
+
+		lottie.loadAnimation({
+			container: animationContainer,
+			renderer: 'svg',
+			loop: true,
+			autoplay: true,
+			animationData,
+		})
+	})
 </script>
 
 <section
@@ -29,6 +47,6 @@
 		</p>
 	</div>
 	<aside class="self-center sm:col-span-6 md:col-span-6 lg:col-span-7">
-		<HeroImage class="w-full fill-surface-2 text-primary-400" />
+		<div bind:this={animationContainer} />
 	</aside>
 </section>

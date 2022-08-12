@@ -1,8 +1,9 @@
 <script lang="ts">
-	import IdeaCard from '$lib/components/IdeaCard.svelte'
-	import PageHeading from '$lib/components/PageHeading.svelte'
 	import {animate, stagger} from 'motion'
 	import {onMount} from 'svelte'
+
+	import IdeaCard from '$lib/components/IdeaCard/IdeaCard.svelte'
+	import PageHeading from '$lib/components/PageHeading.svelte'
 
 	export let ideas: App.IdeaWithAuthorAndStarred[]
 
