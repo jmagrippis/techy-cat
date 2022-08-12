@@ -1,8 +1,10 @@
 import type {RequestHandler} from '@sveltejs/kit'
 
 export const GET: RequestHandler = async ({locals: {ideasRepo}, url}) => {
-	const limit = parseInt(url.searchParams.get('limit') || '50')
-	const ideas = await ideasRepo.getAll({limit})
+	const limit = parseInt(url.searchParams.get('limit') || '7')
+	const page = parseInt(url.searchParams.get('page') || '1')
+
+	const ideas = await ideasRepo.getAll({limit, page})
 
 	return {
 		body: {ideas},

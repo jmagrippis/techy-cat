@@ -27,19 +27,20 @@ export class IdeasRepo implements App.IdeasRepoInterface {
 	}
 
 	getAll = async ({
-		limit,
-		match = {},
+		limit = 50,
+		page = 1,
 	}: {
-		limit: number
-		match?: Record<string, unknown>
+		limit?: number
+		page?: number
 	}): Promise<App.IdeaWithAuthorAndStarred[]> => {
+		const start = (page - 1) * limit
+		const end = limit - 1 + start
 		const response = await this.#client
 			// find the SQL which defined this function at
 			// sql/ideas_with_authors_and_starred.sql
 			.rpc<DbIdeaWithAuthorAndStarred>('ideas_with_authors_and_starred')
 			.select('id, slug, name, emoji, description, starred')
-			.match(match)
-			.limit(limit)
+			.range(start, end)
 
 		return response.data ?? []
 	}

@@ -53,8 +53,8 @@ declare namespace App {
 
 	interface IdeasRepoInterface {
 		getAll(options: {
-			limit: number
-			match?: Record<string, unknown>
+			limit?: number
+			page?: number
 		}): Promise<IdeaWithAuthorAndStarred[]>
 		getAllForAuthorId(authorId: string): Promise<Idea[]>
 		findById(id: string): Promise<Idea | null>
