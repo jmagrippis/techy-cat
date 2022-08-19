@@ -13,6 +13,12 @@ test('navigation smoke test', async ({page}) => {
 	await expect(page).toHaveTitle(/Latest Ideas/)
 	await expect(page.locator('role=heading[level=1]')).toHaveText('Latest Ideas')
 
+	// navigate to the Games Page
+	await page.locator('role=link[name=Games]').click()
+
+	await expect(page).toHaveTitle(/Memory Game/)
+	await expect(page.locator('role=heading[level=1]')).toHaveText('Memory Game')
+
 	// navigate to the About Page
 	await page.locator('role=link[name=About]').click()
 
