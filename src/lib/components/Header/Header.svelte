@@ -50,6 +50,9 @@
 				<a href="/ideas">Ideas</a>
 			</li>
 			<li>
+				<a href="/games/memory">Games</a>
+			</li>
+			<li>
 				<a href="/about">About</a>
 			</li>
 		</ul>

@@ -46,6 +46,9 @@ const config = {
 					'100%': {opacity: '1', transform: 'translateY(0)'},
 				},
 			},
+			backgroundImage: {
+				'card-back': "url('/svgs/hexagons.svg')",
+			},
 		},
 	},
 	plugins: [],
