@@ -89,5 +89,5 @@
 {/if}
 <div
 	bind:this={confettiContainer}
-	class="pointer-events-none absolute inset-0 w-full"
+	class="pointer-events-none fixed inset-0 z-20 w-full"
 />
