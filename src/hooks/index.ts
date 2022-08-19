@@ -1,4 +1,4 @@
-import type {GetSession, Handle} from '@sveltejs/kit'
+import type {Handle} from '@sveltejs/kit'
 import {createClient} from '@supabase/supabase-js'
 import {getCookieValue} from '$lib/getCookieValue'
 import {IdeasRepo} from '$lib/repos/ideas'
@@ -59,11 +59,4 @@ export const handle: Handle = async ({event, resolve}) => {
 	}
 
 	return response
-}
-
-export const getSession: GetSession = ({locals}) => {
-	const theme = locals.theme
-	const user = locals.user
-
-	return {theme, user}
 }

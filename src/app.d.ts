@@ -85,10 +85,5 @@ declare namespace App {
 
 	interface Platform {}
 
-	interface Session {
-		theme: Theme
-		user: User | null
-	}
-
 	interface Stuff {}
 }

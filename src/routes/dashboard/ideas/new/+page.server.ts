@@ -1,20 +1,12 @@
 import {error} from '@sveltejs/kit'
 
-import type {PageServerLoad, Action} from './$types'
+import type {Action} from './$types'
 
-export const load: PageServerLoad = async ({params, locals: {ideasRepo}}) => {
-	const {id} = params
-	const idea = await ideasRepo.findById(id)
-
-	if (!idea) {
-		throw error(404)
+export const POST: Action = async ({request, locals: {ideasRepo, user}}) => {
+	if (!user) {
+		throw error(401)
 	}
 
-	return {idea}
-}
-
-export const POST: Action = async ({params, request, locals: {ideasRepo}}) => {
-	const {id} = params
 	const formData = await request.formData()
 	const emoji = formData.get('emoji')
 	const name = formData.get('name')
@@ -38,15 +30,18 @@ export const POST: Action = async ({params, request, locals: {ideasRepo}}) => {
 			},
 		}
 	}
+
 	const ideaPartial = {
 		emoji,
 		name,
 		slug,
 		description,
 	}
-	const idea = await ideasRepo.updateIdea(id, ideaPartial)
+	const idea = await ideasRepo.createIdea(ideaPartial, user.id)
 
 	if (!idea) {
 		throw error(401)
 	}
+
+	return {location: `/dashboard/ideas/${idea.id}`}
 }

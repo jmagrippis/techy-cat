@@ -1,11 +1,11 @@
 <script lang="ts">
 	import {enhanceForm} from '$lib/actions/enhanceForm'
-
 	import BigButton from '$lib/components/buttons/BigButton.svelte'
-
 	import PageHeading from '$lib/components/PageHeading.svelte'
+	import type {PageData} from './$types'
 
-	export let idea: App.Idea
+	export let data: PageData
+	$: ({idea} = data)
 
 	let state: 'idle' | 'updating' | 'success' | Error = 'idle'
 </script>

@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type {Theme} from '../../../types'
-	import {setTheme, theme} from '$lib/stores/theme'
+	import {theme} from '$lib/stores/theme'
 	import YouTubeIcon from '$lib/icons/youtube.svg'
 	import ThemeToggleIcon from './ThemeToggleIcon.svelte'
 	import {browser} from '$app/env'
 	import UserIcon from './UserIcon.svelte'
+	import {enhanceForm} from '$lib/actions/enhanceForm'
 
 	let previousY: number
 	let currentY: number
@@ -33,9 +34,6 @@
 	$: offscreen = scrollDirection === 'down' && currentY > clientHeight * 4
 
 	$: nextTheme = deriveNextTheme($theme)
-	const handleThemeIconClick = () => {
-		setTheme(nextTheme)
-	}
 </script>
 
 <svelte:window bind:scrollY={currentY} />
@@ -57,14 +55,25 @@
 		</ul>
 	</nav>
 	<div class="flex items-center gap-4 md:gap-8">
-		<button
-			on:click={handleThemeIconClick}
-			class="transition-colors hover:text-primary-400"
-			label="toggle theme from {$theme} to {nextTheme}"
-			aria-live="polite"
+		<form
+			class="flex"
+			method="POST"
+			action="/theme"
+			use:enhanceForm={{
+				pending() {
+					$theme = nextTheme
+				},
+			}}
 		>
-			<ThemeToggleIcon className="w-6" />
-		</button>
+			<input type="hidden" name="theme" value={nextTheme} />
+			<button
+				class="transition-colors hover:text-primary-400"
+				label="toggle theme from {$theme} to {nextTheme}"
+				aria-live="polite"
+			>
+				<ThemeToggleIcon className="w-6" />
+			</button>
+		</form>
 		<UserIcon />
 		<a
 			href="https://www.youtube.com/channel/UCm1ALyg61uhPoTnZBm7mY2g"

@@ -2,12 +2,10 @@
 	import PageHeading from '$lib/components/PageHeading.svelte'
 	import {user} from '$lib/stores/user'
 
-	export let myIdeas: App.Idea[]
+	import type {PageData} from './$types'
 
-	import type {Load} from '@sveltejs/kit'
-
-	export const load: Load = ({session}) =>
-		session.user ? {status: 200} : {redirect: '/login', status: 302}
+	export let data: PageData
+	$: ({myIdeas} = data)
 </script>
 
 <svelte:head>

@@ -1,13 +1,10 @@
-import type {RequestHandler} from '@sveltejs/kit'
+import {error, redirect} from '@sveltejs/kit'
 
-export const GET: RequestHandler = async ({locals: {ideasRepo, user}}) => {
+import type {PageServerLoad, Action} from './$types'
+
+export const load: PageServerLoad = async ({locals: {ideasRepo, user}}) => {
 	if (!user) {
-		return {
-			status: 303,
-			headers: {
-				location: '/login',
-			},
-		}
+		throw redirect(307, '/login')
 	}
 
 	const starredIdeas = await ideasRepo.getAll({
@@ -15,36 +12,24 @@ export const GET: RequestHandler = async ({locals: {ideasRepo, user}}) => {
 		match: {starred: true},
 	})
 
-	return {
-		body: {starredIdeas},
-	}
+	return {starredIdeas}
 }
 
-export const POST: RequestHandler = async ({
-	request,
-	locals: {userRepo, user},
-}) => {
+export const POST: Action = async ({request, locals: {userRepo, user}}) => {
 	if (!user) {
-		return {
-			status: 401,
-		}
+		throw error(401)
 	}
 
 	const formData = await request.formData()
 	const displayName = formData.get('display_name')
 
 	if (!displayName || typeof displayName !== 'string') {
-		return {
-			status: 400,
-			body: 'you need to specify a display name',
-		}
+		return {errors: {displayName: 'You need to specify a display name'}}
 	}
 
 	const updatedUser = await userRepo.updateDisplayName(user.id, displayName)
 
 	if (!updatedUser) {
-		return {status: 500}
+		throw error(400, `Could not update display name tp ${displayName}`)
 	}
-
-	return {body: {user: updatedUser}}
 }

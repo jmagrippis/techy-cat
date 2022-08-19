@@ -1,9 +1,7 @@
-import type {RequestHandler} from '@sveltejs/kit'
+import type {PageServerLoad} from './$types'
 
-export const GET: RequestHandler = async ({locals: {ideasRepo}}) => {
+export const load: PageServerLoad = async ({locals: {ideasRepo}}) => {
 	const latestIdeas = await ideasRepo.getAll({limit: 3})
 
-	return {
-		body: {latestIdeas},
-	}
+	return {latestIdeas}
 }

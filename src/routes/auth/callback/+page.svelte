@@ -1,9 +1,8 @@
 <script lang="ts">
 	import {onMount} from 'svelte'
 	import {goto} from '$app/navigation'
-
+	import {user} from '$lib/stores/user'
 	import {getValueFromHash} from '$lib/getValueFromHash'
-	import {setUser} from '$lib/stores/user'
 
 	onMount(async () => {
 		const accessToken = getValueFromHash(window.location.hash, 'access_token')
@@ -26,8 +25,8 @@
 		})
 
 		if (response.ok) {
-			const {user} = await response.json()
-			setUser(user)
+			const json = await response.json()
+			$user = json.user
 			goto('/profile')
 		} else {
 			goto('/login')
