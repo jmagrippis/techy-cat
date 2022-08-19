@@ -1,28 +1,37 @@
-import type {RequestHandler} from '@sveltejs/kit'
-import {isTheme} from '../types'
+import {json} from '@sveltejs/kit'
 
-// PUT /theme
-export const PUT: RequestHandler = async ({request}) => {
-	const theme = await request.text()
+import type {RequestHandler} from './$types'
+import {isTheme} from '../../types'
+
+// POST /theme
+export const POST: RequestHandler = async ({request}) => {
+	const formData = await request.formData()
+	const theme = formData.get('theme')
 
 	if (!isTheme(theme)) {
-		return {
-			status: 400,
-			body: `not a valid theme value: ${theme}`,
-		}
+		return json(
+			{
+				errors: {theme: `not a valid theme value: ${theme}`},
+			},
+			{status: 400}
+		)
 	}
 
-	return {
-		headers: {
+	return new Response(null, {
+		status: 200,
+		headers: new Headers({
 			'Set-Cookie': `theme=${theme}; SameSite=Strict; HttpOnly; Path=/`,
-		},
-	}
+		}),
+	})
 }
 
+const expiredThemeCookie =
+	'theme= ; Max-Age=0; SameSite=Strict; HttpOnly; Path=/'
 // DELETE /theme
-export const DELETE: RequestHandler = async () => ({
-	status: 204,
-	headers: {
-		'Set-Cookie': `theme= ; Max-Age=0; SameSite=Strict; HttpOnly; Path=/`,
-	},
-})
+export const DELETE: RequestHandler = async () =>
+	new Response(null, {
+		status: 204,
+		headers: new Headers({
+			'Set-Cookie': expiredThemeCookie,
+		}),
+	})

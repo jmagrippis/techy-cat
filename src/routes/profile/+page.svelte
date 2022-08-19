@@ -1,22 +1,24 @@
 <script lang="ts">
 	import {enhanceForm} from '$lib/actions/enhanceForm'
 	import PageHeading from '$lib/components/PageHeading.svelte'
-	import {setUser, user} from '$lib/stores/user'
+	import {user} from '$lib/stores/user'
 	import IdeaSnippetCard from '$lib/components/IdeaSnippetCard.svelte'
+	import type {PageData} from './$types'
 
-	export let starredIdeas: App.Idea[]
+	export let data: PageData
+	$: ({starredIdeas} = data)
 
 	let updatedName: string = $user?.displayName || ''
 
 	const handleUpdateDisplayName = async ({response}: {response: Response}) => {
 		if (response.ok) {
-			const {user} = await response.json()
+			const json = await response.json()
 
-			setUser(user)
+			$user = json.user
 		}
 	}
 	const handleLogout = async () => {
-		setUser(null)
+		$user = null
 	}
 </script>
 

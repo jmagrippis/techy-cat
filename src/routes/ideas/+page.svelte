@@ -4,8 +4,10 @@
 
 	import IdeaCard from '$lib/components/IdeaCard/IdeaCard.svelte'
 	import PageHeading from '$lib/components/PageHeading.svelte'
+	import type {PageData} from './$types'
 
-	export let ideas: App.IdeaWithAuthorAndStarred[]
+	export let data: PageData
+	$: ({ideas} = data)
 
 	let listContainer: HTMLUListElement
 

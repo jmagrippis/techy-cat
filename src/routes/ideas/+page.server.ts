@@ -1,72 +1,50 @@
-import type {RequestHandler} from '@sveltejs/kit'
+import {error} from '@sveltejs/kit'
 
-export const GET: RequestHandler = async ({locals: {ideasRepo}, url}) => {
+import type {PageServerLoad, Action} from './$types'
+
+export const load: PageServerLoad = async ({locals: {ideasRepo}, url}) => {
 	const limit = parseInt(url.searchParams.get('limit') || '50')
 	const ideas = await ideasRepo.getAll({limit})
 
-	return {
-		body: {ideas},
-	}
+	return {ideas}
 }
 
-export const POST: RequestHandler = async ({
-	request,
-	locals: {ideasRepo, user},
-}) => {
+export const POST: Action = async ({request, locals: {ideasRepo, user}}) => {
 	if (!user) {
-		return {
-			status: 401,
-		}
+		throw error(401)
 	}
 
 	const id = (await request.formData()).get('id')
 
 	if (typeof id !== 'string') {
 		return {
-			status: 400,
-			error: 'Idea `id` must be provided',
+			errors: {id: 'Idea `id` must be provided'},
 		}
 	}
 
 	try {
 		await ideasRepo.starIdea(id, user.id)
-		return {
-			status: 201,
-		}
 	} catch {
-		return {
-			status: 500,
-		}
+		throw error(400, `Could not star ide ${id}`)
 	}
 }
 
-export const DELETE: RequestHandler = async ({
-	request,
-	locals: {ideasRepo, user},
-}) => {
+export const DELETE: Action = async ({request, locals: {ideasRepo, user}}) => {
 	if (!user) {
-		return {
-			status: 400,
-		}
+		throw error(401)
 	}
 
 	const id = (await request.formData()).get('id')
 
 	if (typeof id !== 'string') {
 		return {
-			status: 401,
-			error: 'Idea `id` must be provided',
+			errors: {id: 'Idea `id` must be provided'},
 		}
 	}
 
 	try {
 		await ideasRepo.unstarIdea(id, user.id)
-		return {
-			status: 201,
-		}
 	} catch {
-		return {
-			status: 500,
-		}
+		throw error(400, `Could not star ide ${id}`)
 	}
 }

@@ -2,8 +2,10 @@
 	import Hero from '$lib/components/Hero/Hero.svelte'
 	import BigLink from '$lib/components/buttons/BigLink.svelte'
 	import IdeaSnippetCard from '$lib/components/IdeaSnippetCard.svelte'
+	import type {PageData} from './$types'
 
-	export let latestIdeas: App.Idea[]
+	export let data: PageData
+	$: ({latestIdeas} = data)
 </script>
 
 <svelte:head>

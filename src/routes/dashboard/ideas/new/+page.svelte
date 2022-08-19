@@ -23,7 +23,7 @@
 
 <form
 	method="POST"
-	action="/dashboard/ideas"
+	action="/dashboard/ideas/new"
 	class="text-2x mb-6 flex w-full flex-col gap-4"
 	use:enhanceForm={{
 		pending() {
@@ -38,11 +38,8 @@
 				return
 			}
 
-			const {
-				idea: {id},
-			} = await response.json()
 			state = 'success'
-			goto(`/dashboard/ideas/${id}`)
+			goto('/dashboard/ideas')
 		},
 	}}
 >
