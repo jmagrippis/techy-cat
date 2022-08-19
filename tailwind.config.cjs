@@ -48,6 +48,7 @@ const config = {
 			},
 			backgroundImage: {
 				'card-back': "url('/svgs/hexagons.svg')",
+				'card-front': "url('/svgs/wiggle.svg')",
 			},
 		},
 	},

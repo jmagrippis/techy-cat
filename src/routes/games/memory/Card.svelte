@@ -5,15 +5,19 @@
 </script>
 
 <button
-	class="relative col-span-6 flex h-64 w-48 select-none items-center justify-center rounded border bg-surface-2 text-center shadow lg:col-span-3"
+	class="relative col-span-6 flex h-56 w-40 select-none sm:h-64 sm:w-48 lg:col-span-3"
 	class:revealed
 	on:click={handleClick}
 	disabled={revealed}
 >
-	<div class="front">
+	<div
+		class="front absolute flex h-full w-full items-center justify-center rounded border bg-surface-2 bg-card-front text-center shadow"
+	>
 		{face}
 	</div>
-	<div class="back absolute h-full w-full bg-card-back" />
+	<div
+		class="back absolute h-full w-full rounded border bg-surface-2 bg-card-back shadow"
+	/>
 </button>
 
 <style>
