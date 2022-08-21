@@ -1,10 +1,11 @@
 import type {Handle} from '@sveltejs/kit'
 import {createClient} from '@supabase/supabase-js'
+
+import {PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY} from '$env/static/public'
 import {getCookieValue} from '$lib/getCookieValue'
 import {IdeasRepo} from '$lib/repos/ideas'
-
-import {isTheme, type Theme} from '../types'
 import {UserRepo} from '$lib/repos/user'
+import {isTheme, type Theme} from '../types'
 
 const getThemeFromCookie = (cookie: string | null): Theme => {
 	const theme = getCookieValue(cookie, 'theme')
@@ -17,8 +18,8 @@ export const handle: Handle = async ({event, resolve}) => {
 	event.locals.theme = getThemeFromCookie(cookie)
 
 	const supabaseClient = createClient(
-		import.meta.env.VITE_SUPABASE_URL,
-		import.meta.env.VITE_SUPABASE_ANON_KEY,
+		PUBLIC_SUPABASE_URL,
+		PUBLIC_SUPABASE_ANON_KEY,
 		{
 			autoRefreshToken: false,
 			persistSession: false,

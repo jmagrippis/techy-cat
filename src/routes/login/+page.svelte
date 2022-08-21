@@ -1,12 +1,16 @@
 <script lang="ts">
-	import BigButton from '$lib/components/buttons/BigButton.svelte'
-
-	import PageHeading from '$lib/components/PageHeading.svelte'
 	import {createClient} from '@supabase/supabase-js'
 
+	import {
+		PUBLIC_SUPABASE_URL,
+		PUBLIC_SUPABASE_ANON_KEY,
+	} from '$env/static/public'
+	import BigButton from '$lib/components/buttons/BigButton.svelte'
+	import PageHeading from '$lib/components/PageHeading.svelte'
+
 	const supabaseClient = createClient(
-		import.meta.env.VITE_SUPABASE_URL,
-		import.meta.env.VITE_SUPABASE_ANON_KEY
+		PUBLIC_SUPABASE_URL,
+		PUBLIC_SUPABASE_ANON_KEY
 	)
 
 	type FormState = 'idle' | 'loading' | 'success' | Error
