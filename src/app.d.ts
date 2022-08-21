@@ -85,5 +85,7 @@ declare namespace App {
 
 	interface Platform {}
 
-	interface Stuff {}
+	interface PrivateEnv extends Record<string, string> {}
+
+	interface PublicEnv extends Record<string, string> {}
 }

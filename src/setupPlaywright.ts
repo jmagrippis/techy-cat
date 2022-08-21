@@ -9,8 +9,8 @@ const globalSetup = async (config: FullConfig) => {
 	const {baseURL} = config.projects[0].use
 
 	if (
-		typeof process.env.VITE_SUPABASE_URL !== 'string' ||
-		typeof process.env.VITE_SUPABASE_ANON_KEY !== 'string' ||
+		typeof process.env.PUBLIC_SUPABASE_URL !== 'string' ||
+		typeof process.env.PUBLIC_SUPABASE_ANON_KEY !== 'string' ||
 		typeof process.env.SUPABASE_PLAYWRIGHT_USER_PASSWORD !== 'string' ||
 		!baseURL
 	)
@@ -20,7 +20,7 @@ const globalSetup = async (config: FullConfig) => {
 	// authorize Playwright user with Supabase first
 	const {access_token, refresh_token, expires_in} = await requestContext
 		.post(
-			`${process.env.VITE_SUPABASE_URL}/auth/v1/token?grant_type=password`,
+			`${process.env.PUBLIC_SUPABASE_URL}/auth/v1/token?grant_type=password`,
 			{
 				data: {
 					email: 'playwright@techy.cat',
@@ -28,7 +28,7 @@ const globalSetup = async (config: FullConfig) => {
 				},
 				headers: {
 					'Content-Type': 'application/json',
-					apikey: process.env.VITE_SUPABASE_ANON_KEY,
+					apikey: process.env.PUBLIC_SUPABASE_ANON_KEY,
 				},
 			}
 		)
