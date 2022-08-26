@@ -5,15 +5,9 @@
 	import Card from './Card.svelte'
 	import type {Card as CardType} from './types'
 	import animationData from './confetti.json'
-	import {shuffleArray} from '$lib/shuffleArray'
 
-	const emojis = ['🤩', '😎', '🤪', '😻', '😼', '👾', '💙', '🙌']
-	const getInitialBoard = (): CardType[] =>
-		shuffleArray(
-			[...emojis, ...emojis].map((face) => ({face, state: 'hidden'}))
-		)
-
-	let board: CardType[] = getInitialBoard()
+	export let board: CardType[]
+	export let handleWrongGuess: () => void
 
 	let reverting = false
 
@@ -39,6 +33,8 @@
 				}
 			} else {
 				reverting = true
+				handleWrongGuess()
+
 				setTimeout(() => {
 					board[previouslySelectedCardIndex].state = 'hidden'
 					board[index].state = 'hidden'
@@ -49,7 +45,7 @@
 	}
 
 	const handleReset = () => {
-		board = getInitialBoard()
+		window.location.reload()
 	}
 
 	let confettiContainer: HTMLElement
@@ -68,7 +64,9 @@
 	})
 </script>
 
-<section class="mb-6 grid grid-cols-12 justify-items-center gap-6 text-9xl">
+<section
+	class="mb-6 grid grid-cols-12 justify-items-center gap-2 text-5xl sm:gap-6 sm:text-8xl md:text-9xl"
+>
 	{#each board as { face, state }, index}
 		<Card
 			{face}
