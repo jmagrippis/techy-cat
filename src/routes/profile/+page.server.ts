@@ -30,6 +30,6 @@ export const POST: Action = async ({request, locals: {userRepo, user}}) => {
 	const updatedUser = await userRepo.updateDisplayName(user.id, displayName)
 
 	if (!updatedUser) {
-		throw error(400, `Could not update display name tp ${displayName}`)
+		throw error(400, `Could not update display name to ${displayName}`)
 	}
 }
