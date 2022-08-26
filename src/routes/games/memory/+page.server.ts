@@ -3,6 +3,7 @@ import seedrandom from 'seedrandom'
 import type {PageServerLoad} from './$types'
 import type {Card} from './types'
 import {shuffleArray} from '$lib/shuffleArray'
+import {getRandomArrayItem} from '$lib/getRandomArrayItem'
 
 const getInitialBoard = (
 	emojis: string[],
@@ -23,18 +24,27 @@ const emojiCollections: Record<string, string[]> = {
 
 const getCurrentDateSeed = () => new Date().toISOString().slice(0, 10)
 
+const getEmojis = (cardSet: string) =>
+	cardSet === 'random'
+		? getRandomArrayItem(Object.values(emojiCollections))
+		: emojiCollections[cardSet] || emojiCollections.default
+
 export const load: PageServerLoad = ({url}) => {
-	const seed = url.searchParams.get('seed') || getCurrentDateSeed()
+	const mode = url.searchParams.get('mode')
+	const seed =
+		url.searchParams.get('seed') || mode !== 'practice'
+			? getCurrentDateSeed()
+			: undefined
 	const cardSet = url.searchParams.get('cardSet') || 'default'
 
 	const rng = seedrandom(seed)
 
-	const emojis = emojiCollections[cardSet] || emojiCollections.default
+	const emojis = getEmojis(cardSet)
 	const board = getInitialBoard(emojis, rng)
 
 	return {
 		board,
 		selectedCardSet: cardSet,
-		cardSets: Object.keys(emojiCollections),
+		cardSets: [...Object.keys(emojiCollections), 'random'],
 	}
 }

@@ -8,6 +8,17 @@
 	$: ({board, cardSets, selectedCardSet} = data)
 
 	let wrongGuesses = 0
+
+	const handleWrongGuess = () => (wrongGuesses += 1)
+	const handleReset = async () => {
+		const url = new URL(window.location.href)
+		if (!url.searchParams.has('seed') && !url.searchParams.has('mode')) {
+			url.searchParams.set('mode', 'practice')
+		}
+
+		await goto(url, {noscroll: true})
+		wrongGuesses = 0
+	}
 </script>
 
 <svelte:head>
@@ -40,6 +51,6 @@
 	</aside>
 
 	<div class="flex grow flex-col justify-center">
-		<Board {board} handleWrongGuess={() => (wrongGuesses += 1)} />
+		<Board {board} {handleWrongGuess} {handleReset} />
 	</div>
 </div>

@@ -8,6 +8,7 @@
 
 	export let board: CardType[]
 	export let handleWrongGuess: () => void
+	export let handleReset: () => void
 
 	let reverting = false
 
@@ -42,10 +43,6 @@
 				}, 500)
 			}
 		}
-	}
-
-	const handleReset = () => {
-		window.location.reload()
 	}
 
 	let confettiContainer: HTMLElement
