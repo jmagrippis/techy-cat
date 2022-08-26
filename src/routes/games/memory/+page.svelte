@@ -16,8 +16,12 @@
 			url.searchParams.set('mode', 'practice')
 		}
 
-		await goto(url, {noscroll: true})
-		wrongGuesses = 0
+		if (url.href === window.location.href) {
+			window.location.reload()
+		} else {
+			await goto(url, {noscroll: true})
+			wrongGuesses = 0
+		}
 	}
 </script>
 
