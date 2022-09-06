@@ -49,6 +49,10 @@ export const load: PageServerLoad = ({url}) => {
 		meta: {
 			title: 'Memory Game',
 			description: 'Play the classic memory game, but with emojis 🤯',
+			image: {
+				url: `${url.origin}/meta/game-memory.png`,
+				alt: 'Memory Game: A Techy Cat take on a classic!',
+			},
 		},
 	}
 }
