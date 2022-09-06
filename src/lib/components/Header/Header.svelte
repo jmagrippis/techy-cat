@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type {Theme} from '../../../types'
+	import {browser} from '$app/environment'
 	import {theme} from '$lib/stores/theme'
 	import YouTubeIcon from '$lib/icons/youtube.svg'
 	import ThemeToggleIcon from './ThemeToggleIcon.svelte'
-	import {browser} from '$app/env'
 	import UserIcon from './UserIcon.svelte'
 	import {enhanceForm} from '$lib/actions/enhanceForm'
 
