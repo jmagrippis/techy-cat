@@ -8,10 +8,26 @@
 	import {user} from '$lib/stores/user'
 
 	export let data: LayoutServerData
+	$: ({title, description, image} = data.meta)
 
 	$theme = data.theme
 	$user = data.user
 </script>
+
+<svelte:head>
+	<title>{title}</title>
+	<meta name="description" content={description} />
+
+	<meta property="og:title" content={title} />
+	<meta property="og:type" content="article" />
+
+	<meta property="og:image" content={image.url} />
+	<meta name="twitter:card" content="summary_large_image" />
+
+	<meta property="og:description" content={description} />
+	<meta property="og:site_name" content="Techy Cat" />
+	<meta name="twitter:image:alt" content={image.alt} />
+</svelte:head>
 
 <div id="theme-container" class={$theme}>
 	<div id="app-content">
