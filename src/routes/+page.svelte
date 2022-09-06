@@ -5,7 +5,7 @@
 	import type {PageData} from './$types'
 
 	export let data: PageData
-	$: ({latestIdeas} = data)
+	$: ({latestIdeas, rootUrl} = data)
 
 	const description = 'Tech content and ideas for free, to help inspire you!'
 </script>
@@ -17,10 +17,7 @@
 	<meta property="og:title" content="Get inspired & do more tech!" />
 	<meta property="og:type" content="article" />
 
-	<meta
-		property="og:image"
-		content="https://via.placeholder.com/1200x630.png"
-	/>
+	<meta property="og:image" content={`${rootUrl}/meta/index-preview.png`} />
 	<meta name="twitter:card" content="summary_large_image" />
 
 	<meta property="og:description" content={description} />
