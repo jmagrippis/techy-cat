@@ -6,10 +6,26 @@
 
 	export let data: PageData
 	$: ({latestIdeas} = data)
+
+	const description = 'Tech content and ideas for free, to help inspire you!'
 </script>
 
 <svelte:head>
 	<title>Techy Cat: Get inspired & do more tech!</title>
+	<meta name="description" content={description} />
+
+	<meta property="og:title" content="Get inspired & do more tech!" />
+	<meta property="og:type" content="article" />
+
+	<meta
+		property="og:image"
+		content="https://via.placeholder.com/1200x630.png"
+	/>
+	<meta name="twitter:card" content="summary_large_image" />
+
+	<meta property="og:description" content={description} />
+	<meta property="og:site_name" content="Techy Cat" />
+	<meta name="twitter:image:alt" content="Placeholder image for now" />
 </svelte:head>
 
 <Hero />
