@@ -5,25 +5,8 @@
 	import type {PageData} from './$types'
 
 	export let data: PageData
-	$: ({latestIdeas, rootUrl} = data)
-
-	const description = 'Tech content and ideas for free, to help inspire you!'
+	$: ({latestIdeas} = data)
 </script>
-
-<svelte:head>
-	<title>Techy Cat: Get inspired & do more tech!</title>
-	<meta name="description" content={description} />
-
-	<meta property="og:title" content="Get inspired & do more tech!" />
-	<meta property="og:type" content="article" />
-
-	<meta property="og:image" content={`${rootUrl}/meta/index-preview.png`} />
-	<meta name="twitter:card" content="summary_large_image" />
-
-	<meta property="og:description" content={description} />
-	<meta property="og:site_name" content="Techy Cat" />
-	<meta name="twitter:image:alt" content="Placeholder image for now" />
-</svelte:head>
 
 <Hero />
 <section class="container mb-6 px-2 sm:px-0">
