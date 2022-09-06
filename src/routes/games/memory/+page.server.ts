@@ -46,5 +46,9 @@ export const load: PageServerLoad = ({url}) => {
 		board,
 		selectedCardSet: cardSet,
 		cardSets: [...Object.keys(emojiCollections), 'random'],
+		meta: {
+			title: 'Memory Game',
+			description: 'Play the classic memory game, but with emojis 🤯',
+		},
 	}
 }

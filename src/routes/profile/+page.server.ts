@@ -12,7 +12,14 @@ export const load: PageServerLoad = async ({locals: {ideasRepo, user}}) => {
 		match: {starred: true},
 	})
 
-	return {starredIdeas}
+	return {
+		starredIdeas,
+		meta: {
+			title: 'My Profile',
+			description:
+				'Your profile on Techy Cat, including the ideas you have starred',
+		},
+	}
 }
 
 export const POST: Action = async ({request, locals: {userRepo, user}}) => {

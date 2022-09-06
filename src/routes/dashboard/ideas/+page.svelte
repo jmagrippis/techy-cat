@@ -8,10 +8,6 @@
 	$: ({myIdeas} = data)
 </script>
 
-<svelte:head>
-	<title>My Ideas Dashboard | Techy Cat</title>
-</svelte:head>
-
 <PageHeading>My Ideas</PageHeading>
 
 {#if myIdeas.length}

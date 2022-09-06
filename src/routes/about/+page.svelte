@@ -2,10 +2,6 @@
 	import PageHeading from '$lib/components/PageHeading.svelte'
 </script>
 
-<svelte:head>
-	<title>About | Techy Cat</title>
-</svelte:head>
-
 <section class="container flex-grow px-2">
 	<PageHeading>About</PageHeading>
 

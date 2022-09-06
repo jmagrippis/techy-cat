@@ -25,10 +25,6 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Memory Game | Techy Cat</title>
-</svelte:head>
-
 <div class="container flex w-full grow flex-col px-2">
 	<PageHeading>Memory Game</PageHeading>
 	<aside class="mb-6 flex flex-col gap-4 text-xl">
