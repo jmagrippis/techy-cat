@@ -15,10 +15,6 @@
 	let state: 'idle' | 'creating' | 'success' | Error = 'idle'
 </script>
 
-<svelte:head>
-	<title>Create new idea | Techy Cat</title>
-</svelte:head>
-
 <PageHeading>New Idea</PageHeading>
 
 <form

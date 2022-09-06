@@ -6,16 +6,19 @@
 	import type {LayoutServerData} from './$types'
 	import {theme} from '$lib/stores/theme'
 	import {user} from '$lib/stores/user'
+	import {page} from '$app/stores'
 
 	export let data: LayoutServerData
-	$: ({title, description, image} = data.meta)
+	$: title = $page.data.meta?.title ?? data.defaultMeta.title
+	$: description = $page.data.meta?.description ?? data.defaultMeta.description
+	$: image = $page.data.meta?.image ?? data.defaultMeta.image
 
 	$theme = data.theme
 	$user = data.user
 </script>
 
 <svelte:head>
-	<title>{title}</title>
+	<title>{title} | Techy Cat</title>
 	<meta name="description" content={description} />
 
 	<meta property="og:title" content={title} />

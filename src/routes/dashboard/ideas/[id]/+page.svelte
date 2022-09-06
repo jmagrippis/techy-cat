@@ -10,10 +10,6 @@
 	let state: 'idle' | 'updating' | 'success' | Error = 'idle'
 </script>
 
-<svelte:head>
-	<title>Edit {idea.name} | Techy Cat</title>
-</svelte:head>
-
 <PageHeading>Edit Idea</PageHeading>
 
 <form

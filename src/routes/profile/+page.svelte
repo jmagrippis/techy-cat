@@ -22,10 +22,6 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Profile | Techy Cat</title>
-</svelte:head>
-
 <div class="container w-full grow px-2 sm:px-0">
 	<section class="mb-8 max-w-prose">
 		<PageHeading>Profile</PageHeading>

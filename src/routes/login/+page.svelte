@@ -47,10 +47,6 @@
 	}
 </script>
 
-<svelte:head>
-	<title>Login | Techy Cat</title>
-</svelte:head>
-
 <section class="container w-full max-w-prose grow px-2 text-xl sm:px-0">
 	<PageHeading>Login</PageHeading>
 

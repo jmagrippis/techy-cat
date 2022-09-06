@@ -1,6 +1,13 @@
 import {error} from '@sveltejs/kit'
 
-import type {Action} from './$types'
+import type {PageServerLoad, Action} from './$types'
+
+export const load: PageServerLoad = async () => ({
+	meta: {
+		title: 'Create a new idea',
+		description: 'Publish your own new idea on Techy Cat!',
+	},
+})
 
 export const POST: Action = async ({request, locals: {ideasRepo, user}}) => {
 	if (!user) {

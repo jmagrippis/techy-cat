@@ -6,7 +6,13 @@ export const load: PageServerLoad = async ({locals: {ideasRepo}, url}) => {
 	const limit = parseInt(url.searchParams.get('limit') || '50')
 	const ideas = await ideasRepo.getAll({limit})
 
-	return {ideas}
+	return {
+		ideas,
+		meta: {
+			title: 'Latest Ideas',
+			description: 'The latest ideas from the Techy Cat community',
+		},
+	}
 }
 
 export const POST: Action = async ({request, locals: {ideasRepo, user}}) => {

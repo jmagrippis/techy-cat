@@ -9,5 +9,12 @@ export const load: PageServerLoad = async ({locals: {ideasRepo, user}}) => {
 
 	const myIdeas = await ideasRepo.getAllForAuthorId(user.id)
 
-	return {myIdeas}
+	return {
+		myIdeas,
+		meta: {
+			title: 'My ideas dashboard',
+			description:
+				'Overview of all the ideas you have submitted, and links to edit them',
+		},
+	}
 }

@@ -10,7 +10,14 @@ export const load: PageServerLoad = async ({params, locals: {ideasRepo}}) => {
 		throw error(404)
 	}
 
-	return {idea}
+	return {
+		idea,
+		meta: {
+			title: `Edit “${idea.name}”`,
+			description:
+				'Edit your own idea on the fly, but be cool with the content 👀',
+		},
+	}
 }
 
 export const POST: Action = async ({params, request, locals: {ideasRepo}}) => {
