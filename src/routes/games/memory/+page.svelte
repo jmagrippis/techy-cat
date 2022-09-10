@@ -1,4 +1,5 @@
 <script lang="ts">
+	import {fly} from 'svelte/transition'
 	import PageHeading from '$lib/components/PageHeading.svelte'
 	import Board from './Board.svelte'
 	import type {PageData} from './$types'
@@ -8,8 +9,8 @@
 	$: ({board, cardSets, selectedCardSet} = data)
 
 	let wrongGuesses = 0
+	let reverting = false
 
-	const handleWrongGuess = () => (wrongGuesses += 1)
 	const handleReset = async () => {
 		const url = new URL(window.location.href)
 		if (!url.searchParams.has('seed') && !url.searchParams.has('mode')) {
@@ -47,10 +48,21 @@
 				{/each}
 			</select>
 		</label>
-		<div>Wrong guesses: <strong>{wrongGuesses}</strong></div>
+		<div class="flex gap-2">
+			<div>Wrong guesses:</div>
+			<div class="relative grow">
+				{#key wrongGuesses}
+					<strong
+						out:fly={{y: -12, duration: 500}}
+						in:fly={{y: 12, duration: 500}}
+						class="absolute">{wrongGuesses}</strong
+					>
+				{/key}
+			</div>
+		</div>
 	</aside>
 
 	<div class="flex grow flex-col justify-center">
-		<Board {board} {handleWrongGuess} {handleReset} />
+		<Board bind:board bind:wrongGuesses bind:reverting {handleReset} />
 	</div>
 </div>

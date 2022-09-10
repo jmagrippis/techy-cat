@@ -7,10 +7,9 @@
 	import animationData from './confetti.json'
 
 	export let board: CardType[]
-	export let handleWrongGuess: () => void
+	export let wrongGuesses: number
 	export let handleReset: () => void
-
-	let reverting = false
+	export let reverting: boolean
 
 	const deriveBoardSolved = (givenBoard: CardType[]) =>
 		givenBoard.every(({state}) => state === 'revealed')
@@ -34,7 +33,7 @@
 				}
 			} else {
 				reverting = true
-				handleWrongGuess()
+				wrongGuesses += 1
 
 				setTimeout(() => {
 					board[previouslySelectedCardIndex].state = 'hidden'
