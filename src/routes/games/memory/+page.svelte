@@ -53,8 +53,8 @@
 			<div class="relative grow">
 				{#key wrongGuesses}
 					<strong
-						out:fly={{y: -12, duration: 500}}
-						in:fly={{y: 12, duration: 500}}
+						out:fly|local={{y: -12, duration: 500}}
+						in:fly|local={{y: 12, duration: 500}}
 						class="absolute">{wrongGuesses}</strong
 					>
 				{/key}
