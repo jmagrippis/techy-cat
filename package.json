@@ -26,6 +26,8 @@
 		"@types/seedrandom": "^3.0.2",
 		"@typescript-eslint/eslint-plugin": "^5.36.2",
 		"@typescript-eslint/parser": "^5.36.2",
+		"@xstate/cli": "^0.3.3",
+		"@xstate/svelte": "^2.0.0",
 		"autoprefixer": "^10.4.8",
 		"dotenv-flow": "^3.2.0",
 		"eslint": "^8.23.0",
@@ -48,7 +50,8 @@
 		"tslib": "^2.4.0",
 		"typescript": "^4.8.2",
 		"unique-names-generator": "^4.7.1",
-		"vitest": "^0.23.1"
+		"vitest": "^0.23.1",
+		"xstate": "^4.33.5"
 	},
 	"type": "module",
 	"engines": {

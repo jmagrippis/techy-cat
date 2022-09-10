@@ -1,48 +1,23 @@
 <script lang="ts">
-	import {onMount} from 'svelte'
+	import {afterUpdate, onMount} from 'svelte'
 	import lottie, {type AnimationItem} from 'lottie-web'
 
 	import Card from './Card.svelte'
 	import type {Card as CardType} from './types'
 	import animationData from './confetti.json'
+	import type {StateValue} from 'xstate'
 
 	export let board: CardType[]
-	export let handleWrongGuess: () => void
+	export let boardState: StateValue
+	export let wrongGuessesCount: number
+	$: isWon = boardState === 'won'
+	$: isReverting = boardState === 'reverting'
+
+	export let handlePick: (index: number) => void
 	export let handleReset: () => void
 
-	let reverting = false
-
-	const deriveBoardSolved = (givenBoard: CardType[]) =>
-		givenBoard.every(({state}) => state === 'revealed')
-	$: isBoardSolved = deriveBoardSolved(board)
-
 	const handleCardClick = (index: number) => {
-		if (reverting) return
-
-		const previouslySelectedCardIndex = board.findIndex(
-			(card) => card.state === 'selected'
-		)
-		board[index].state = 'selected'
-
-		if (previouslySelectedCardIndex !== -1) {
-			if (board[previouslySelectedCardIndex].face === board[index].face) {
-				board[previouslySelectedCardIndex].state = 'revealed'
-				board[index].state = 'revealed'
-
-				if (deriveBoardSolved(board)) {
-					confettiAnimation.goToAndPlay(0, true)
-				}
-			} else {
-				reverting = true
-				handleWrongGuess()
-
-				setTimeout(() => {
-					board[previouslySelectedCardIndex].state = 'hidden'
-					board[index].state = 'hidden'
-					reverting = false
-				}, 500)
-			}
-		}
+		handlePick(index)
 	}
 
 	let confettiContainer: HTMLElement
@@ -59,6 +34,12 @@
 			animationData,
 		})
 	})
+
+	afterUpdate(() => {
+		if (isWon) {
+			confettiAnimation.goToAndPlay(0, true)
+		}
+	})
 </script>
 
 <section
@@ -69,17 +50,29 @@
 			{face}
 			revealed={state !== 'hidden'}
 			handleClick={() => handleCardClick(index)}
+			shake={state === 'selected' && isReverting}
 		/>
 	{/each}
 </section>
-{#if isBoardSolved}
+{#if isWon}
 	<div
 		class="fixed inset-0 z-10 flex flex-col justify-center bg-surface-2/80 text-center text-4xl"
 	>
-		A winner is YOU! <button
-			class="underline decoration-primary-600"
-			on:click={handleReset}>Play again?</button
-		>
+		<div>
+			A winner is YOU! <button
+				class="underline decoration-primary-600"
+				on:click={handleReset}>Play again?</button
+			>
+		</div>
+		<div class="text-2xl">
+			{#if wrongGuessesCount === 0}
+				🤯 No wrong guesses! 🤯
+			{:else}
+				You needed {wrongGuessesCount} wrong guess{wrongGuessesCount === 1
+					? ''
+					: 'es'} 🙌
+			{/if}
+		</div>
 	</div>
 {/if}
 <div

@@ -1,15 +1,24 @@
 <script lang="ts">
+	import {fly, type FlyParams} from 'svelte/transition'
+
 	import PageHeading from '$lib/components/PageHeading.svelte'
 	import Board from './Board.svelte'
 	import type {PageData} from './$types'
 	import {goto} from '$app/navigation'
+	import {useMachine} from '@xstate/svelte'
+	import {memoryGameMachine} from './memoryGameMachine'
 
 	export let data: PageData
-	$: ({board, cardSets, selectedCardSet} = data)
+	$: ({cardSets, selectedCardSet} = data)
 
-	let wrongGuesses = 0
+	const {state, send} = useMachine(memoryGameMachine, {
+		context: {board: data.board, wrongGuessesCount: 0},
+	})
 
-	const handleWrongGuess = () => (wrongGuesses += 1)
+	const handlePick = (index: number) => {
+		send({type: 'PICK', index})
+	}
+
 	const handleReset = async () => {
 		const url = new URL(window.location.href)
 		if (!url.searchParams.has('seed') && !url.searchParams.has('mode')) {
@@ -20,7 +29,7 @@
 			window.location.reload()
 		} else {
 			await goto(url, {noscroll: true})
-			wrongGuesses = 0
+			send('REPLAY')
 		}
 	}
 </script>
@@ -37,7 +46,7 @@
 					url.searchParams.set('cardSet', currentTarget.value)
 
 					await goto(url, {noscroll: true})
-					wrongGuesses = 0
+					send('REPLAY')
 				}}
 			>
 				{#each cardSets as cardSet}
@@ -47,10 +56,26 @@
 				{/each}
 			</select>
 		</label>
-		<div>Wrong guesses: <strong>{wrongGuesses}</strong></div>
+		<div class="flex gap-2">
+			Wrong guesses: <span class="relative grow">
+				{#if $state.value !== 'reverting'}
+					<strong
+						in:fly={{y: 16, duration: 500}}
+						out:fly={{y: -16, duration: 500}}
+						class="absolute">{$state.context.wrongGuessesCount}</strong
+					>
+				{/if}
+			</span>
+		</div>
 	</aside>
 
 	<div class="flex grow flex-col justify-center">
-		<Board {board} {handleWrongGuess} {handleReset} />
+		<Board
+			board={$state.context.board}
+			wrongGuessesCount={$state.context.wrongGuessesCount}
+			boardState={$state.value}
+			{handlePick}
+			{handleReset}
+		/>
 	</div>
 </div>

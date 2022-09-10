@@ -39,11 +39,16 @@ const config = {
 		extend: {
 			animation: {
 				'fade-in-once': 'fadeIn 1s cubic-bezier(0, 0, 0.2, 1)',
+				'fade-out-once': 'fadeOut 1s cubic-bezier(0, 0, 0.2, 1)',
 			},
 			keyframes: {
 				fadeIn: {
 					'0%': {opacity: '0', transform: 'translateY(25%)'},
 					'100%': {opacity: '1', transform: 'translateY(0)'},
+				},
+				fadeOut: {
+					'0%': {opacity: '1', transform: 'translateY(0)'},
+					'100%': {opacity: '0', transform: 'translateY(-25%)'},
 				},
 			},
 			backgroundImage: {
