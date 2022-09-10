@@ -69,6 +69,7 @@
 			{face}
 			revealed={state !== 'hidden'}
 			handleClick={() => handleCardClick(index)}
+			shaking={reverting && state === 'selected'}
 		/>
 	{/each}
 </section>
