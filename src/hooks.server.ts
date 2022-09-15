@@ -5,7 +5,7 @@ import {PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY} from '$env/static/public'
 import {getCookieValue} from '$lib/getCookieValue'
 import {IdeasRepo} from '$lib/repos/ideas'
 import {UserRepo} from '$lib/repos/user'
-import {isTheme, type Theme} from '../types'
+import {isTheme, type Theme} from './types'
 
 const getThemeFromCookie = (cookie: string | null): Theme => {
 	const theme = getCookieValue(cookie, 'theme')

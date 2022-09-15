@@ -88,4 +88,8 @@ declare namespace App {
 	interface PrivateEnv extends Record<string, string> {}
 
 	interface PublicEnv extends Record<string, string> {}
+
+	interface PageError {
+		message: string
+	}
 }

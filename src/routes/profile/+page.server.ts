@@ -1,6 +1,6 @@
-import {error, redirect} from '@sveltejs/kit'
+import {invalid, redirect} from '@sveltejs/kit'
 
-import type {PageServerLoad, Action} from './$types'
+import type {PageServerLoad, Actions} from './$types'
 
 export const load: PageServerLoad = async ({locals: {ideasRepo, user}}) => {
 	if (!user) {
@@ -22,21 +22,30 @@ export const load: PageServerLoad = async ({locals: {ideasRepo, user}}) => {
 	}
 }
 
-export const POST: Action = async ({request, locals: {userRepo, user}}) => {
-	if (!user) {
-		throw error(401)
-	}
+export const actions: Actions = {
+	default: async ({request, locals: {userRepo, user}}) => {
+		if (!user) {
+			return invalid(401, {
+				error:
+					'You must be logged in to change your display name! To HAVE a display name even.',
+			})
+		}
 
-	const formData = await request.formData()
-	const displayName = formData.get('display_name')
+		const formData = await request.formData()
+		const displayName = formData.get('display_name')
 
-	if (!displayName || typeof displayName !== 'string') {
-		return {errors: {displayName: 'You need to specify a display name'}}
-	}
+		if (!displayName || typeof displayName !== 'string') {
+			return invalid(400, {error: 'You need to specify a display name'})
+		}
 
-	const updatedUser = await userRepo.updateDisplayName(user.id, displayName)
+		const updatedUser = await userRepo.updateDisplayName(user.id, displayName)
 
-	if (!updatedUser) {
-		throw error(400, `Could not update display name to ${displayName}`)
-	}
+		if (!updatedUser) {
+			return invalid(400, {
+				error: `Could not update display name to ${displayName}... Maybe it's taken?`,
+			})
+		}
+
+		return updatedUser
+	},
 }

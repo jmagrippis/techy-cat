@@ -2,7 +2,7 @@
 	import {onMount} from 'svelte'
 	import lottie, {type AnimationItem} from 'lottie-web'
 
-	import {enhanceForm} from '$lib/actions/enhanceForm'
+	import {enhance} from '$app/forms'
 	import EmptyStar from '$lib/icons/empty-star.svg'
 	import {user} from '$lib/stores/user'
 	import animationData from './star.json'
@@ -49,26 +49,29 @@
 			<form
 				class="relative"
 				method="POST"
-				action={starred ? '/ideas?_method=DELETE' : '/ideas'}
-				use:enhanceForm={{
-					pending() {
-						state = 'starring'
-						starred = !starred
+				action={`/ideas?/${starred ? 'unstar' : 'star'}`}
+				use:enhance={() => {
+					state = 'starring'
+					starred = !starred
 
-						starAnimation.setDirection(starred ? 1 : -1)
-						starAnimation.goToAndPlay(starred ? 0 : 20, true)
-					},
-					result() {
-						state = 'idle'
-					},
-					error() {
-						state = new Error(
-							`there was a problem ${
-								starred ? 'starring' : 'unstarring'
-							} this idea...`
-						)
-						starred = !starred
-					},
+					starAnimation.setDirection(starred ? 1 : -1)
+					starAnimation.goToAndPlay(starred ? 0 : 20, true)
+
+					return ({result}) => {
+						if (result.type === 'success') {
+							state = 'idle'
+						} else {
+							state = new Error(
+								`there was a problem ${
+									starred ? 'starring' : 'unstarring'
+								} this idea...`
+							)
+							starred = !starred
+
+							const lastFrame = starAnimation.totalFrames - 1
+							starAnimation.goToAndStop(starred ? lastFrame : 0, true)
+						}
+					}
 				}}
 			>
 				<input type="hidden" name="id" value={id} />

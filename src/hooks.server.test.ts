@@ -1,7 +1,7 @@
 import type {RequestEvent} from '@sveltejs/kit'
 import {describe, it, expect, vi} from 'vitest'
 
-import {handle} from '.'
+import {handle} from './hooks.server'
 
 vi.mock('$lib/firebase/admin', () => ({
 	getIdTokenFromSessionCookie: vi.fn(() => Promise.resolve('mock-id-token')),
