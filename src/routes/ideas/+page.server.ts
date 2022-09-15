@@ -1,6 +1,6 @@
-import {error} from '@sveltejs/kit'
+import {error, invalid} from '@sveltejs/kit'
 
-import type {PageServerLoad, Action} from './$types'
+import type {PageServerLoad, Actions} from './$types'
 
 export const load: PageServerLoad = async ({locals: {ideasRepo}, url}) => {
 	const limit = parseInt(url.searchParams.get('limit') || '50')
@@ -15,42 +15,43 @@ export const load: PageServerLoad = async ({locals: {ideasRepo}, url}) => {
 	}
 }
 
-export const POST: Action = async ({request, locals: {ideasRepo, user}}) => {
-	if (!user) {
-		throw error(401)
-	}
-
-	const id = (await request.formData()).get('id')
-
-	if (typeof id !== 'string') {
-		return {
-			errors: {id: 'Idea `id` must be provided'},
+export const actions: Actions = {
+	star: async ({request, locals: {ideasRepo, user}}) => {
+		if (!user) {
+			return invalid(401, {error: 'You must be logged in to star ideas'})
 		}
-	}
 
-	try {
-		await ideasRepo.starIdea(id, user.id)
-	} catch {
-		throw error(400, `Could not star ide ${id}`)
-	}
-}
+		const id = (await request.formData()).get('id')
 
-export const DELETE: Action = async ({request, locals: {ideasRepo, user}}) => {
-	if (!user) {
-		throw error(401)
-	}
-
-	const id = (await request.formData()).get('id')
-
-	if (typeof id !== 'string') {
-		return {
-			errors: {id: 'Idea `id` must be provided'},
+		if (typeof id !== 'string') {
+			return invalid(400, {error: 'Idea `id` must be provided'})
 		}
-	}
 
-	try {
-		await ideasRepo.unstarIdea(id, user.id)
-	} catch {
-		throw error(400, `Could not star ide ${id}`)
-	}
+		try {
+			await ideasRepo.starIdea(id, user.id)
+
+			return {id, starred: true}
+		} catch {
+			return invalid(400, {error: `Could not star idea ${id}`})
+		}
+	},
+	unstar: async ({request, locals: {ideasRepo, user}}) => {
+		if (!user) {
+			return invalid(401, {error: 'You must be logged in to unstar ideas'})
+		}
+
+		const id = (await request.formData()).get('id')
+
+		if (typeof id !== 'string') {
+			return invalid(400, {error: 'Idea `id` must be provided'})
+		}
+
+		try {
+			await ideasRepo.unstarIdea(id, user.id)
+
+			return {id, starred: false}
+		} catch {
+			return invalid(400, {error: `Could not unstar idea ${id}`})
+		}
+	},
 }

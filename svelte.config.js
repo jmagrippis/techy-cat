@@ -9,10 +9,6 @@ const config = {
 
 	kit: {
 		adapter: adapter({edge: false}),
-
-		methodOverride: {
-			allowed: ['PUT', 'PATCH', 'DELETE'],
-		},
 	},
 }
 

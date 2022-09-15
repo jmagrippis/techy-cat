@@ -1,24 +1,27 @@
 <script lang="ts">
-	import {enhanceForm} from '$lib/actions/enhanceForm'
+	import {enhance} from '$app/forms'
 	import PageHeading from '$lib/components/PageHeading.svelte'
-	import {user} from '$lib/stores/user'
+	import {isUser, user} from '$lib/stores/user'
 	import IdeaSnippetCard from '$lib/components/IdeaSnippetCard.svelte'
 	import type {PageData} from './$types'
+	import {goto} from '$app/navigation'
 
 	export let data: PageData
 	$: ({starredIdeas} = data)
 
-	let updatedName: string = $user?.displayName || ''
+	$: displayName = $user?.displayName || ''
 
-	const handleUpdateDisplayName = async ({response}: {response: Response}) => {
+	const handleLogout: svelte.JSX.EventHandler<
+		Event,
+		HTMLFormElement
+	> = async () => {
+		const response = await fetch('/auth/session', {
+			method: 'DELETE',
+		})
 		if (response.ok) {
-			const json = await response.json()
-
-			$user = json.user
+			await goto('/login')
+			$user = null
 		}
-	}
-	const handleLogout = async () => {
-		$user = null
 	}
 </script>
 
@@ -31,7 +34,12 @@
 			class="mb-2 grid grid-cols-12 items-center gap-2"
 			method="POST"
 			action="profile"
-			use:enhanceForm={{result: handleUpdateDisplayName}}
+			use:enhance={() =>
+				({result}) => {
+					if (result.type === 'success' && isUser(result.data)) {
+						$user = result.data
+					}
+				}}
 		>
 			<label class="col-span-12 lg:col-span-5" for="display_name">
 				You may update your <strong>display name</strong>:
@@ -40,7 +48,7 @@
 				class="col-span-7 rounded p-2 shadow sm:col-span-6 lg:col-span-4"
 				id="display_name"
 				name="display_name"
-				bind:value={updatedName}
+				value={displayName}
 				placeholder="display name"
 			/>
 			<button
@@ -51,8 +59,13 @@
 
 		<form
 			method="POST"
-			action="auth/session?_method=DELETE"
-			use:enhanceForm={{result: handleLogout}}
+			on:submit|preventDefault={handleLogout}
+			use:enhance={() =>
+				({result}) => {
+					if (result.type === 'success') {
+						$user = null
+					}
+				}}
 		>
 			<p>
 				You may also <button class="underline decoration-primary-600"

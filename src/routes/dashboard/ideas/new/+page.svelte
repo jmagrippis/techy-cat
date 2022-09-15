@@ -1,16 +1,9 @@
 <script lang="ts">
+	import {enhance} from '$app/forms'
 	import {goto} from '$app/navigation'
 
-	import {enhanceForm} from '$lib/actions/enhanceForm'
-
 	import BigButton from '$lib/components/buttons/BigButton.svelte'
-
 	import PageHeading from '$lib/components/PageHeading.svelte'
-
-	let emoji: string
-	let name: string
-	let slug: string
-	let description: string
 
 	let state: 'idle' | 'creating' | 'success' | Error = 'idle'
 </script>
@@ -21,49 +14,46 @@
 	method="POST"
 	action="/dashboard/ideas/new"
 	class="text-2x mb-6 flex w-full flex-col gap-4"
-	use:enhanceForm={{
-		pending() {
-			state = 'creating'
-		},
-		error({error}) {
-			state = error ?? new Error('Something went wrong creating idea!')
-		},
-		async result({response}) {
-			if (!response.ok) {
-				state = new Error('Something went wrong creating idea!')
-				return
-			}
+	use:enhance={() => {
+		state = 'creating'
 
-			state = 'success'
-			goto('/dashboard/ideas')
-		},
+		return ({result}) => {
+			switch (result.type) {
+				case 'error':
+					state = new Error(
+						result.error ?? 'Something went wrong creating idea!'
+					)
+					break
+				case 'invalid':
+					state = new Error('Something went wrong creating idea!')
+					break
+				case 'redirect':
+					goto(result.location)
+					break
+				case 'success':
+				default:
+					state = 'success'
+					goto('/dashboard/ideas')
+					break
+			}
+		}
 	}}
 >
 	<label>
 		<strong>Emoji</strong>
-		<input
-			class="block w-full rounded p-4"
-			name="emoji"
-			bind:value={emoji}
-			maxlength="4"
-		/>
+		<input class="block w-full rounded p-4" name="emoji" maxlength="4" />
 	</label>
 	<label>
 		<strong>Name</strong>
-		<input class="block w-full rounded p-4" name="name" bind:value={name} />
+		<input class="block w-full rounded p-4" name="name" />
 	</label>
 	<label>
 		<strong>Slug</strong>
-		<input class="block w-full rounded p-4" name="slug" bind:value={slug} />
+		<input class="block w-full rounded p-4" name="slug" />
 	</label>
 	<label>
 		<strong>Description</strong>
-		<textarea
-			class="block w-full rounded p-4"
-			name="description"
-			bind:value={description}
-			rows="8"
-		/>
+		<textarea class="block w-full rounded p-4" name="description" rows="8" />
 	</label>
 
 	<BigButton disabled={state === 'creating'}>Publish!</BigButton>

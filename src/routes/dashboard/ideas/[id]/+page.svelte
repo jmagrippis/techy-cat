@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {enhanceForm} from '$lib/actions/enhanceForm'
+	import {enhance} from '$app/forms'
 	import BigButton from '$lib/components/buttons/BigButton.svelte'
 	import PageHeading from '$lib/components/PageHeading.svelte'
 	import type {PageData} from './$types'
@@ -14,18 +14,26 @@
 
 <form
 	method="POST"
-	action={`/dashboard/ideas/${idea.id}`}
 	class="text-2x mb-6 flex w-full flex-col gap-4"
-	use:enhanceForm={{
-		pending() {
-			state = 'updating'
-		},
-		error({error}) {
-			state = error ?? new Error('Something went wrong updating idea!')
-		},
-		result() {
-			state = 'success'
-		},
+	use:enhance={() => {
+		state = 'updating'
+
+		return ({result}) => {
+			switch (result.type) {
+				case 'error':
+					state = new Error(
+						result.error ?? 'Something went wrong updating idea!'
+					)
+					break
+				case 'invalid':
+					state = new Error('Something went wrong updating idea!')
+					break
+				case 'success':
+				default:
+					state = 'success'
+					break
+			}
+		}
 	}}
 >
 	<label>
@@ -33,32 +41,24 @@
 		<input
 			class="block w-full rounded p-4"
 			name="emoji"
-			bind:value={idea.emoji}
+			value={idea.emoji}
 			maxlength="4"
 		/>
 	</label>
 	<label>
 		<strong>Name</strong>
-		<input
-			class="block w-full rounded p-4"
-			name="name"
-			bind:value={idea.name}
-		/>
+		<input class="block w-full rounded p-4" name="name" value={idea.name} />
 	</label>
 	<label>
 		<strong>Slug</strong>
-		<input
-			class="block w-full rounded p-4"
-			name="slug"
-			bind:value={idea.slug}
-		/>
+		<input class="block w-full rounded p-4" name="slug" value={idea.slug} />
 	</label>
 	<label>
 		<strong>Description</strong>
 		<textarea
 			class="block w-full rounded p-4"
 			name="description"
-			bind:value={idea.description}
+			value={idea.description}
 			rows="8"
 		/>
 	</label>

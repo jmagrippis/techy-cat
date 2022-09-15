@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type {Theme} from '../../../types'
+	import {enhance} from '$app/forms'
 	import {browser} from '$app/environment'
 	import {theme} from '$lib/stores/theme'
 	import YouTubeIcon from '$lib/icons/youtube.svg'
 	import ThemeToggleIcon from './ThemeToggleIcon.svelte'
 	import UserIcon from './UserIcon.svelte'
-	import {enhanceForm} from '$lib/actions/enhanceForm'
 
 	let previousY: number
 	let currentY: number
@@ -62,10 +62,8 @@
 			class="flex"
 			method="POST"
 			action="/theme"
-			use:enhanceForm={{
-				pending() {
-					$theme = nextTheme
-				},
+			use:enhance={() => {
+				$theme = nextTheme
 			}}
 		>
 			<input type="hidden" name="theme" value={nextTheme} />

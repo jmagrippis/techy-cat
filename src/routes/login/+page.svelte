@@ -17,10 +17,9 @@
 	let email: string | null = null
 	let state: FormState = 'idle'
 
-	const handleSubmit: svelte.JSX.EventHandler<
-		SubmitEvent,
-		HTMLFormElement
-	> = async ({currentTarget}) => {
+	const handleSubmit: svelte.JSX.EventHandler<Event, HTMLFormElement> = async ({
+		currentTarget,
+	}) => {
 		const formEmail = new FormData(currentTarget).get('email')
 		if (!formEmail || typeof formEmail !== 'string') {
 			state = new Error('looks like you forgot to fill in your email?')
