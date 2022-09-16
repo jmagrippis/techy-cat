@@ -89,6 +89,27 @@
 			</label>
 		</form>
 		<div class="flex gap-2">
+			<div>
+				{#if data.mode === 'daily'}
+					Mode: <strong class="uppercase">Daily</strong>
+					{#if data.seed}
+						<em
+							>{new Date(data.seed).toLocaleString(undefined, {
+								year: 'numeric',
+								month: 'long',
+								day: 'numeric',
+							})}</em
+						>
+					{/if}
+				{:else}
+					Mode: <strong class="uppercase">Practice</strong>
+					{#if data.seed}
+						<em>{data.seed}</em>
+					{/if}
+				{/if}
+			</div>
+		</div>
+		<div class="flex gap-2">
 			<div>Wrong guesses:</div>
 			<div class="relative grow">
 				{#key wrongGuesses}
