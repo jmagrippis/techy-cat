@@ -30,10 +30,13 @@ const getEmojis = (cardSet: string) =>
 		: emojiCollections[cardSet] || emojiCollections.default
 
 export const load: PageServerLoad = ({url, locals}) => {
-	const mode = url.searchParams.get('mode')
+	const mode = url.searchParams.get('mode') || 'daily'
+	const seedFromUrl = url.searchParams.get('seed')
 	const seed =
-		url.searchParams.get('seed') || mode !== 'practice'
+		mode === 'daily'
 			? getCurrentDateSeed()
+			: mode === 'practice' && typeof seedFromUrl === 'string'
+			? seedFromUrl
 			: undefined
 	const cardSet = url.searchParams.get('cardSet') || 'default'
 
@@ -44,6 +47,8 @@ export const load: PageServerLoad = ({url, locals}) => {
 
 	return {
 		board,
+		mode,
+		seed,
 		selectedCardSet: cardSet,
 		cardSets: [...Object.keys(emojiCollections), 'random'],
 		sfxOn: locals.sfxOn,

@@ -104,9 +104,19 @@
 	<div
 		class="fixed inset-0 z-10 flex flex-col justify-center bg-surface-2/80 text-center text-4xl"
 	>
-		A winner is YOU! <button
-			class="underline decoration-primary-600"
-			on:click={handleReset}>Play again?</button
+		<div>A winner is YOU!</div>
+		{#if wrongGuesses === 0}
+			<div>You went PERFECT!!! 🤯</div>
+		{:else}
+			<div class="text-2xl">
+				You needed {wrongGuesses > 1
+					? `${wrongGuesses} wrong guesses`
+					: 'a single wrong guess'}
+				.
+			</div>
+		{/if}
+		<button class="underline decoration-primary-600" on:click={handleReset}
+			>Play again?</button
 		>
 	</div>
 {/if}
