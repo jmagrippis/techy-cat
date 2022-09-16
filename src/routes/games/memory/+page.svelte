@@ -13,7 +13,7 @@
 
 	const handleReset = async () => {
 		const url = new URL(window.location.href)
-		if (!url.searchParams.has('seed') && !url.searchParams.has('mode')) {
+		if (!url.searchParams.has('mode')) {
 			url.searchParams.set('mode', 'practice')
 		}
 
