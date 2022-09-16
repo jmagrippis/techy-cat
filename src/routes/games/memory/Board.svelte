@@ -27,6 +27,7 @@
 
 	const playSfxIfEnabled = (audio: HTMLAudioElement) => {
 		if (sfxOn) {
+			audio.currentTime = 0
 			audio.play()
 		}
 	}
@@ -81,9 +82,11 @@
 		})
 
 		cardPickAudio = new Audio(cardPickUrl)
-		cardPickAudio.volume = 0.5
+		cardPickAudio.volume = 0.3
 		mismatchAudio = new Audio(mismatchUrl)
+		mismatchAudio.volume = 0.4
 		matchAudio = new Audio(matchUrl)
+		matchAudio.volume = 0.7
 		fanfareAudio = new Audio(fanfareUrl)
 	})
 </script>
