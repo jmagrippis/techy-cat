@@ -5,18 +5,36 @@
 	import Card from './Card.svelte'
 	import type {Card as CardType} from './types'
 	import animationData from './confetti.json'
+	import cardPickUrl from './sfx/card-pick.aac'
+	import mismatchUrl from './sfx/mismatch.aac'
+	import matchUrl from './sfx/match.aac'
+	import fanfareUrl from './sfx/fanfare.aac'
 
 	export let board: CardType[]
 	export let wrongGuesses: number
 	export let handleReset: () => void
 	export let reverting: boolean
+	export let sfxOn: boolean
 
 	const deriveBoardSolved = (givenBoard: CardType[]) =>
 		givenBoard.every(({state}) => state === 'revealed')
 	$: isBoardSolved = deriveBoardSolved(board)
 
+	let cardPickAudio: HTMLAudioElement
+	let mismatchAudio: HTMLAudioElement
+	let matchAudio: HTMLAudioElement
+	let fanfareAudio: HTMLAudioElement
+
+	const playSfxIfEnabled = (audio: HTMLAudioElement) => {
+		if (sfxOn) {
+			audio.play()
+		}
+	}
+
 	const handleCardClick = (index: number) => {
 		if (reverting) return
+
+		playSfxIfEnabled(cardPickAudio)
 
 		const previouslySelectedCardIndex = board.findIndex(
 			(card) => card.state === 'selected'
@@ -30,10 +48,14 @@
 
 				if (deriveBoardSolved(board)) {
 					confettiAnimation.goToAndPlay(0, true)
+					playSfxIfEnabled(fanfareAudio)
+				} else {
+					playSfxIfEnabled(matchAudio)
 				}
 			} else {
 				reverting = true
 				wrongGuesses += 1
+				playSfxIfEnabled(mismatchAudio)
 
 				setTimeout(() => {
 					board[previouslySelectedCardIndex].state = 'hidden'
@@ -57,6 +79,12 @@
 			autoplay: false,
 			animationData,
 		})
+
+		cardPickAudio = new Audio(cardPickUrl)
+		cardPickAudio.volume = 0.5
+		mismatchAudio = new Audio(mismatchUrl)
+		matchAudio = new Audio(matchUrl)
+		fanfareAudio = new Audio(fanfareUrl)
 	})
 </script>
 

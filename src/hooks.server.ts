@@ -12,10 +12,16 @@ const getThemeFromCookie = (cookie: string | null): Theme => {
 	return isTheme(theme) ? theme : 'auto'
 }
 
+const getSfxOnFromCookie = (cookie: string | null): boolean => {
+	const sfxOn = getCookieValue(cookie, 'sfxOn')
+	return sfxOn === 'false' ? false : true
+}
+
 export const handle: Handle = async ({event, resolve}) => {
 	const cookie = event.request.headers.get('cookie')
 
 	event.locals.theme = getThemeFromCookie(cookie)
+	event.locals.sfxOn = getSfxOnFromCookie(cookie)
 
 	const supabaseClient = createClient(
 		PUBLIC_SUPABASE_URL,

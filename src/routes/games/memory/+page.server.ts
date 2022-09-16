@@ -29,7 +29,7 @@ const getEmojis = (cardSet: string) =>
 		? getRandomArrayItem(Object.values(emojiCollections))
 		: emojiCollections[cardSet] || emojiCollections.default
 
-export const load: PageServerLoad = ({url}) => {
+export const load: PageServerLoad = ({url, locals}) => {
 	const mode = url.searchParams.get('mode')
 	const seed =
 		url.searchParams.get('seed') || mode !== 'practice'
@@ -46,6 +46,7 @@ export const load: PageServerLoad = ({url}) => {
 		board,
 		selectedCardSet: cardSet,
 		cardSets: [...Object.keys(emojiCollections), 'random'],
+		sfxOn: locals.sfxOn,
 		meta: {
 			title: 'Memory Game',
 			description: 'Play the classic memory game, but with emojis 🤯',

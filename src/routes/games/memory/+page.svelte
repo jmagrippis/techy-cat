@@ -24,6 +24,19 @@
 			wrongGuesses = 0
 		}
 	}
+
+	const handleSfxToggle: svelte.JSX.EventHandler<
+		Event,
+		HTMLInputElement
+	> = async ({currentTarget}) => {
+		if (!currentTarget.form) return
+
+		const data = new FormData(currentTarget.form)
+		await fetch('/sfxOn', {
+			method: 'POST',
+			body: data,
+		})
+	}
 </script>
 
 <div class="container flex w-full grow flex-col px-2">
@@ -48,6 +61,33 @@
 				{/each}
 			</select>
 		</label>
+		<form class="flex">
+			<label class="flex cursor-pointer items-center gap-4">
+				<span>SFXs</span>
+				<div class="relative h-full w-6">
+					{#if data.sfxOn}
+						<span
+							out:fly|local={{y: -12, duration: 500}}
+							in:fly|local={{y: 12, duration: 500}}
+							class="absolute">📢</span
+						>
+					{:else}
+						<span
+							out:fly|local={{y: -12, duration: 500}}
+							in:fly|local={{y: 12, duration: 500}}
+							class="absolute">🔇</span
+						>
+					{/if}
+				</div>
+				<input
+					class="rounded border-r-8 border-transparent py-2 px-3"
+					type="checkbox"
+					name="sfxOn"
+					bind:checked={data.sfxOn}
+					on:change|preventDefault={handleSfxToggle}
+				/>
+			</label>
+		</form>
 		<div class="flex gap-2">
 			<div>Wrong guesses:</div>
 			<div class="relative grow">
@@ -63,6 +103,12 @@
 	</aside>
 
 	<div class="flex grow flex-col justify-center">
-		<Board bind:board bind:wrongGuesses bind:reverting {handleReset} />
+		<Board
+			bind:board
+			bind:wrongGuesses
+			bind:reverting
+			{handleReset}
+			sfxOn={data.sfxOn}
+		/>
 	</div>
 </div>
