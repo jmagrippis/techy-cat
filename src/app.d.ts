@@ -77,6 +77,7 @@ declare namespace App {
 
 	interface Locals {
 		theme: Theme
+		sfxOn: boolean
 		ideasRepo: IdeasRepoInterface
 		userRepo: UserRepoInterface
 		user: User | null
