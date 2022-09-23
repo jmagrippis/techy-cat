@@ -19,6 +19,6 @@
 		{/each}
 	</ul>
 	<p class="text-center">
-		<BigLink href="/ideas" prefetch={true}>See more & star your faves!</BigLink>
+		<BigLink href="/ideas">See more & star your faves!</BigLink>
 	</p>
 </section>

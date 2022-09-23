@@ -90,7 +90,7 @@ declare namespace App {
 
 	interface PublicEnv extends Record<string, string> {}
 
-	interface PageError {
+	interface Error {
 		message: string
 	}
 }

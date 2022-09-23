@@ -37,9 +37,7 @@
 			>!
 		</p>
 		<p class="text-center">
-			<BigLink href="/ideas" prefetch={true}
-				>Check out the latest ideas!</BigLink
-			>
+			<BigLink href="/ideas">Check out the latest ideas!</BigLink>
 		</p>
 	</div>
 	<aside class="col-span-12 min-h-full lg:col-span-7">

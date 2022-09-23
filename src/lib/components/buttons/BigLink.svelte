@@ -1,11 +1,9 @@
 <script lang="ts">
 	export let href: string
-	export let prefetch: true | null = null
 </script>
 
 <a
 	{href}
-	sveltekit:prefetch={prefetch}
 	class="relative block rounded bg-gradient-to-br from-primary-400 to-primary-700 px-6 py-4 text-2xl font-thin text-white no-underline shadow shadow-shadow-1/10 transition-shadow hover:bg-gradient-to-tl hover:shadow-lg hover:shadow-shadow-1/20 active:top-[-1px] md:text-3xl"
 >
 	<slot />
