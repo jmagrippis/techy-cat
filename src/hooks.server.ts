@@ -35,7 +35,10 @@ export const handle: Handle = async ({event, resolve}) => {
 	event.locals.ideasRepo = ideasRepo
 	event.locals.userRepo = userRepo
 
-	event.locals.user = await userRepo.findAndRefreshIfNeeded(event.cookies)
+	event.locals.user = await userRepo.findAndRefreshIfNeeded(
+		event.cookies,
+		event.url.protocol.startsWith('https')
+	)
 
 	const response = await resolve(event)
 

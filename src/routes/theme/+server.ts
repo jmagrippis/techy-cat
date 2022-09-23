@@ -18,7 +18,11 @@ export const POST: RequestHandler = async ({request, cookies}) => {
 		)
 	}
 
-	cookies.set('theme', theme, {path: '/', maxAge: TEN_YEARS_IN_SECONDS})
+	cookies.set('theme', theme, {
+		path: '/',
+		maxAge: TEN_YEARS_IN_SECONDS,
+		secure: request.url.startsWith('https'),
+	})
 
 	return json(theme)
 }

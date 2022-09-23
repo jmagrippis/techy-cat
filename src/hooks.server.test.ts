@@ -14,6 +14,7 @@ describe('handle', () => {
 		const cookies = {get: vi.fn(() => null)}
 		const event = {
 			cookies,
+			url: new URL('https://techy.cat'),
 			locals: {},
 		} as unknown as RequestEvent
 
@@ -31,6 +32,7 @@ describe('handle', () => {
 
 		const eventA = {
 			cookies: cookiesA,
+			url: new URL('https://techy.cat'),
 			locals: {},
 		} as unknown as RequestEvent
 
@@ -44,6 +46,7 @@ describe('handle', () => {
 
 		const eventB = {
 			cookies: cookiesB,
+			url: new URL('https://techy.cat'),
 			locals: {},
 		} as unknown as RequestEvent
 
@@ -61,6 +64,7 @@ describe('handle', () => {
 
 		const event = {
 			cookies,
+			url: new URL('https://techy.cat'),
 			locals: {},
 		} as unknown as RequestEvent
 
