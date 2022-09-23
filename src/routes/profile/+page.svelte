@@ -19,8 +19,8 @@
 			method: 'DELETE',
 		})
 		if (response.ok) {
-			await goto('/login')
 			$user = null
+			await goto('/login')
 		}
 	}
 </script>
@@ -57,16 +57,7 @@
 			>
 		</form>
 
-		<form
-			method="POST"
-			on:submit|preventDefault={handleLogout}
-			use:enhance={() =>
-				({result}) => {
-					if (result.type === 'success') {
-						$user = null
-					}
-				}}
-		>
+		<form method="POST" on:submit|preventDefault={handleLogout}>
 			<p>
 				You may also <button class="underline decoration-primary-600"
 					>logout</button
