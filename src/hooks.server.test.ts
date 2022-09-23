@@ -9,15 +9,11 @@ vi.mock('$lib/firebase/admin', () => ({
 
 describe('handle', () => {
 	it('puts `auto` as the theme value in the locals when there are no cookies in the request', async () => {
-		const response = {
-			headers: {get: vi.fn()},
-		}
+		const response = {}
 		const resolve = vi.fn().mockResolvedValue(response)
-		const headers = new Headers({})
+		const cookies = {get: vi.fn(() => null)}
 		const event = {
-			request: {
-				headers,
-			},
+			cookies,
 			locals: {},
 		} as unknown as RequestEvent
 
@@ -27,16 +23,14 @@ describe('handle', () => {
 	})
 
 	it('returns the value of the theme cookie', async () => {
-		const response = {
-			headers: {get: vi.fn()},
-		}
+		const response = {}
 		const resolve = vi.fn().mockResolvedValue(response)
-		const headersA = new Headers({cookie: 'theme=dark'})
+		const cookiesA = {
+			get: vi.fn((property) => (property === 'theme' ? 'dark' : null)),
+		}
 
 		const eventA = {
-			request: {
-				headers: headersA,
-			},
+			cookies: cookiesA,
 			locals: {},
 		} as unknown as RequestEvent
 
@@ -44,14 +38,12 @@ describe('handle', () => {
 
 		expect(eventA.locals.theme).toBe('dark')
 
-		const headersB = new Headers({
-			cookie: 'random=value; theme=light; answer=42',
-		})
+		const cookiesB = {
+			get: vi.fn((property) => (property === 'theme' ? 'light' : null)),
+		}
 
 		const eventB = {
-			request: {
-				headers: headersB,
-			},
+			cookies: cookiesB,
 			locals: {},
 		} as unknown as RequestEvent
 
@@ -60,35 +52,20 @@ describe('handle', () => {
 		expect(eventB.locals.theme).toBe('light')
 	})
 
-	it('returns `auto` as the theme value when there is no theme cookie in the request', async () => {
-		const response = {
-			headers: {get: vi.fn()},
-		}
+	it('returns `auto` as the theme value for invalid theme cookie values', async () => {
+		const response = {}
 		const resolve = vi.fn().mockResolvedValue(response)
-		const headersA = new Headers({cookie: ''})
+		const cookies = {
+			get: vi.fn((property) => (property === 'theme' ? 'peach' : null)),
+		}
 
-		const eventA = {
-			request: {
-				headers: headersA,
-			},
+		const event = {
+			cookies,
 			locals: {},
 		} as unknown as RequestEvent
 
-		await handle({event: eventA, resolve})
+		await handle({event, resolve})
 
-		expect(eventA.locals.theme).toBe('auto')
-
-		const headersB = new Headers({cookie: 'answer=42'})
-
-		const eventB = {
-			request: {
-				headers: headersB,
-			},
-			locals: {},
-		} as unknown as RequestEvent
-
-		await handle({event: eventB, resolve})
-
-		expect(eventA.locals.theme).toBe('auto')
+		expect(event.locals.theme).toBe('auto')
 	})
 })

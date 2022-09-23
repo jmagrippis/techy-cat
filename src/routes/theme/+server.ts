@@ -2,9 +2,10 @@ import {json} from '@sveltejs/kit'
 
 import type {RequestHandler} from './$types'
 import {isTheme} from '../../types'
+import {TEN_YEARS_IN_SECONDS} from '$lib/constants'
 
 // POST /theme
-export const POST: RequestHandler = async ({request}) => {
+export const POST: RequestHandler = async ({request, cookies}) => {
 	const formData = await request.formData()
 	const theme = formData.get('theme')
 
@@ -17,21 +18,14 @@ export const POST: RequestHandler = async ({request}) => {
 		)
 	}
 
-	return new Response(null, {
-		status: 200,
-		headers: new Headers({
-			'Set-Cookie': `theme=${theme}; SameSite=Strict; HttpOnly; Path=/`,
-		}),
-	})
+	cookies.set('theme', theme, {path: '/', maxAge: TEN_YEARS_IN_SECONDS})
+
+	return json(theme)
 }
 
-const expiredThemeCookie =
-	'theme= ; Max-Age=0; SameSite=Strict; HttpOnly; Path=/'
 // DELETE /theme
-export const DELETE: RequestHandler = async () =>
-	new Response(null, {
-		status: 204,
-		headers: new Headers({
-			'Set-Cookie': expiredThemeCookie,
-		}),
-	})
+export const DELETE: RequestHandler = async ({cookies}) => {
+	cookies.delete('theme', {path: '/'})
+
+	return new Response(null, {status: 204})
+}
