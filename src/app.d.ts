@@ -64,10 +64,7 @@ declare global {
 
 		interface UserRepoInterface {
 			findByAccessToken(accessToken: string): Promise<User | null>
-			refreshSession(
-				refreshToken: string,
-				cookies: Cookies
-			): Promise<User | null>
+			findAndRefreshIfNeeded(cookies: Cookies): Promise<User | null>
 			updateDisplayName(
 				id: string,
 				displayName: string

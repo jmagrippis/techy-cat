@@ -34,29 +34,8 @@ export const handle: Handle = async ({event, resolve}) => {
 	const ideasRepo = new IdeasRepo(supabaseClient)
 	event.locals.ideasRepo = ideasRepo
 	event.locals.userRepo = userRepo
-	const session = event.cookies.get('session')
-	const refreshSession = event.cookies.get('refreshSession')
 
-	if (!session) {
-		if (!refreshSession) {
-			event.locals.user = null
-		} else {
-			try {
-				const user = await userRepo.refreshSession(
-					refreshSession,
-					event.cookies
-				)
-
-				event.locals.user = user
-			} catch {
-				// I *think* I've fixed my bug with refreshing the session
-				// but this will keep the app operational if not 😄
-				event.locals.user = null
-			}
-		}
-	} else {
-		event.locals.user = await userRepo.findByAccessToken(session)
-	}
+	event.locals.user = await userRepo.findAndRefreshIfNeeded(event.cookies)
 
 	const response = await resolve(event)
 

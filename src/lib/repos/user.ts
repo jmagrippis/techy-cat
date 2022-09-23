@@ -11,6 +11,18 @@ export type DbUser = {
 	role: 'fan' | 'contributor'
 }
 
+export type JwtDecodedUser = {
+	aud: string
+	exp: number
+	sub: string
+	email: string
+	phone: string
+	app_metadata: {provider: string; providers: unknown[]}
+	user_metadata: Record<string, unknown>
+	role: string
+	session_id: string
+}
+
 export class UserRepo implements App.UserRepoInterface {
 	#client: SupabaseClient
 
@@ -58,15 +70,45 @@ export class UserRepo implements App.UserRepoInterface {
 		return {id: dbUser.id, displayName: dbUser.display_name, role: dbUser.role}
 	}
 
-	findByAccessToken = async (accessToken: string) => {
+	findByAccessToken = async (accessToken: string): Promise<App.User | null> => {
+		if (!accessToken) return null
+
 		this.#client.auth.setAuth(accessToken)
 
-		const decodedUser = jwtDecode(accessToken) as {sub: string}
+		const decodedUser = jwtDecode(accessToken) as JwtDecodedUser
 
 		return this.findById(decodedUser.sub)
 	}
 
-	refreshSession = async (refreshToken: string, cookies: Cookies) => {
+	findAndRefreshIfNeeded = async (
+		cookies: Cookies
+	): Promise<App.User | null> => {
+		const accessToken = cookies.get('session')
+
+		if (!accessToken) return null
+
+		this.#client.auth.setAuth(accessToken)
+
+		const decodedUser = jwtDecode(accessToken) as JwtDecodedUser
+
+		const sixDaysFromNow = new Date()
+		sixDaysFromNow.setDate(sixDaysFromNow.getDate() + 6)
+
+		const expiryDate = new Date(decodedUser.exp)
+
+		if (expiryDate < sixDaysFromNow) {
+			const user = this.refreshSession(cookies).catch()
+
+			if (user) return user
+		}
+
+		return this.findById(decodedUser.sub)
+	}
+
+	refreshSession = async (cookies: Cookies) => {
+		const refreshToken = cookies.get('refreshSession')
+		if (!refreshToken) return null
+
 		const {session} = await this.#client.auth.setSession(refreshToken)
 
 		if (session && session.user) {
@@ -85,6 +127,8 @@ export class UserRepo implements App.UserRepoInterface {
 
 			return user
 		} else {
+			cookies.delete('refreshSession', {path: '/'})
+
 			throw new Error('Invalid refresh token')
 		}
 	}
