@@ -8,7 +8,11 @@ export const POST: RequestHandler = async ({request, cookies}) => {
 	const formData = await request.formData()
 	const sfxOn = formData.get('sfxOn') ? 'true' : 'false'
 
-	cookies.set('sfxOn', sfxOn, {path: '/', maxAge: TEN_YEARS_IN_SECONDS})
+	cookies.set('sfxOn', sfxOn, {
+		path: '/',
+		maxAge: TEN_YEARS_IN_SECONDS,
+		secure: request.url.startsWith('https'),
+	})
 
 	return json({sfxOn})
 }
