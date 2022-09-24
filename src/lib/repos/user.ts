@@ -98,7 +98,9 @@ export class UserRepo implements App.UserRepoInterface {
 		const expiryDate = new Date(decodedUser.exp * 1_000)
 
 		if (expiryDate < sixDaysFromNow) {
-			const user = this.refreshSession(cookies, secureCookies).catch(() => null)
+			const user = await this.refreshSession(cookies, secureCookies).catch(
+				() => null
+			)
 
 			if (user) return user
 		}
