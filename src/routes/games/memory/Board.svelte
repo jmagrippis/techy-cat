@@ -13,6 +13,7 @@
 	export let board: CardType[]
 	export let wrongGuesses: number
 	export let handleReset: () => void
+	export let handleBoardSolved: () => void
 	export let reverting: boolean
 	export let sfxOn: boolean
 
@@ -50,6 +51,7 @@
 				if (deriveBoardSolved(board)) {
 					confettiAnimation.goToAndPlay(0, true)
 					playSfxIfEnabled(fanfareAudio)
+					handleBoardSolved()
 				} else {
 					playSfxIfEnabled(matchAudio)
 				}

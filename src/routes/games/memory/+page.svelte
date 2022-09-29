@@ -4,24 +4,37 @@
 	import Board from './Board.svelte'
 	import type {PageData} from './$types'
 	import {goto} from '$app/navigation'
+	import type {ActionResult} from '@sveltejs/kit'
 
 	export let data: PageData
 	$: ({board, cardSets, selectedCardSet} = data)
 
 	let wrongGuesses = 0
 	let reverting = false
+	let updatedHighScore: number | null = null
+
+	$: currentHighScore = updatedHighScore ?? data.highScore
 
 	const handleReset = async () => {
-		const url = new URL(window.location.href)
-		if (!url.searchParams.has('mode')) {
-			url.searchParams.set('mode', 'practice')
-		}
+		window.location.reload()
+	}
 
-		if (url.href === window.location.href) {
-			window.location.reload()
-		} else {
-			await goto(url, {noscroll: true})
-			wrongGuesses = 0
+	let persistScoreForm: HTMLFormElement
+
+	const handleBoardSolved = async () => {
+		const formData = new FormData(persistScoreForm)
+
+		const response = await fetch(persistScoreForm.action, {
+			method: 'POST',
+			body: formData,
+		})
+		const result: ActionResult = await response.json()
+
+		if (
+			result.type === 'success' &&
+			typeof result.data?.highScore === 'number'
+		) {
+			updatedHighScore = result.data?.highScore
 		}
 	}
 
@@ -88,6 +101,10 @@
 				/>
 			</label>
 		</form>
+		<form method="POST" action="?/persistScore" bind:this={persistScoreForm}>
+			<input type="hidden" name="seed" value={data.seed} />
+			<input type="hidden" name="wrongGuesses" value={wrongGuesses} />
+		</form>
 		<div class="flex gap-2">
 			<div>
 				{#if data.mode === 'daily'}
@@ -121,6 +138,20 @@
 				{/key}
 			</div>
 		</div>
+		{#if currentHighScore}
+			<div class="flex gap-2">
+				<div>Your best score today:</div>
+				<div class="relative grow">
+					{#key currentHighScore}
+						<strong
+							out:fly|local={{y: -12, duration: 500}}
+							in:fly|local={{y: 12, duration: 500}}
+							class="absolute">{currentHighScore}</strong
+						>
+					{/key}
+				</div>
+			</div>
+		{/if}
 	</aside>
 
 	<div class="flex grow flex-col justify-center">
@@ -129,7 +160,18 @@
 			bind:wrongGuesses
 			bind:reverting
 			{handleReset}
+			{handleBoardSolved}
 			sfxOn={data.sfxOn}
 		/>
 	</div>
+	{#if data.stats}
+		<div class="text-xl">
+			<p>
+				You’ve completed {data.stats.totalDailies === 1
+					? 'your first daily'
+					: `${data.stats.totalDailies} dailies total`}!
+			</p>
+			<p>Your current daily streak is {data.stats.streak}!</p>
+		</div>
+	{/if}
 </div>
