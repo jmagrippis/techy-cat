@@ -1,9 +1,13 @@
 import seedrandom from 'seedrandom'
 
-import type {PageServerLoad} from './$types'
+import type {PageServerLoad, Actions} from './$types'
 import type {Card} from './types'
 import {shuffleArray} from '$lib/shuffleArray'
 import {getRandomArrayItem} from '$lib/getRandomArrayItem'
+import {invalid} from '@sveltejs/kit'
+import {ONE_DAY_IN_SECONDS, TEN_YEARS_IN_SECONDS} from '$lib/constants'
+import {getHighScoreForSeed} from './getHighScoreForSeed'
+import {getStats, type Stats} from './getStatsCookie'
 
 const getInitialBoard = (
 	emojis: string[],
@@ -29,7 +33,7 @@ const getEmojis = (cardSet: string) =>
 		? getRandomArrayItem(Object.values(emojiCollections))
 		: emojiCollections[cardSet] || emojiCollections.default
 
-export const load: PageServerLoad = ({url, locals}) => {
+export const load: PageServerLoad = ({url, cookies, locals}) => {
 	const mode = url.searchParams.get('mode') || 'daily'
 	const seedFromUrl = url.searchParams.get('seed')
 	const seed =
@@ -39,6 +43,8 @@ export const load: PageServerLoad = ({url, locals}) => {
 			? seedFromUrl
 			: undefined
 	const cardSet = url.searchParams.get('cardSet') || 'default'
+	const highScore = getHighScoreForSeed(cookies, seed)
+	const stats = getStats(cookies)
 
 	const rng = seedrandom(seed)
 
@@ -49,6 +55,8 @@ export const load: PageServerLoad = ({url, locals}) => {
 		board,
 		mode,
 		seed,
+		highScore,
+		stats,
 		selectedCardSet: cardSet,
 		cardSets: [...Object.keys(emojiCollections), 'random'],
 		sfxOn: locals.sfxOn,
@@ -61,4 +69,79 @@ export const load: PageServerLoad = ({url, locals}) => {
 			},
 		},
 	}
+}
+
+export const actions: Actions = {
+	persistScore: async ({request, cookies}) => {
+		const formData = await request.formData()
+		const wrongGuesses = formData.get('wrongGuesses')
+		const seed = formData.get('seed')
+
+		if (typeof wrongGuesses !== 'string') {
+			return invalid(400, {wrongGuesses, missing: true})
+		}
+
+		if (typeof seed !== 'string') {
+			return invalid(400, {seed, missing: true})
+		}
+
+		const currentHighScore = getHighScoreForSeed(cookies, seed)
+
+		const wrongGuessesCount = parseInt(wrongGuesses)
+
+		const currentDateSeed = getCurrentDateSeed()
+
+		const statsCookie = getStats(cookies)
+
+		if (!statsCookie) {
+			const nextStatsCookie = {
+				lastPlayed: currentDateSeed,
+				streak: 1,
+				totalDailies: 1,
+			}
+
+			cookies.set('stats', JSON.stringify(nextStatsCookie), {
+				path: '/games/memory',
+				maxAge: TEN_YEARS_IN_SECONDS,
+				secure: request.url.startsWith('https'),
+			})
+		} else if (statsCookie.lastPlayed !== currentDateSeed) {
+			const nextDateForStreak = new Date(statsCookie.lastPlayed)
+			nextDateForStreak.setDate(nextDateForStreak.getDate() + 1)
+			const seedForNextDateForStreak = nextDateForStreak
+				.toISOString()
+				.slice(0, 10)
+
+			const streak =
+				seedForNextDateForStreak === currentDateSeed
+					? statsCookie.streak + 1
+					: 1
+
+			const nextStatsCookie: Stats = {
+				streak,
+				lastPlayed: currentDateSeed,
+				totalDailies: statsCookie.totalDailies + 1,
+			}
+
+			cookies.set('stats', JSON.stringify(nextStatsCookie), {
+				path: '/games/memory',
+				maxAge: TEN_YEARS_IN_SECONDS,
+				secure: request.url.startsWith('https'),
+			})
+		}
+
+		if (!currentHighScore || wrongGuessesCount < currentHighScore) {
+			const highScoreCookie = `${seed}|${wrongGuessesCount}`
+
+			cookies.set('highScore', highScoreCookie, {
+				path: '/games/memory',
+				maxAge: ONE_DAY_IN_SECONDS,
+				secure: request.url.startsWith('https'),
+			})
+
+			return {success: true, highScore: wrongGuessesCount}
+		}
+
+		return {success: true, highScore: currentHighScore}
+	},
 }

@@ -1,4 +1,4 @@
-import {error, invalid} from '@sveltejs/kit'
+import {invalid} from '@sveltejs/kit'
 
 import type {PageServerLoad, Actions} from './$types'
 
