@@ -46,6 +46,26 @@ declare global {
 			starred: boolean
 		}
 
+		type HighScore = {
+			id: string
+			score: number
+			game: string
+			seed: string
+			player: {
+				id: string
+				displayName: string
+			}
+		}
+
+		type HighScoreWithPlayer = HighScore & {
+			player: {
+				id: string
+				displayName: string
+			}
+		}
+
+		type HighScorePartial = Pick<HighScore, 'score' | 'game' | 'seed'>
+
 		type IdeaPartial = Pick<Idea, 'slug' | 'name' | 'emoji' | 'description'>
 
 		interface IdeasRepoInterface {
@@ -58,8 +78,19 @@ declare global {
 			findBySlug(slug: string): Promise<Idea | null>
 			starIdea(ideaId: string, userId: string): Promise<boolean>
 			unstarIdea(ideaId: string, userId: string): Promise<boolean>
-			createIdea(idea: IdeaPartial, userId): Promise<Idea | null>
+			createIdea(idea: IdeaPartial, userId: string): Promise<Idea | null>
 			updateIdea(id: string, ideaPartial: IdeaPartial): Promise<Idea | null>
+		}
+
+		interface HighScoresRepoInterface {
+			getAll(options: {
+				limit: number
+				match?: Record<string, unknown>
+			}): Promise<HighScore[]>
+			submitHighScore(
+				highScorePartial: HighScorePartial,
+				userId: string
+			): Promise<null>
 		}
 
 		interface UserRepoInterface {
@@ -79,8 +110,8 @@ declare global {
 			sfxOn: boolean
 			ideasRepo: IdeasRepoInterface
 			userRepo: UserRepoInterface
+			highScoresRepo: HighScoresRepoInterface
 			user: User | null
-			ideasRepo: IdeasRepoInterface
 		}
 
 		interface Platform {}
