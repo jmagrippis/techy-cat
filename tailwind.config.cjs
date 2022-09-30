@@ -27,6 +27,7 @@ const config = {
 		},
 		fontFamily: {
 			sans: ['Overpass', 'sans-serif'],
+			arcade: ['"Press Start 2P"', 'cursive'],
 		},
 		fontWeight: {
 			thin: 100,
