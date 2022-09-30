@@ -72,7 +72,7 @@ export const load: PageServerLoad = ({url, cookies, locals}) => {
 }
 
 export const actions: Actions = {
-	persistScore: async ({request, cookies}) => {
+	persistScore: async ({request, cookies, locals}) => {
 		const formData = await request.formData()
 		const wrongGuesses = formData.get('wrongGuesses')
 		const seed = formData.get('seed')
@@ -138,6 +138,17 @@ export const actions: Actions = {
 				maxAge: ONE_DAY_IN_SECONDS,
 				secure: request.url.startsWith('https'),
 			})
+
+			if (locals.user) {
+				await locals.highScoresRepo.submitHighScore(
+					{
+						seed,
+						score: wrongGuessesCount,
+						game: 'memory',
+					},
+					locals.user.id
+				)
+			}
 
 			return {success: true, highScore: wrongGuessesCount}
 		}

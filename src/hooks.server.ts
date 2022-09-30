@@ -4,6 +4,7 @@ import {createClient} from '@supabase/supabase-js'
 import {PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY} from '$env/static/public'
 import {IdeasRepo} from '$lib/repos/ideas'
 import {UserRepo} from '$lib/repos/user'
+import {HighScoresRepo} from '$lib/repos/highScores'
 import {isTheme, type Theme} from './types'
 
 const getThemeFromCookies = (cookies: Cookies): Theme => {
@@ -32,8 +33,10 @@ export const handle: Handle = async ({event, resolve}) => {
 	)
 	const userRepo = new UserRepo(supabaseClient)
 	const ideasRepo = new IdeasRepo(supabaseClient)
+	const highScoresRepo = new HighScoresRepo(supabaseClient)
 	event.locals.ideasRepo = ideasRepo
 	event.locals.userRepo = userRepo
+	event.locals.highScoresRepo = highScoresRepo
 
 	event.locals.user = await userRepo.findAndRefreshIfNeeded(
 		event.cookies,

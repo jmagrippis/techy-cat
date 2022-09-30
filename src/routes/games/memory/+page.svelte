@@ -172,6 +172,9 @@
 					: `${data.stats.totalDailies} dailies total`}!
 			</p>
 			<p>Your current daily streak is {data.stats.streak}!</p>
+			<p>
+				Check out the <a href="/games/memory/leaderboard">leaderboard!</a>
+			</p>
 		</div>
 	{/if}
 </div>
