@@ -1,11 +1,7 @@
 <script lang="ts">
-	import {onMount} from 'svelte'
-	import lottie, {type AnimationItem} from 'lottie-web'
-
 	import {enhance} from '$app/forms'
 	import EmptyStar from '$lib/icons/empty-star.svg'
 	import {user} from '$lib/stores/user'
-	import animationData from './star.json'
 
 	export let id: string
 	export let emoji: string
@@ -13,25 +9,7 @@
 	export let description: string
 	export let starred: boolean
 
-	let starButton: HTMLButtonElement
-	let starAnimation: AnimationItem
-
 	let state: 'idle' | 'starring' | Error = 'idle'
-
-	onMount(() => {
-		if (!starButton) return
-
-		starAnimation = lottie.loadAnimation({
-			container: starButton,
-			renderer: 'svg',
-			loop: false,
-			autoplay: false,
-			animationData,
-		})
-
-		const lastFrame = starAnimation.totalFrames - 1
-		starAnimation.goToAndStop(starred ? lastFrame : 0, true)
-	})
 </script>
 
 <div
@@ -54,9 +32,6 @@
 					state = 'starring'
 					starred = !starred
 
-					starAnimation.setDirection(starred ? 1 : -1)
-					starAnimation.goToAndPlay(starred ? 0 : 20, true)
-
 					return ({result}) => {
 						if (result.type === 'success') {
 							state = 'idle'
@@ -67,19 +42,18 @@
 								} this idea...`
 							)
 							starred = !starred
-
-							const lastFrame = starAnimation.totalFrames - 1
-							starAnimation.goToAndStop(starred ? lastFrame : 0, true)
 						}
 					}
 				}}
 			>
 				<input type="hidden" name="id" value={id} />
 				<button
+					class="text-4xl"
 					disabled={state === 'starring'}
-					bind:this={starButton}
 					aria-label={starred ? 'unstar this idea' : 'star this idea'}
-				/>
+				>
+					{starred ? '★' : '☆'}
+				</button>
 			</form>
 		{:else}
 			<a href="/login">
