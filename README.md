@@ -5,7 +5,11 @@
 
 Ideas should be free, here's some for you to get you started 😄
 
-Watch [livestreams where we build this app & "distilled" tutorial videos / guides](https://www.youtube.com/channel/UCm1ALyg61uhPoTnZBm7mY2g)!
+Watch [livestreams where we build this app, as well as "distilled" tutorial videos / guides](https://www.youtube.com/c/jmagrippis)!
+
+Discuss, suggest features and get support on the [Discord](https://discord.gg/eR5Q52Sfm3)!
+
+And also, feel free to treat this as a regular repo, so raise issues and PRs here on GitHub, as you see fit 🙌
 
 ## Testing
 
