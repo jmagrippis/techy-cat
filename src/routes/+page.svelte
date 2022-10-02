@@ -9,6 +9,7 @@
 </script>
 
 <Hero />
+
 <section class="container mb-6 px-2 sm:px-0">
 	<h2 class="mb-4 text-2xl">Latest ideas</h2>
 	<ul class="mb-6 grid grid-cols-12 gap-4">

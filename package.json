@@ -33,7 +33,6 @@
 		"eslint-plugin-svelte3": "^4.0.0",
 		"jsdom": "^20.0.0",
 		"jwt-decode": "^3.1.2",
-		"lottie-web": "^5.9.6",
 		"motion": "^10.14.2",
 		"openapi-typescript": "^5.4.1",
 		"postcss": "^8.4.16",
