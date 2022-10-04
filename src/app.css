@@ -92,6 +92,8 @@
 	--shadow-1-color: var(--shadow-1-color-light);
 
 	--header-height: 4rem;
+	--header-top-margin: 1rem;
+	--header-with-margin: calc(var(--header-height) + var(--header-top-margin));
 }
 
 .dark {

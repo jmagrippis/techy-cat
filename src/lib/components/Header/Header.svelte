@@ -39,8 +39,8 @@
 <svelte:window bind:scrollY={currentY} />
 
 <header
-	class="container sticky top-0 z-50 flex h-[var(--header-height)] items-center bg-surface-1/50 px-2 text-lg backdrop-blur-sm transition-transform ease-in"
-	class:motion-safe:-translate-y-full={offscreen}
+	class="container sticky top-[var(--header-top-margin)] z-50 flex h-[var(--header-height)] items-center bg-surface-1/50 px-2 text-lg backdrop-blur-sm transition-transform ease-in"
+	class:motion-safe:-translate-y-[var(--header-with-margin)]={offscreen}
 	bind:clientHeight
 >
 	<nav class="flex flex-grow gap-2 md:gap-4">
