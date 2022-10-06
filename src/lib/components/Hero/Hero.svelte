@@ -1,5 +1,18 @@
 <script lang="ts">
+	import {onMount} from 'svelte'
+	import lottie from 'lottie-web'
+
 	import BigLink from '../buttons/BigLink.svelte'
+	import animationData from './cat-with-yarn.json'
+
+	let animationContainer: HTMLElement
+
+	onMount(() => {
+		lottie.loadAnimation({
+			container: animationContainer,
+			animationData,
+		})
+	})
 </script>
 
 <section class="container grid grid-cols-12 items-center">
@@ -22,6 +35,9 @@
 		</p>
 	</div>
 	<aside class="col-span-12 min-h-full lg:col-span-7">
-		<div class="mt-6 p-6 text-center text-8xl">😸</div>
+		<div
+			class="h-[33vh] animate-fade-in-once lg:h-[67vh]"
+			bind:this={animationContainer}
+		/>
 	</aside>
 </section>
