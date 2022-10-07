@@ -11,7 +11,6 @@ export const POST: RequestHandler = async ({request, cookies}) => {
 	cookies.set('sfxOn', sfxOn, {
 		path: '/',
 		maxAge: TEN_YEARS_IN_SECONDS,
-		secure: request.url.startsWith('https'),
 	})
 
 	return json({sfxOn})

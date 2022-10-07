@@ -81,8 +81,7 @@ export class UserRepo implements App.UserRepoInterface {
 	}
 
 	findAndRefreshIfNeeded = async (
-		cookies: Cookies,
-		secureCookies: boolean
+		cookies: Cookies
 	): Promise<App.User | null> => {
 		const accessToken = cookies.get('session')
 
@@ -98,9 +97,7 @@ export class UserRepo implements App.UserRepoInterface {
 		const expiryDate = new Date(decodedUser.exp * 1_000)
 
 		if (expiryDate < sixDaysFromNow) {
-			const user = await this.refreshSession(cookies, secureCookies).catch(
-				() => null
-			)
+			const user = await this.refreshSession(cookies).catch(() => null)
 
 			if (user) return user
 		}
@@ -108,7 +105,7 @@ export class UserRepo implements App.UserRepoInterface {
 		return this.findById(decodedUser.sub)
 	}
 
-	refreshSession = async (cookies: Cookies, secureCookies: boolean) => {
+	refreshSession = async (cookies: Cookies) => {
 		const refreshToken = cookies.get('refreshSession')
 		if (!refreshToken) return null
 
@@ -120,13 +117,11 @@ export class UserRepo implements App.UserRepoInterface {
 			cookies.set('session', session.access_token, {
 				path: '/',
 				maxAge: session.expires_in,
-				secure: secureCookies,
 			})
 			if (session.refresh_token) {
 				cookies.set('refreshSession', session.refresh_token, {
 					path: '/',
 					maxAge: session.expires_in,
-					secure: secureCookies,
 				})
 			}
 
