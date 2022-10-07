@@ -18,7 +18,7 @@
 	use:enhance={() => {
 		state = 'updating'
 
-		return ({result}) => {
+		return ({result, update}) => {
 			switch (result.type) {
 				case 'error':
 					state = new Error(
@@ -31,6 +31,7 @@
 				case 'success':
 				default:
 					state = 'success'
+					update()
 					break
 			}
 		}

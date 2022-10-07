@@ -1,3 +1,5 @@
+import {TEN_YEARS_IN_SECONDS} from '$lib/constants'
+import {invalid} from '@sveltejs/kit'
 import type {PageServerLoad, Actions} from './$types'
 
 const demos = [
@@ -15,20 +17,43 @@ const demos = [
 	},
 ]
 
-export const load: PageServerLoad = async () => ({
-	demos,
-	meta: {
-		title: 'Latest Demos',
-		description:
-			'The latest demos by the Techy Cat community, FOR the Techy Cat community!',
-	},
-})
+export const load: PageServerLoad = async ({cookies}) => {
+	const demosWithHearts = demos.map((demo) => ({
+		...demo,
+		hearted: !!cookies.get(`hearted-demo-${demo.id}`),
+	}))
+
+	return {
+		demos: demosWithHearts,
+		meta: {
+			title: 'Latest Demos',
+			description:
+				'The latest demos by the Techy Cat community, FOR the Techy Cat community!',
+		},
+	}
+}
 
 export const actions: Actions = {
-	heart: async () => {
-		// TODO: allow hearting with cookies?
+	heart: async ({request, cookies}) => {
+		const id = (await request.formData()).get('id')
+
+		if (typeof id !== 'string') {
+			return invalid(400, {error: 'Idea `id` must be provided'})
+		}
+
+		cookies.set(`hearted-demo-${id}`, '💜', {
+			path: '/demos',
+			maxAge: TEN_YEARS_IN_SECONDS,
+		})
 	},
-	unheart: async () => {
-		// TODO: allow... un-hearting with cookies?
+
+	unheart: async ({request, cookies}) => {
+		const id = (await request.formData()).get('id')
+
+		if (typeof id !== 'string') {
+			return invalid(400, {error: 'Idea `id` must be provided'})
+		}
+
+		cookies.delete(`hearted-demo-${id}`, {path: '/demos'})
 	},
 }
