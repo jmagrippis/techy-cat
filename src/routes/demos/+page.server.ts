@@ -9,7 +9,7 @@ const demos = [
 		link: '/demos/lottie',
 		title: 'Animations with Lottie',
 		description:
-			'A playground for user interactions with extra flair, thanks to Lottie!',
+			'A playground for user interactions with extra flair, thanks to Lottie! Heart your heart out 😄',
 		tags: ['frontend'],
 		createdAt: '2022-10-07T07:30:12.141Z',
 		updatedAt: '2022-10-07T07:30:12.141Z',
@@ -26,7 +26,7 @@ export const load: PageServerLoad = async ({cookies}) => {
 	return {
 		demos: demosWithHearts,
 		meta: {
-			title: 'Latest Demos',
+			title: 'Interactive Demos',
 			description:
 				'The latest demos by the Techy Cat community, FOR the Techy Cat community!',
 		},
