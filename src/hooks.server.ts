@@ -38,10 +38,7 @@ export const handle: Handle = async ({event, resolve}) => {
 	event.locals.userRepo = userRepo
 	event.locals.highScoresRepo = highScoresRepo
 
-	event.locals.user = await userRepo.findAndRefreshIfNeeded(
-		event.cookies,
-		event.url.protocol.startsWith('https')
-	)
+	event.locals.user = await userRepo.findAndRefreshIfNeeded(event.cookies)
 
 	const response = await resolve(event)
 

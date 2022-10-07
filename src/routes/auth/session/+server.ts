@@ -11,15 +11,11 @@ export const POST: RequestHandler = async ({request, cookies, locals}) => {
 
 	const user = await locals.userRepo.findByAccessToken(accessToken)
 
-	const secure = request.url.startsWith('https')
-
 	cookies.set('session', accessToken, {
-		secure,
 		path: '/',
 		maxAge: expiresIn,
 	})
 	cookies.set('refreshSession', refreshToken, {
-		secure,
 		path: '/',
 		maxAge: expiresIn,
 	})

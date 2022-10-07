@@ -103,7 +103,6 @@ export const actions: Actions = {
 			cookies.set('stats', JSON.stringify(nextStatsCookie), {
 				path: '/games/memory',
 				maxAge: TEN_YEARS_IN_SECONDS,
-				secure: request.url.startsWith('https'),
 			})
 		} else if (statsCookie.lastPlayed !== currentDateSeed) {
 			const nextDateForStreak = new Date(statsCookie.lastPlayed)
@@ -126,7 +125,6 @@ export const actions: Actions = {
 			cookies.set('stats', JSON.stringify(nextStatsCookie), {
 				path: '/games/memory',
 				maxAge: TEN_YEARS_IN_SECONDS,
-				secure: request.url.startsWith('https'),
 			})
 		}
 
@@ -136,7 +134,6 @@ export const actions: Actions = {
 			cookies.set('highScore', highScoreCookie, {
 				path: '/games/memory',
 				maxAge: ONE_DAY_IN_SECONDS,
-				secure: request.url.startsWith('https'),
 			})
 
 			if (locals.user) {
