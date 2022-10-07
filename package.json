@@ -18,7 +18,7 @@
 		"@poppanator/sveltekit-svg": "^1.0.0",
 		"@sparticuz/chromium": "107.0.0",
 		"@supabase/supabase-js": "^1.35.7",
-		"@sveltejs/adapter-vercel": "next",
+		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
 		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/svelte": "^3.2.2",
