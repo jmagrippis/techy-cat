@@ -36,6 +36,7 @@
 		"lottie-web": "^5.9.6",
 		"motion": "^10.14.2",
 		"openapi-typescript": "^5.4.1",
+		"playwright": "^1.26.1",
 		"postcss": "^8.4.17",
 		"prettier": "^2.7.1",
 		"prettier-plugin-svelte": "^2.7.1",
@@ -56,8 +57,5 @@
 	},
 	"volta": {
 		"node": "16.17.0"
-	},
-	"dependencies": {
-		"puppeteer": "^18.2.1"
 	}
 }

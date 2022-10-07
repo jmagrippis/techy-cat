@@ -1,12 +1,13 @@
+import {chromium} from 'playwright'
+
 import type {RequestHandler} from './$types'
-import puppeteer from 'puppeteer'
 
 export const GET: RequestHandler = async ({url}) => {
-	const browser = await puppeteer.launch()
+	const browser = await chromium.launch()
 	const page = await browser.newPage()
-	page.setViewport({width: 1200, height: 630})
+	page.setViewportSize({width: 1200, height: 630})
 	const imageUrl = url.href.replace('/png', '')
-	await page.goto(imageUrl)
+	await page.goto(imageUrl, {waitUntil: 'networkidle'})
 	const imageBuffer = await page.screenshot()
 
 	return new Response(imageBuffer, {
