@@ -56,5 +56,8 @@
 	},
 	"volta": {
 		"node": "16.17.0"
+	},
+	"dependencies": {
+		"puppeteer": "^18.2.1"
 	}
 }
