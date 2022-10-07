@@ -1,7 +1,7 @@
 import {json} from '@sveltejs/kit'
 
 import type {RequestHandler} from './$types'
-import {isTheme} from '../../types'
+import {isTheme} from '../../../types'
 import {TEN_YEARS_IN_SECONDS} from '$lib/constants'
 
 // POST /theme
