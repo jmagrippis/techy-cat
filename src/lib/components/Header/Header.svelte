@@ -53,7 +53,7 @@
 				<a href="/games/memory">Games</a>
 			</li>
 			<li>
-				<a href="/about">About</a>
+				<a href="/demos">Demos</a>
 			</li>
 		</ul>
 	</nav>

@@ -19,15 +19,23 @@ test('navigation smoke test', async ({page}) => {
 	await expect(page).toHaveTitle(/Memory Game/)
 	await expect(page.locator('role=heading[level=1]')).toHaveText('Memory Game')
 
-	// navigate to the About Page
-	await page.locator('role=link[name=About]').click()
+	// navigate to the Demos Page
+	await page.locator('role=link[name=Demos]').click()
 
-	await expect(page).toHaveTitle(/About/)
-	await expect(page.locator('role=heading[level=1]')).toHaveText('About')
+	await expect(page).toHaveTitle(/Interactive Demos/)
+	await expect(page.locator('role=heading[level=1]')).toHaveText(
+		'Interactive Demos'
+	)
 
 	// navigate to the Login Page
 	await page.locator('role=link[name=Login]').click()
 
 	await expect(page).toHaveTitle(/Login/)
 	await expect(page.locator('role=heading[level=1]')).toHaveText('Login')
+
+	// navigate to the About Page
+	await page.locator('role=link[name=About]').click()
+
+	await expect(page).toHaveTitle(/About/)
+	await expect(page.locator('role=heading[level=1]')).toHaveText('About')
 })

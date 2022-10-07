@@ -8,6 +8,11 @@ declare global {
 		export default content
 	}
 
+	declare module './*.svg' {
+		const content: SvelteComponentType
+		export default content
+	}
+
 	declare module '*.svg?component' {
 		const content: SvelteComponentType
 		export default content

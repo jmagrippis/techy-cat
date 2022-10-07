@@ -74,8 +74,8 @@
 			>
 				<input type="hidden" name="id" value={id} />
 				<button
+					class="w-full"
 					bind:this={starButton}
-					class="text-4xl"
 					disabled={state === 'starring'}
 					aria-label={starred ? 'unstar this idea' : 'star this idea'}
 				/>
