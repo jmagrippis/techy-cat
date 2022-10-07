@@ -55,9 +55,10 @@
 					starAnimation.setDirection(starred ? 1 : -1)
 					starAnimation.goToAndPlay(starred ? 0 : reverseStartFrame, true)
 
-					return ({result}) => {
+					return ({result, update}) => {
 						if (result.type === 'success') {
 							state = 'idle'
+							update()
 						} else {
 							state = new Error(
 								`there was a problem ${

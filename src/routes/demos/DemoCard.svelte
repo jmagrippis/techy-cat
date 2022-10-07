@@ -34,7 +34,7 @@
 </script>
 
 <div
-	class="grid grid-cols-12 items-center gap-4 rounded bg-surface-2 px-6 py-4 shadow"
+	class="grid animate-fade-in-once grid-cols-12 items-center gap-4 rounded bg-surface-2 px-6 py-4 shadow"
 >
 	<div class="col-span-9">
 		<h2 class="text-2xl">
@@ -56,9 +56,10 @@
 			heartAnimation.setDirection(hearted ? 1 : -1)
 			heartAnimation.goToAndPlay(hearted ? 0 : lastFrame, true)
 
-			return ({result}) => {
+			return ({result, update}) => {
 				if (result.type === 'success') {
 					state = 'idle'
+					update()
 				} else {
 					state = new Error(
 						`there was a problem ${hearted ? 'hearting' : 'unhearting'}...`
@@ -78,12 +79,12 @@
 			aria-label={hearted ? 'unheart this demo' : 'heart this demo'}
 		/>
 	</form>
-	<div class="col-span-12 flex border-t border-t-secondary-400 pt-6">
+	<div class="col-span-12 flex gap-2 border-t border-t-secondary-400 pt-6">
 		<div class="grow font-thin">
 			by <span class="text-secondary-400">{author}</span>, last updated on {dateFormatter.format(
 				new Date(updatedAt)
 			)}
 		</div>
-		<a href={link} class="text-2xl">👁 View Demo</a>
+		<a href={link} class="shrink-0 text-2xl">👁 View Demo</a>
 	</div>
 </div>
