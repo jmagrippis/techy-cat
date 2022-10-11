@@ -16,7 +16,6 @@
 	"devDependencies": {
 		"@playwright/test": "^1.27.0",
 		"@poppanator/sveltekit-svg": "^1.0.0",
-		"@sparticuz/chromium": "107.0.0",
 		"@supabase/supabase-js": "^1.35.7",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
@@ -41,7 +40,6 @@
 		"prettier": "^2.7.1",
 		"prettier-plugin-svelte": "^2.8.0",
 		"prettier-plugin-tailwindcss": "^0.1.13",
-		"puppeteer": "^18.2.1",
 		"seedrandom": "^3.0.5",
 		"svelte": "^3.51.0",
 		"svelte-check": "^2.9.2",
