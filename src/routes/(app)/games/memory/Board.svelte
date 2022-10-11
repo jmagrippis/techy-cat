@@ -2,9 +2,9 @@
 	import {onMount} from 'svelte'
 	import lottie, {type AnimationItem} from 'lottie-web'
 
+	import animationData from '$lib/animations/confetti.json'
 	import Card from './Card.svelte'
 	import type {Card as CardType} from './types'
-	import animationData from './confetti.json'
 	import cardPickUrl from './sfx/card-pick.aac'
 	import mismatchUrl from './sfx/mismatch.aac'
 	import matchUrl from './sfx/match.aac'
