@@ -32,7 +32,7 @@ const demos = [
 export const load: PageServerLoad = async ({cookies}) => {
 	const demosWithHearts = demos.map((demo) => ({
 		...demo,
-		hearted: !!cookies.get(`hearted-demo-${demo.id}`),
+		hearted: !!cookies.get(`hearted-${demo.id}`),
 	}))
 
 	return {
@@ -53,7 +53,7 @@ export const actions: Actions = {
 			return invalid(400, {error: 'Idea `id` must be provided'})
 		}
 
-		cookies.set(`hearted-demo-${id}`, '💜', {
+		cookies.set(`hearted-${id}`, '💜', {
 			path: '/demos',
 			maxAge: TEN_YEARS_IN_SECONDS,
 		})
@@ -66,6 +66,6 @@ export const actions: Actions = {
 			return invalid(400, {error: 'Idea `id` must be provided'})
 		}
 
-		cookies.delete(`hearted-demo-${id}`, {path: '/demos'})
+		cookies.delete(`hearted-${id}`, {path: '/demos'})
 	},
 }
