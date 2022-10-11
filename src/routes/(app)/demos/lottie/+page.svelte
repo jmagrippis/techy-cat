@@ -27,4 +27,7 @@
 		{/each}
 	</ul>
 	<BigButton>Celebrate!</BigButton>
+	{#await import('./AnotherCat.svelte') then Module}
+		<Module.default />
+	{/await}
 </section>
