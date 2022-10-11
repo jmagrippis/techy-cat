@@ -13,6 +13,7 @@
 	export let author: string
 	export let updatedAt: string
 	export let hearted: boolean
+	export let actionText: string = 'View Demo'
 
 	let state: 'idle' | 'hearting' | Error = 'idle'
 
@@ -48,7 +49,7 @@
 	<form
 		class="relative col-span-3 text-center"
 		method="POST"
-		action={`?/${hearted ? 'unheart' : 'heart'}`}
+		action={`/demos?/${hearted ? 'unheart' : 'heart'}`}
 		use:enhance={() => {
 			state = 'hearting'
 			hearted = !hearted
@@ -91,8 +92,8 @@
 		<a
 			href={link}
 			class="group flex shrink-0 items-center justify-center gap-4 text-2xl"
-			><EyeIcon class="w-8 transition-colors group-hover:stroke-primary-600" /> View
-			Demo</a
+			><EyeIcon class="w-8 transition-colors group-hover:stroke-primary-600" />
+			{actionText}</a
 		>
 	</div>
 </div>
