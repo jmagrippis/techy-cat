@@ -1,10 +1,28 @@
 <script lang="ts">
+	import {onMount} from 'svelte'
+	import lottie, {type AnimationItem} from 'lottie-web'
+
 	import PageHeading from '$lib/components/PageHeading.svelte'
 	import BigButton from '$lib/components/buttons/BigButton.svelte'
+	import confettiAnimationData from '$lib/animations/confetti.json'
 	import type {PageData} from './$types'
 	import DemoCard from '../DemoCard.svelte'
 
 	export let data: PageData
+
+	let confettiContainer: HTMLElement
+	let confettiAnimation: AnimationItem
+
+	onMount(() => {
+		if (!confettiContainer) return
+
+		confettiAnimation = lottie.loadAnimation({
+			container: confettiContainer,
+			animationData: confettiAnimationData,
+			loop: false,
+			autoplay: false,
+		})
+	})
 </script>
 
 <section class="container w-full grow px-2">
@@ -26,8 +44,18 @@
 			</li>
 		{/each}
 	</ul>
-	<BigButton>Celebrate!</BigButton>
+	<form
+		on:submit|preventDefault={() => {
+			confettiAnimation.goToAndPlay(0, true)
+		}}
+	>
+		<BigButton>Celebrate!</BigButton>
+	</form>
 	{#await import('./AnotherCat.svelte') then Module}
 		<Module.default />
 	{/await}
 </section>
+<div
+	bind:this={confettiContainer}
+	class="pointer-events-none fixed inset-0 z-20 w-full"
+/>
