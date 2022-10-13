@@ -7,10 +7,14 @@
 	let container: HTMLElement
 
 	onMount(() => {
-		lottie.loadAnimation({
+		const animation = lottie.loadAnimation({
 			container,
 			animationData,
 		})
+
+		return () => {
+			animation.destroy()
+		}
 	})
 </script>
 

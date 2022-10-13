@@ -8,10 +8,14 @@
 	let animationContainer: HTMLElement
 
 	onMount(() => {
-		lottie.loadAnimation({
+		const animation = lottie.loadAnimation({
 			container: animationContainer,
 			animationData,
 		})
+
+		return () => {
+			animation.destroy()
+		}
 	})
 </script>
 

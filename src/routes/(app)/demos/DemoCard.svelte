@@ -32,6 +32,10 @@
 
 		const lastFrame = heartAnimation.totalFrames - 1
 		heartAnimation.goToAndStop(hearted ? lastFrame : 0, true)
+
+		return () => {
+			heartAnimation.destroy()
+		}
 	})
 </script>
 
@@ -54,9 +58,9 @@
 			state = 'hearting'
 			hearted = !hearted
 
-			const lastFrame = heartAnimation.totalFrames - 1
+			const reverseStartFrame = 68
 			heartAnimation.setDirection(hearted ? 1 : -1)
-			heartAnimation.goToAndPlay(hearted ? 0 : lastFrame, true)
+			heartAnimation.goToAndPlay(hearted ? 0 : reverseStartFrame, true)
 
 			return ({result, update}) => {
 				if (result.type === 'success') {
@@ -68,7 +72,7 @@
 					)
 					hearted = !hearted
 
-					heartAnimation.goToAndStop(hearted ? lastFrame : 0, true)
+					heartAnimation.goToAndStop(hearted ? reverseStartFrame : 0, true)
 				}
 			}
 		}}

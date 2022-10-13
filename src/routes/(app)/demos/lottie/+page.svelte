@@ -22,6 +22,10 @@
 			loop: false,
 			autoplay: false,
 		})
+
+		return () => {
+			confettiAnimation.destroy()
+		}
 	})
 </script>
 
