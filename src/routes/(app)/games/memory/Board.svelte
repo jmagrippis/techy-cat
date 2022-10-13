@@ -90,6 +90,10 @@
 		matchAudio = new Audio(matchUrl)
 		matchAudio.volume = 0.7
 		fanfareAudio = new Audio(fanfareUrl)
+
+		return () => {
+			confettiAnimation.destroy()
+		}
 	})
 </script>
 
