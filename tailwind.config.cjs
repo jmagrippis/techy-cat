@@ -26,8 +26,8 @@ const config = {
 			current: 'currentColor',
 		},
 		fontFamily: {
-			sans: ['Overpass', 'sans-serif'],
-			arcade: ['"Press Start 2P"', 'cursive'],
+			sans: ['Overpass', 'sans-serif', '"Noto Color Emoji"'],
+			arcade: ['"Press Start 2P"', 'cursive', '"Noto Color Emoji"'],
 		},
 		fontWeight: {
 			thin: 100,
