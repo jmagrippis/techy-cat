@@ -27,6 +27,18 @@ const demos = [
 		updatedAt: '2022-10-07T12:30:12.141Z',
 		hearted: false,
 	},
+	{
+		id: 'c4db8a55-e802-4fb5-a34e-d45a25943704',
+		author: 'Johnny',
+		link: '/demos/typing-animation',
+		title: 'Typing Animation',
+		description:
+			'For a lightweight but still cool effect, with relatively little CSS & Javascript!',
+		tags: ['frontend'],
+		createdAt: '2022-11-04T14:00:12.141Z',
+		updatedAt: '2022-11-04T14:00:12.141Z',
+		hearted: false,
+	},
 ]
 
 export const load: PageServerLoad = async ({cookies}) => {
