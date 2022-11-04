@@ -14,7 +14,7 @@
 		"generate": "export $(grep -v '^#' .env | xargs) && openapi-typescript \"$PUBLIC_SUPABASE_URL/rest/v1/?apikey=$PUBLIC_SUPABASE_ANON_KEY\" --output src/lib/supabase.d.ts"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.27.0",
+		"@playwright/test": "^1.27.1",
 		"@poppanator/sveltekit-svg": "^1.0.0",
 		"@supabase/supabase-js": "^1.35.7",
 		"@sveltejs/adapter-auto": "next",
